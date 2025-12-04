@@ -3,18 +3,15 @@ import {
   SignUpCommand,
   InitiateAuthCommand,
   AuthFlowType,
-  ConfirmSignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import type { SignupRequest, LoginRequest } from "@retire-strong/shared-api";
 
 export class AuthService {
   private client: CognitoIdentityProviderClient;
-  private userPoolId: string;
   private clientId: string;
 
-  constructor(userPoolId: string, clientId: string, region: string = "us-east-1") {
+  constructor(_userPoolId: string, clientId: string, region: string = "us-east-1") {
     this.client = new CognitoIdentityProviderClient({ region });
-    this.userPoolId = userPoolId;
     this.clientId = clientId;
   }
 

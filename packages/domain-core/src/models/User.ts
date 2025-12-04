@@ -31,12 +31,26 @@ export interface User {
   updatedAt: string; // ISO 8601
   onboardingComplete: boolean;
   onboardingData?: OnboardingData;
-  // Motivation profile (will be added in Step 3.2)
-  motivationProfile?: {
-    primaryMotivator: string;
-    secondaryMotivators: string[];
-    persona: string;
+  motivationProfile?: MotivationProfile;
+  coachPersona?: CoachPersona;
+}
+
+export interface MotivationProfile {
+  primaryMotivator: string;
+  secondaryMotivators: string[];
+  scores: Record<string, number>;
+}
+
+export interface CoachPersona {
+  name: string;
+  description: string;
+  tone: {
+    formality: "casual" | "professional" | "warm";
+    encouragement: "gentle" | "moderate" | "energetic";
+    directness: "subtle" | "balanced" | "direct";
+    humor: "none" | "light" | "moderate";
   };
+  avatar?: string;
 }
 
 export interface CreateUserInput {
@@ -49,5 +63,11 @@ export interface CreateUserInput {
 export interface CompleteOnboardingInput {
   userId: string;
   onboardingData: OnboardingData;
+}
+
+export interface SetMotivationProfileInput {
+  userId: string;
+  motivationProfile: MotivationProfile;
+  coachPersona: CoachPersona;
 }
 

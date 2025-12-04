@@ -73,6 +73,33 @@ Resources:
             Path: /users/onboarding
             Method: post
 
+  QuizFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/motivation/quiz.handler
+      CodeUri: .
+      Events:
+        Quiz:
+          Type: Api
+          Properties:
+            Path: /motivation/quiz
+            Method: get
+
+  SubmitQuizFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/motivation/submit.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          USERS_TABLE_NAME: Users
+      Events:
+        SubmitQuiz:
+          Type: Api
+          Properties:
+            Path: /motivation/quiz/submit
+            Method: post
+
 Outputs:
   ApiUrl:
     Description: API Gateway endpoint URL

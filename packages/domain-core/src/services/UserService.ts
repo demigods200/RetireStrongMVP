@@ -1,5 +1,10 @@
-import type { User, CreateUserInput, CompleteOnboardingInput } from "../models/User";
-import { UserRepo } from "../repos/UserRepo";
+import type {
+  User,
+  CreateUserInput,
+  CompleteOnboardingInput,
+  SetMotivationProfileInput,
+} from "../models/User.js";
+import { UserRepo } from "../repos/UserRepo.js";
 
 export class UserService {
   constructor(private userRepo: UserRepo) {}
@@ -41,6 +46,32 @@ export class UserService {
       ...user,
       onboardingData: input.onboardingData,
       onboardingComplete: true,
+      updatedAt: new Date().toISOString(),
+    };
+
+    // Save updated user
+    await this.userRepo.updateUser(updatedUser);
+
+    return updatedUser;
+  }
+
+  async setMotivationProfile(input: SetMotivationProfileInput): Promise<User> {
+    // Validate input
+    if (!input.motivationProfile || !input.coachPersona) {
+      throw new Error("Missing motivation profile or coach persona");
+    }
+
+    // Get existing user
+    const user = await this.userRepo.getUserById(input.userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Update user with motivation profile and persona
+    const updatedUser: User = {
+      ...user,
+      motivationProfile: input.motivationProfile,
+      coachPersona: input.coachPersona,
       updatedAt: new Date().toISOString(),
     };
 

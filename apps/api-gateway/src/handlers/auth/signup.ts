@@ -23,6 +23,10 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     const cognitoResult = await authService.signUp(validated);
 
     // Create user in DynamoDB
+    if (!cognitoResult.userId) {
+      throw new Error("Failed to create user in Cognito");
+    }
+
     const user = await userService.createUser({
       userId: cognitoResult.userId,
       email: validated.email,

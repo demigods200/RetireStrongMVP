@@ -14,7 +14,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "@retire-strong/shared-ui": "workspace:*",
-    "@retire-strong/shared-api": "workspace:*"
+    "@retire-strong/shared-api": "workspace:*",
+    "@retire-strong/motivation-engine": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.18.0",

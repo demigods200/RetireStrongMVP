@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -19,9 +19,36 @@ const navItems: NavItem[] = [
   { href: "/settings", label: "Settings" },
 ];
 
+interface CoachPersona {
+  name: string;
+  description: string;
+  tone: {
+    formality: string;
+    encouragement: string;
+    directness: string;
+    humor: string;
+  };
+  avatar?: string;
+}
+
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [persona, setPersona] = useState<CoachPersona | null>(null);
+
+  useEffect(() => {
+    // Load persona from localStorage
+    if (typeof window !== "undefined") {
+      const storedPersona = localStorage.getItem("coachPersona");
+      if (storedPersona) {
+        try {
+          setPersona(JSON.parse(storedPersona));
+        } catch (error) {
+          console.error("Failed to parse persona:", error);
+        }
+      }
+    }
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -43,7 +70,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex space-x-1">
+          <div className="hidden md:flex space-x-1 items-center">
             {navItems.map((item) => {
               const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
               return (
@@ -61,6 +88,20 @@ export const Navbar: React.FC = () => {
                 </Link>
               );
             })}
+            
+            {/* Persona Widget */}
+            {persona && (
+              <div className="ml-4 flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20">
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-sm font-bold text-primary">
+                    {persona.name.split(" ").map((n) => n[0]).join("")}
+                  </span>
+                </div>
+                <span className="text-sm font-medium text-gray-700 hidden lg:inline">
+                  {persona.name}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu button */}
