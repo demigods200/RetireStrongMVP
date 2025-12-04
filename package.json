@@ -1,0 +1,31 @@
+{
+  "name": "retire-strong",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-powered wellness platform for adults 50+",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter web dev & pnpm --filter api-gateway dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "type-check": "pnpm -r type-check",
+    "clean": "pnpm -r clean && rm -rf node_modules",
+    "cdk:deploy": "pnpm --filter infra-cdk deploy",
+    "cdk:diff": "pnpm --filter infra-cdk diff",
+    "cdk:synth": "pnpm --filter infra-cdk synth"
+  },
+  "devDependencies": {
+    "@types/node": "^20.18.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20.18.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.0.0"
+}
+
