@@ -12,7 +12,10 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.700.0",
-    "@aws-sdk/lib-dynamodb": "^3.700.0"
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.700.0",
+    "@retire-strong/shared-api": "workspace:*",
+    "@retire-strong/domain-core": "workspace:*"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.145",

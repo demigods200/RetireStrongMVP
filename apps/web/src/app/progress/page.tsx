@@ -1,7 +1,12 @@
+"use client";
+
 import { Layout } from "@retire-strong/shared-ui";
 import { Card } from "@retire-strong/shared-ui";
+import { useAuthGuard } from "@/lib/auth/guards";
 
 export default function ProgressPage() {
+  useAuthGuard(); // Redirect to login if not authenticated
+
   return (
     <Layout>
       <div className="space-y-6">

@@ -24,6 +24,55 @@ Resources:
             Path: /health
             Method: get
 
+  SignupFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/auth/signup.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          COGNITO_USER_POOL_ID: !Ref UserPool
+          COGNITO_CLIENT_ID: !Ref UserPoolClient
+          DYNAMO_TABLE_USERS: !Ref UsersTable
+      Events:
+        Signup:
+          Type: Api
+          Properties:
+            Path: /auth/signup
+            Method: post
+
+  LoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/auth/login.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          COGNITO_USER_POOL_ID: !Ref UserPool
+          COGNITO_CLIENT_ID: !Ref UserPoolClient
+          DYNAMO_TABLE_USERS: !Ref UsersTable
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /auth/login
+            Method: post
+
+  OnboardingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/users/onboarding.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          DYNAMO_TABLE_USERS: !Ref UsersTable
+      Events:
+        Onboarding:
+          Type: Api
+          Properties:
+            Path: /users/onboarding
+            Method: post
+
 Outputs:
   ApiUrl:
     Description: API Gateway endpoint URL

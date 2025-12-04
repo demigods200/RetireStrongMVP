@@ -43,8 +43,8 @@ export class ApiStack extends cdk.Stack {
       },
     });
 
-    // Cognito Authorizer
-    const authorizer = new apigateway.CognitoUserPoolsAuthorizer(this, "CognitoAuthorizer", {
+    // Cognito Authorizer (will be used for protected endpoints in future steps)
+    new apigateway.CognitoUserPoolsAuthorizer(this, "CognitoAuthorizer", {
       cognitoUserPools: [props.userPool],
     });
 

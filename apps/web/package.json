@@ -13,7 +13,8 @@
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@retire-strong/shared-ui": "workspace:*"
+    "@retire-strong/shared-ui": "workspace:*",
+    "@retire-strong/shared-api": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.18.0",
