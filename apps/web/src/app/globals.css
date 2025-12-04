@@ -1,27 +1,13 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  /* 50+ friendly design: larger text, high contrast */
-  --font-size-base: 18px;
-  --font-size-lg: 20px;
-  --font-size-xl: 24px;
-  
-  --line-height-base: 1.6;
-  --line-height-lg: 1.6;
-  --line-height-xl: 1.5;
-  
-  /* High contrast colors for accessibility */
-  --color-primary: #0066CC;
-  --color-primary-dark: #004499;
-  --color-primary-light: #3385D6;
-  
-  /* Larger touch targets (minimum 44x44px) */
-  --spacing-touch: 44px;
-}
-
-body {
-  @apply bg-gray-50 text-gray-900;
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
+@layer base {
+  body {
+    background-color: #f9fafb; /* bg-gray-50 */
+    color: #111827; /* text-gray-900 */
+    font-size: 18px; /* 50+ friendly base font size */
+    line-height: 1.6;
+  }
 }
 
