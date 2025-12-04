@@ -1,0 +1,86 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+.nyc_output
+
+# Production
+dist/
+build/
+.next/
+out/
+
+# Misc
+.DS_Store
+*.pem
+.env
+.env*.local
+.env.*
+!.env.example
+.vercel
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# AWS
+.aws-sam/
+cdk.out/
+*.d.ts.map
+.aws/
+
+# TypeScript
+*.tsbuildinfo
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Logs
+logs/
+*.log
+
+# Confidential/Sensitive Documents
+idea/
+*.pdf
+*.docx
+*.doc
+*.xlsx
+*.xls
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# Local development
+.local/
+localstack-data/
+
+# Documentation
+SETUP.md
+TECH_STACK.md
+BUSINESS_REQUIREMENTS.md
+API_SPECIFICATIONS.md
+QUICK_REFERENCE.md
+retire-strong-project-structure.txt
+retire-strong-full-execution-plan.txt
