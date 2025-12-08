@@ -43,10 +43,13 @@ export class ApiStack extends cdk.Stack {
       },
     });
 
-    // Cognito Authorizer (will be used for protected endpoints in future steps)
-    new apigateway.CognitoUserPoolsAuthorizer(this, "CognitoAuthorizer", {
-      cognitoUserPools: [props.userPool],
-    });
+    // Cognito Authorizer (will be created and attached when needed for protected endpoints)
+    // Example usage when needed:
+    // const cognitoAuthorizer = new apigateway.CognitoUserPoolsAuthorizer(this, "CognitoAuthorizer", {
+    //   cognitoUserPools: [props.userPool],
+    //   identitySource: apigateway.IdentitySource.header("Authorization"),
+    // });
+    // Then use in addMethod: resource.addMethod("GET", integration, { authorizer: cognitoAuthorizer });
 
     // Health Lambda
     const healthLambda = new lambda.Function(this, "HealthFunction", {
