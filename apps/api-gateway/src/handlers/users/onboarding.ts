@@ -10,8 +10,24 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     const validated = OnboardingRequestSchema.parse(body);
 
     // Initialize services
-    const usersTable = process.env.DYNAMO_TABLE_USERS || "";
-    const userRepo = new UserRepo(usersTable);
+    const usersTable = process.env.USERS_TABLE_NAME || process.env.DYNAMO_TABLE_USERS || "";
+    if (!usersTable) {
+      console.error("USERS_TABLE_NAME or DYNAMO_TABLE_USERS environment variable is not set");
+      return {
+        statusCode: 500,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          success: false,
+          error: {
+            code: "CONFIGURATION_ERROR",
+            message: "USERS_TABLE_NAME or DYNAMO_TABLE_USERS environment variable is not set",
+          },
+        }),
+      };
+    }
+    // AWS_REGION is automatically set by Lambda runtime
+    const region = process.env.AWS_REGION || "us-east-2";
+    const userRepo = new UserRepo(usersTable, region);
     const userService = new UserService(userRepo);
 
     // Complete onboarding
@@ -30,6 +46,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
         data: {
           userId: user.userId,
           onboardingComplete: user.onboardingComplete,
+          onboardingData: user.onboardingData, // Include onboarding data in response
         },
       }),
     };

@@ -7,8 +7,11 @@ export const handler: APIGatewayProxyHandlerV2 = async () => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      status: "ok",
-      timestamp: new Date().toISOString(),
+      success: true,
+      data: {
+        status: "ok",
+        timestamp: new Date().toISOString(),
+      },
     }),
   };
 };

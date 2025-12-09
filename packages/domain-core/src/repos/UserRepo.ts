@@ -6,9 +6,17 @@ export class UserRepo {
   private client: DynamoDBDocumentClient;
   private tableName: string;
 
-  constructor(tableName: string, region: string = "us-east-1") {
+  constructor(tableName: string, region: string = "us-east-2") {
     const dynamoClient = new DynamoDBClient({ region });
-    this.client = DynamoDBDocumentClient.from(dynamoClient);
+    this.client = DynamoDBDocumentClient.from(dynamoClient, {
+      marshallOptions: {
+        removeUndefinedValues: true,
+        convertEmptyValues: false,
+      },
+      unmarshallOptions: {
+        wrapNumbers: false,
+      },
+    });
     this.tableName = tableName;
   }
 
@@ -43,17 +51,45 @@ export class UserRepo {
   }
 
   async updateUser(user: User): Promise<User> {
+    // Clean the user object to remove any undefined values before saving
+    const cleanUser = this.removeUndefinedValues({
+      ...user,
+      updatedAt: new Date().toISOString(),
+    });
+
     await this.client.send(
       new PutCommand({
         TableName: this.tableName,
-        Item: {
-          ...user,
-          updatedAt: new Date().toISOString(),
-        },
+        Item: cleanUser,
       })
     );
 
     return user;
+  }
+
+  // Helper to recursively remove undefined values
+  private removeUndefinedValues(obj: any): any {
+    if (obj === null || obj === undefined) {
+      return obj;
+    }
+    
+    if (Array.isArray(obj)) {
+      return obj
+        .map(item => this.removeUndefinedValues(item))
+        .filter(item => item !== undefined);
+    }
+    
+    if (typeof obj === 'object') {
+      const cleaned: any = {};
+      for (const [key, value] of Object.entries(obj)) {
+        if (value !== undefined) {
+          cleaned[key] = this.removeUndefinedValues(value);
+        }
+      }
+      return cleaned;
+    }
+    
+    return obj;
   }
 
   async getUserByEmail(_email: string): Promise<User | null> {

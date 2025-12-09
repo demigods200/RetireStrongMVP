@@ -73,6 +73,21 @@ Resources:
             Path: /users/onboarding
             Method: post
 
+  UserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/users/profile.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          DYNAMO_TABLE_USERS: !Ref UsersTable
+      Events:
+        UserProfile:
+          Type: Api
+          Properties:
+            Path: /users/me
+            Method: get
+
   QuizFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -92,7 +107,7 @@ Resources:
       CodeUri: .
       Environment:
         Variables:
-          USERS_TABLE_NAME: Users
+          DYNAMO_TABLE_USERS: !Ref UsersTable
       Events:
         SubmitQuiz:
           Type: Api

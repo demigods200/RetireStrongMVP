@@ -83,7 +83,10 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ userId }) =>
 
       const data = await response.json();
       if (data.success) {
-        router.push("/today?onboarding=complete");
+        // Store the result in localStorage for the result page
+        localStorage.setItem("onboardingResult", JSON.stringify(data.data));
+        // Redirect to result page
+        router.push("/onboarding/result");
       } else {
         alert(data.error?.message || "Failed to complete onboarding");
       }

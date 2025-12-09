@@ -17,9 +17,20 @@ interface CoachPersona {
   avatar?: string;
 }
 
+interface QuizResult {
+  profile: {
+    primaryMotivator: string;
+    secondaryMotivators: string[];
+    scores: Record<string, number>;
+  };
+  persona: CoachPersona;
+}
+
 export default function MotivationResultPage() {
   const router = useRouter();
   const [persona, setPersona] = useState<CoachPersona | null>(null);
+  const [fullResult, setFullResult] = useState<QuizResult | null>(null);
+  const [showRawData, setShowRawData] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,12 +39,25 @@ export default function MotivationResultPage() {
       return;
     }
 
-    const storedPersona = localStorage.getItem("coachPersona");
-    if (storedPersona) {
+    // Get full result from localStorage
+    const storedResult = localStorage.getItem("quizResult");
+    if (storedResult) {
       try {
-        setPersona(JSON.parse(storedPersona));
+        const parsed = JSON.parse(storedResult);
+        setFullResult(parsed);
+        setPersona(parsed.persona);
       } catch (error) {
-        console.error("Failed to parse persona:", error);
+        console.error("Failed to parse quiz result:", error);
+      }
+    } else {
+      // Fallback to just persona
+      const storedPersona = localStorage.getItem("coachPersona");
+      if (storedPersona) {
+        try {
+          setPersona(JSON.parse(storedPersona));
+        } catch (error) {
+          console.error("Failed to parse persona:", error);
+        }
       }
     }
     setLoading(false);
@@ -122,6 +146,52 @@ export default function MotivationResultPage() {
                 Continue to My Plan
               </Button>
             </div>
+          </div>
+
+          {/* Profile Details */}
+          {fullResult?.profile && (
+            <div className="mt-6 bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+              <div className="px-8 py-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Your Motivation Profile</h3>
+                <div className="space-y-3">
+                  <div>
+                    <span className="text-gray-500">Primary Motivator:</span>
+                    <span className="ml-2 font-medium text-gray-900 capitalize">
+                      {fullResult.profile.primaryMotivator.replace("_", " ")}
+                    </span>
+                  </div>
+                  {fullResult.profile.secondaryMotivators.length > 0 && (
+                    <div>
+                      <span className="text-gray-500">Secondary Motivators:</span>
+                      <span className="ml-2 font-medium text-gray-900">
+                        {fullResult.profile.secondaryMotivators
+                          .map((m) => m.replace("_", " "))
+                          .join(", ")}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Raw API Response (Collapsible) */}
+          <div className="mt-6">
+            <button
+              onClick={() => setShowRawData(!showRawData)}
+              className="w-full text-left px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+            >
+              <span className="font-medium text-gray-700">
+                {showRawData ? "▼" : "▶"} View Raw API Response
+              </span>
+            </button>
+            {showRawData && (
+              <div className="mt-4 bg-gray-900 rounded-lg p-4 overflow-auto">
+                <pre className="text-xs text-green-400 font-mono">
+                  {JSON.stringify(fullResult || { persona }, null, 2)}
+                </pre>
+              </div>
+            )}
           </div>
         </div>
       </div>

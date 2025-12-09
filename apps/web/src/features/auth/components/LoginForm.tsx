@@ -14,6 +14,10 @@ export const LoginForm: React.FC = () => {
     if (params.get("signup") === "success") {
       setSignupSuccess(true);
     }
+    if (params.get("verified") === "true") {
+      setSignupSuccess(true);
+      setError(null);
+    }
   }, []);
 
   const [formData, setFormData] = useState({
@@ -44,11 +48,29 @@ export const LoginForm: React.FC = () => {
           if (data.data.refreshToken) {
             localStorage.setItem("refreshToken", data.data.refreshToken);
           }
+          if (data.data.idToken) {
+            localStorage.setItem("idToken", data.data.idToken);
+          }
         }
 
-        // Redirect to today page
-        router.push("/today");
+        // Store userId if provided
+        if (data.data.user?.userId) {
+          localStorage.setItem("userId", data.data.user.userId);
+        }
+
+        // Check onboarding status and redirect accordingly
+        const onboardingComplete = data.data.user?.onboardingComplete ?? false;
+        if (!onboardingComplete) {
+          router.push("/onboarding");
+        } else {
+          router.push("/today");
+        }
       } else {
+        // Check if user is not confirmed - redirect to verification
+        if (data.error?.code === "USER_NOT_CONFIRMED") {
+          router.push(`/verify?email=${encodeURIComponent(formData.email)}`);
+          return;
+        }
         setError(data.error?.message || "Login failed");
       }
     } catch (err) {
@@ -69,7 +91,9 @@ export const LoginForm: React.FC = () => {
     <Card title="Sign In" subtitle="Welcome back to Retire Strong">
       {signupSuccess && (
         <div className="bg-green-50 border-2 border-green-200 text-green-700 px-4 py-3 rounded-lg text-base mb-4">
-          Account created successfully! Please sign in.
+          {window.location.search.includes("verified=true")
+            ? "Email verified successfully! Please sign in."
+            : "Account created successfully! Please sign in."}
         </div>
       )}
 

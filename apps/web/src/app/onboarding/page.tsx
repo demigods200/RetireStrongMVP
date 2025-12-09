@@ -18,14 +18,37 @@ export default function OnboardingPage() {
       return;
     }
 
-    // Get userId from token or localStorage (simplified - in production, decode JWT)
-    // For testing: if no userId, create a test one
+    // Get userId from localStorage (set during login/signup)
     let storedUserId = localStorage.getItem("userId");
+    
+    // If not in localStorage, try to decode from JWT idToken
     if (!storedUserId) {
-      // Create a test userId for testing purposes
-      storedUserId = `test-user-${Date.now()}`;
-      localStorage.setItem("userId", storedUserId);
+      const idToken = localStorage.getItem("idToken");
+      if (idToken) {
+        try {
+          // Decode JWT token to get userId (sub claim)
+          const parts = idToken.split(".");
+          if (parts.length === 3) {
+            const payload = parts[1];
+            const paddedPayload = payload + "=".repeat((4 - (payload.length % 4)) % 4);
+            const decoded = JSON.parse(atob(paddedPayload));
+            if (decoded.sub) {
+              storedUserId = decoded.sub;
+              localStorage.setItem("userId", storedUserId);
+            }
+          }
+        } catch (error) {
+          console.error("Failed to decode JWT token:", error);
+        }
+      }
     }
+
+    if (!storedUserId) {
+      // If still no userId, redirect to login
+      router.push("/login");
+      return;
+    }
+
     setUserId(storedUserId);
     setLoading(false);
   }, [router]);

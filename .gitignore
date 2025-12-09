@@ -40,6 +40,7 @@ lerna-debug.log*
 .aws-sam/
 cdk.out/
 *.d.ts.map
+*.js.map
 .aws/
 
 # TypeScript
@@ -76,7 +77,7 @@ desktop.ini
 .local/
 localstack-data/
 
-# Documentation
+# Documentation (temporary/working docs - keep important ones in docs/)
 SETUP.md
 TECH_STACK.md
 BUSINESS_REQUIREMENTS.md
@@ -84,3 +85,7 @@ API_SPECIFICATIONS.md
 QUICK_REFERENCE.md
 retire-strong-project-structure.txt
 retire-strong-full-execution-plan.txt
+AWS_INTEGRATION_*.md
+MILESTONE_*_TEST_PLAN.md
+*_TESTING_CHECKLIST.md
+*_SUMMARY.md

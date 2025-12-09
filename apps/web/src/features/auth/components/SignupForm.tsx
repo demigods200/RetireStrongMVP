@@ -34,8 +34,18 @@ export const SignupForm: React.FC = () => {
         if (data.data?.userId) {
           localStorage.setItem("userId", data.data.userId);
         }
-        // Redirect to onboarding
-        router.push("/onboarding");
+        // Store email for verification
+        if (formData.email) {
+          localStorage.setItem("signupEmail", formData.email);
+        }
+        // Check if email verification is required
+        if (data.data?.requiresVerification) {
+          // Redirect to verification page
+          router.push(`/verify?email=${encodeURIComponent(formData.email)}`);
+        } else {
+          // Redirect to onboarding if already verified
+          router.push("/onboarding");
+        }
       } else {
         setError(data.error?.message || "Signup failed");
       }

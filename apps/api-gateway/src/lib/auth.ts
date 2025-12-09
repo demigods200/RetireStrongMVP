@@ -3,6 +3,8 @@ import {
   SignUpCommand,
   InitiateAuthCommand,
   AuthFlowType,
+  ConfirmSignUpCommand,
+  ResendConfirmationCodeCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import type { SignupRequest, LoginRequest } from "@retire-strong/shared-api";
 
@@ -10,7 +12,7 @@ export class AuthService {
   private client: CognitoIdentityProviderClient;
   private clientId: string;
 
-  constructor(_userPoolId: string, clientId: string, region: string = "us-east-1") {
+  constructor(_userPoolId: string, clientId: string, region: string = "us-east-2") {
     this.client = new CognitoIdentityProviderClient({ region });
     this.clientId = clientId;
   }
@@ -56,6 +58,30 @@ export class AuthService {
       refreshToken: response.AuthenticationResult.RefreshToken,
       expiresIn: response.AuthenticationResult.ExpiresIn || 3600,
       idToken: response.AuthenticationResult.IdToken,
+    };
+  }
+
+  async verifyEmail(input: { email: string; code: string }) {
+    const command = new ConfirmSignUpCommand({
+      ClientId: this.clientId,
+      Username: input.email,
+      ConfirmationCode: input.code,
+    });
+
+    await this.client.send(command);
+  }
+
+  async resendVerificationCode(email: string) {
+    const command = new ResendConfirmationCodeCommand({
+      ClientId: this.clientId,
+      Username: email,
+    });
+
+    const response = await this.client.send(command);
+    return {
+      message: "Verification code sent",
+      deliveryMedium: response.CodeDeliveryDetails?.DeliveryMedium,
+      destination: response.CodeDeliveryDetails?.Destination,
     };
   }
 }

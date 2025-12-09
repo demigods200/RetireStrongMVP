@@ -13,10 +13,26 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     // Initialize services
     const userPoolId = process.env.COGNITO_USER_POOL_ID || "";
     const clientId = process.env.COGNITO_CLIENT_ID || "";
-    const usersTable = process.env.DYNAMO_TABLE_USERS || "";
+    const usersTable = process.env.USERS_TABLE_NAME || process.env.DYNAMO_TABLE_USERS || "";
+    if (!usersTable) {
+      console.error("USERS_TABLE_NAME or DYNAMO_TABLE_USERS environment variable is not set");
+      return {
+        statusCode: 500,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          success: false,
+          error: {
+            code: "CONFIGURATION_ERROR",
+            message: "USERS_TABLE_NAME or DYNAMO_TABLE_USERS environment variable is not set",
+          },
+        }),
+      };
+    }
+    // AWS_REGION is automatically set by Lambda runtime
+    const region = process.env.AWS_REGION || "us-east-2";
 
-    const authService = new AuthService(userPoolId, clientId);
-    const userRepo = new UserRepo(usersTable);
+    const authService = new AuthService(userPoolId, clientId, region);
+    const userRepo = new UserRepo(usersTable, region);
     const userService = new UserService(userRepo);
 
     // Sign up in Cognito
@@ -50,8 +66,11 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     };
   } catch (error) {
     console.error("Signup error:", error);
+    console.error("Error details:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
 
     if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
       if (error.message.includes("already exists") || error.message.includes("UsernameExistsException")) {
         return {
           statusCode: 409,

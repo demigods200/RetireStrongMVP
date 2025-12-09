@@ -27,6 +27,14 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<{
+    message: string;
+    details?: any;
+    code?: string;
+    requestId?: string;
+    stack?: string;
+  } | null>(null);
+  const [showErrorDetails, setShowErrorDetails] = useState(false);
 
   useEffect(() => {
     fetchQuestions();
@@ -72,10 +80,46 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
+      // Validate that all questions are answered
+      if (Object.keys(answers).length !== questions.length) {
+        alert(`Please answer all questions before submitting. You've answered ${Object.keys(answers).length} out of ${questions.length} questions.`);
+        setSubmitting(false);
+        return;
+      }
+
+      // Validate answer count (schema requires 10-15 answers)
+      if (Object.keys(answers).length < 10) {
+        alert(`You need to answer at least 10 questions. You've answered ${Object.keys(answers).length} questions.`);
+        setSubmitting(false);
+        return;
+      }
+
+      if (Object.keys(answers).length > 15) {
+        alert(`You can only answer up to 15 questions. You've answered ${Object.keys(answers).length} questions.`);
+        setSubmitting(false);
+        return;
+      }
+
+      // Validate answer values are between 1 and 5
+      const invalidAnswers = Object.entries(answers).filter(([_, value]) => value < 1 || value > 5);
+      if (invalidAnswers.length > 0) {
+        console.error("Invalid answer values:", invalidAnswers);
+        alert("Some answers have invalid values. Please ensure all answers are between 1 and 5.");
+        setSubmitting(false);
+        return;
+      }
+
       const answerArray: QuizAnswer[] = Object.entries(answers).map(([questionId, value]) => ({
         questionId,
-        value,
+        value: Number(value), // Ensure it's a number
       }));
+
+      // Log the submission data for debugging
+      console.log("Submitting quiz with:", {
+        userId,
+        answerCount: answerArray.length,
+        answers: answerArray,
+      });
 
       const response = await fetch("/api/motivation/submit", {
         method: "POST",
@@ -86,17 +130,86 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
         }),
       });
 
-      const data = await response.json();
-      if (data.success) {
-        // Store persona data for reveal screen
-        localStorage.setItem("coachPersona", JSON.stringify(data.data.persona));
-        router.push("/motivation/result");
-      } else {
-        alert(data.error?.message || "Failed to submit quiz");
+      // Log the full response for debugging
+      const responseText = await response.text();
+      console.log("Quiz submission response status:", response.status);
+      console.log("Quiz submission response text:", responseText);
+
+      let data: any;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("Failed to parse response:", parseError);
+        alert("Error: Invalid response from server. Please try again.");
+        setSubmitting(false);
+        return;
       }
+
+      // Log the full data for debugging
+      console.log("Quiz submission response data:", JSON.stringify(data, null, 2));
+      
+      if (!response.ok || !data.success) {
+        // Extract error information
+        const errorMessage = 
+          data.error?.message || 
+          data.error?.details || 
+          (typeof data.error === 'string' ? data.error : null) ||
+          data.message ||
+          `HTTP ${response.status}: ${response.statusText}` ||
+          "Failed to submit quiz";
+        
+        // Log comprehensive error details to console
+        console.error("=".repeat(60));
+        console.error("❌ QUIZ SUBMISSION ERROR");
+        console.error("=".repeat(60));
+        console.error("Response Status:", response.status, response.statusText);
+        console.error("Response OK:", response.ok);
+        console.error("Error Code:", data.error?.code || "UNKNOWN");
+        console.error("Error Message:", errorMessage);
+        console.error("Request ID:", data.error?.requestId || "N/A");
+        console.error("Full Error Object:", JSON.stringify(data.error, null, 2));
+        console.error("Full Response Data:", JSON.stringify(data, null, 2));
+        if (data.error?.stack) {
+          console.error("Stack Trace:", data.error.stack);
+        }
+        console.error("=".repeat(60));
+        
+        // Set error state for UI display
+        setError({
+          message: errorMessage,
+          code: data.error?.code,
+          details: data.error?.details || data.error,
+          requestId: data.error?.requestId,
+          stack: data.error?.stack,
+        });
+        setShowErrorDetails(false); // Start collapsed
+        setSubmitting(false);
+        return;
+      }
+
+      // Store full result for result page
+      localStorage.setItem("quizResult", JSON.stringify(data.data));
+      // Also store persona separately for backward compatibility
+      localStorage.setItem("coachPersona", JSON.stringify(data.data.persona));
+      router.push("/motivation/result");
     } catch (error) {
-      alert("An error occurred. Please try again.");
-    } finally {
+      console.error("=".repeat(60));
+      console.error("❌ QUIZ SUBMISSION EXCEPTION");
+      console.error("=".repeat(60));
+      console.error("Error Type:", error instanceof Error ? error.constructor.name : typeof error);
+      console.error("Error Message:", error instanceof Error ? error.message : String(error));
+      if (error instanceof Error && error.stack) {
+        console.error("Stack Trace:", error.stack);
+      }
+      console.error("Full Error:", error);
+      console.error("=".repeat(60));
+      
+      setError({
+        message: error instanceof Error ? error.message : "An unexpected error occurred",
+        details: error,
+        code: "EXCEPTION",
+      });
+      setShowErrorDetails(false);
       setSubmitting(false);
     }
   };
@@ -138,6 +251,77 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
           <h1 className="text-4xl font-bold text-gray-900 mb-3">Motivation Quiz</h1>
           <p className="text-lg text-gray-600">Help us understand what motivates you</p>
         </div>
+
+        {/* Error Display */}
+        {error && (
+          <div className="mb-8 bg-red-50 border-2 border-red-200 rounded-lg overflow-hidden">
+            <div className="px-6 py-4">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-red-900 mb-2">
+                    ❌ Error: {error.message}
+                  </h3>
+                  {error.code && (
+                    <p className="text-sm text-red-700 mb-2">
+                      <span className="font-medium">Error Code:</span> {error.code}
+                    </p>
+                  )}
+                  {error.requestId && (
+                    <p className="text-sm text-red-700 mb-2">
+                      <span className="font-medium">Request ID:</span> {error.requestId}
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => setShowErrorDetails(!showErrorDetails)}
+                  className="ml-4 text-red-700 hover:text-red-900 text-sm font-medium"
+                >
+                  {showErrorDetails ? "▼ Hide" : "▶ Show"} Details
+                </button>
+              </div>
+              
+              {showErrorDetails && (
+                <div className="mt-4 pt-4 border-t border-red-200">
+                  <div className="space-y-3">
+                    {error.details && (
+                      <div>
+                        <p className="text-sm font-medium text-red-900 mb-1">Error Details:</p>
+                        <pre className="bg-red-100 p-3 rounded text-xs overflow-auto max-h-64 text-red-800">
+                          {typeof error.details === 'string' 
+                            ? error.details 
+                            : JSON.stringify(error.details, null, 2)}
+                        </pre>
+                      </div>
+                    )}
+                    {error.stack && (
+                      <div>
+                        <p className="text-sm font-medium text-red-900 mb-1">Stack Trace:</p>
+                        <pre className="bg-red-100 p-3 rounded text-xs overflow-auto max-h-64 text-red-800">
+                          {error.stack}
+                        </pre>
+                      </div>
+                    )}
+                    <div className="pt-2">
+                      <p className="text-xs text-red-600 mb-2">
+                        💡 <strong>Tip:</strong> Check the browser console (F12) for more detailed logs.
+                        All error information has been logged there as well.
+                      </p>
+                      <button
+                        onClick={() => {
+                          setError(null);
+                          setShowErrorDetails(false);
+                        }}
+                        className="text-sm text-red-700 hover:text-red-900 font-medium underline"
+                      >
+                        Dismiss Error
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Progress Bar */}
         <div className="mb-8">

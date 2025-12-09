@@ -1,6 +1,29 @@
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { LoginRequestSchema } from "@retire-strong/shared-api";
 import { AuthService } from "../../lib/auth";
+import { UserService } from "@retire-strong/domain-core";
+import { UserRepo } from "@retire-strong/domain-core";
+
+// Helper to decode JWT token (simple base64 decode of payload)
+function decodeJWT(token: string): any {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) {
+      throw new Error("Invalid JWT format");
+    }
+    // Decode base64 payload (add padding if needed)
+    const payload = parts[1];
+    if (!payload) {
+      throw new Error("Invalid JWT format: missing payload");
+    }
+    const paddedPayload = payload + "=".repeat((4 - (payload.length % 4)) % 4);
+    const decoded = Buffer.from(paddedPayload, "base64").toString("utf-8");
+    return JSON.parse(decoded);
+  } catch (error) {
+    console.error("Failed to decode JWT:", error);
+    return null;
+  }
+}
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   try {
@@ -11,15 +34,46 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     // Initialize services
     const userPoolId = process.env.COGNITO_USER_POOL_ID || "";
     const clientId = process.env.COGNITO_CLIENT_ID || "";
+    const usersTable = process.env.USERS_TABLE_NAME || process.env.DYNAMO_TABLE_USERS || "";
+    // AWS_REGION is automatically set by Lambda runtime
+    const region = process.env.AWS_REGION || "us-east-2";
+    
+    // Note: usersTable is optional for login (we can decode JWT without DB lookup)
+    // But if provided, we'll use it to get onboarding status
 
-    const authService = new AuthService(userPoolId, clientId);
+    const authService = new AuthService(userPoolId, clientId, region);
 
     // Login in Cognito
     const authResult = await authService.login(validated);
 
-    // For MVP: Return basic user info
-    // In production, decode JWT ID token to get userId (sub claim) and fetch full user from DynamoDB
-    // For now, we'll return email and let frontend handle user lookup if needed
+    // Decode JWT ID token to get userId (sub claim)
+    let userId: string | null = null;
+    let onboardingComplete = false;
+    
+    if (authResult.idToken) {
+      const decodedToken = decodeJWT(authResult.idToken);
+      if (decodedToken && decodedToken.sub) {
+        userId = decodedToken.sub;
+        
+        // Fetch user from DynamoDB to get onboarding status
+        try {
+          if (!userId) {
+            throw new Error("userId is null");
+          }
+          const userRepo = new UserRepo(usersTable, region);
+          const userService = new UserService(userRepo);
+          const user = await userService.getUserById(userId);
+          
+          if (user) {
+            onboardingComplete = user.onboardingComplete || false;
+          }
+        } catch (error) {
+          // If user doesn't exist yet, onboardingComplete will remain false
+          console.log("User not found in DynamoDB, onboardingComplete defaults to false");
+        }
+      }
+    }
+
     return {
       statusCode: 200,
       headers: {
@@ -33,8 +87,9 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
           expiresIn: authResult.expiresIn,
           idToken: authResult.idToken,
           user: {
+            userId: userId,
             email: validated.email,
-            // userId and other fields will be decoded from JWT in production
+            onboardingComplete: onboardingComplete,
           },
         },
       }),
@@ -43,6 +98,24 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     console.error("Login error:", error);
 
     if (error instanceof Error) {
+      // Check for unconfirmed user
+      if (
+        error.message.includes("UserNotConfirmedException") ||
+        error.message.includes("User is not confirmed")
+      ) {
+        return {
+          statusCode: 403,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            success: false,
+            error: {
+              code: "USER_NOT_CONFIRMED",
+              message: "User account is not confirmed. Please verify your email or contact support.",
+            },
+          }),
+        };
+      }
+
       if (
         error.message.includes("NotAuthorizedException") ||
         error.message.includes("UserNotFoundException") ||
