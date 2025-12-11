@@ -1,0 +1,260 @@
+[
+  {
+    "id": "seated_march",
+    "name": "Seated March",
+    "description": "Gentle warmup to raise heart rate while keeping balance demands low.",
+    "categories": ["warmup", "cardio"],
+    "difficulty": "very_easy",
+    "joints": ["hips", "knees"],
+    "muscles": ["hip flexors", "quadriceps", "core"],
+    "contraindications": [
+      {
+        "condition": "dizziness",
+        "severity": "caution",
+        "note": "Start slowly and pause if symptoms increase."
+      }
+    ],
+    "regressions": [],
+    "progressions": ["standing_march"],
+    "time": { "type": "time", "sets": 1, "seconds": 60 },
+    "equipment": ["chair"],
+    "cues": ["Sit tall with feet hip-width.", "Lift one knee at a time to a comfortable height.", "Keep breathing rhythmical."],
+    "safetyTips": ["Pause if dizzy.", "Stop if hip or knee pain sharpens."]
+  },
+  {
+    "id": "standing_march",
+    "name": "Standing March in Place",
+    "description": "Low-impact marching to build confidence with upright movement.",
+    "categories": ["cardio", "balance"],
+    "difficulty": "easy",
+    "joints": ["hips", "knees", "ankles"],
+    "muscles": ["hip flexors", "quadriceps", "calves", "core"],
+    "contraindications": [
+      {
+        "condition": "balance_issue",
+        "severity": "caution",
+        "note": "Perform near a counter or chair for support."
+      }
+    ],
+    "regressions": ["seated_march"],
+    "progressions": ["march_with_arm_drive"],
+    "time": { "type": "time", "sets": 1, "seconds": 60 },
+    "equipment": [],
+    "cues": ["Stand tall, light fingertip support if needed.", "Lift knees softly and swing arms gently.", "Keep pace conversational."],
+    "safetyTips": ["Use stable support if balance is limited.", "Pause if short of breath or dizzy."]
+  },
+  {
+    "id": "march_with_arm_drive",
+    "name": "March with Arm Drive",
+    "description": "Coordinated march adding arm swing to raise heart rate.",
+    "categories": ["cardio", "balance"],
+    "difficulty": "moderate",
+    "joints": ["shoulders", "hips", "knees"],
+    "muscles": ["hip flexors", "quadriceps", "deltoids", "core"],
+    "contraindications": [
+      {
+        "condition": "shoulder_irritation",
+        "severity": "caution",
+        "note": "Keep arm swing below shoulder height if symptomatic."
+      }
+    ],
+    "regressions": ["standing_march"],
+    "progressions": [],
+    "time": { "type": "time", "sets": 1, "seconds": 75 },
+    "equipment": [],
+    "cues": ["Stand tall with gentle arm drive.", "Land softly and maintain steady breathing."],
+    "safetyTips": ["Shorten stride if balance is challenged.", "Avoid holding breath."]
+  },
+  {
+    "id": "heel_toe_balance",
+    "name": "Heel-to-Toe Balance Hold",
+    "description": "Static balance drill to improve ankle and foot stability.",
+    "categories": ["balance"],
+    "difficulty": "easy",
+    "joints": ["ankles", "knees"],
+    "muscles": ["calves", "intrinsic foot", "core"],
+    "contraindications": [
+      {
+        "condition": "balance_issue",
+        "severity": "caution",
+        "note": "Perform with one hand on counter or chair."
+      }
+    ],
+    "regressions": ["wide_stance_balance"],
+    "progressions": [],
+    "time": { "type": "time", "sets": 2, "holdSeconds": 20, "restSeconds": 20 },
+    "equipment": ["stable surface"],
+    "cues": ["Stand tall, one foot directly in front of the other.", "Light fingertip support as needed.", "Gentle brace through core."],
+    "safetyTips": ["Keep support within reach.", "Stop if you feel unsteady or dizzy."]
+  },
+  {
+    "id": "wide_stance_balance",
+    "name": "Wide Stance Balance",
+    "description": "Low challenge balance stance to build confidence.",
+    "categories": ["balance"],
+    "difficulty": "very_easy",
+    "joints": ["ankles", "knees"],
+    "muscles": ["calves", "glutes", "core"],
+    "contraindications": [],
+    "regressions": [],
+    "progressions": ["heel_toe_balance"],
+    "time": { "type": "time", "sets": 2, "holdSeconds": 20, "restSeconds": 15 },
+    "equipment": ["stable surface"],
+    "cues": ["Feet wider than hips, knees soft.", "Light brace through midsection.", "Light fingertip support if needed."],
+    "safetyTips": ["Have support nearby.", "Avoid locking knees."]
+  },
+  {
+    "id": "chair_sit_to_stand",
+    "name": "Chair Sit to Stand",
+    "description": "Foundational strength move for legs and hips using a chair.",
+    "categories": ["strength"],
+    "difficulty": "easy",
+    "joints": ["hips", "knees"],
+    "muscles": ["quadriceps", "glutes", "core"],
+    "contraindications": [
+      {
+        "condition": "knee_pain",
+        "severity": "caution",
+        "note": "Use higher chair or assist with hands if painful."
+      }
+    ],
+    "regressions": ["assisted_sit_to_stand"],
+    "progressions": ["sit_to_stand_loaded"],
+    "time": { "type": "reps", "sets": 2, "reps": "8-10", "restSeconds": 45 },
+    "equipment": ["chair"],
+    "cues": ["Scoot forward, feet under knees.", "Drive through heels, stand tall, control back down.", "Keep knees tracking over toes."],
+    "safetyTips": ["Use hands on chair if needed.", "Stop if sharp knee pain occurs."]
+  },
+  {
+    "id": "assisted_sit_to_stand",
+    "name": "Assisted Sit to Stand",
+    "description": "Supported version using hands or higher seat height.",
+    "categories": ["strength"],
+    "difficulty": "very_easy",
+    "joints": ["hips", "knees"],
+    "muscles": ["quadriceps", "glutes", "core"],
+    "contraindications": [],
+    "regressions": [],
+    "progressions": ["chair_sit_to_stand"],
+    "time": { "type": "reps", "sets": 2, "reps": "6-8", "restSeconds": 45 },
+    "equipment": ["chair"],
+    "cues": ["Place hands on chair or thighs for support.", "Stand smoothly, sit with control.", "Keep feet planted and knees aligned."],
+    "safetyTips": ["Use sturdy chair that won't slide.", "Pause if dizzy on standing."]
+  },
+  {
+    "id": "sit_to_stand_loaded",
+    "name": "Sit to Stand with Light Load",
+    "description": "Progressed sit to stand holding light weight for added strength.",
+    "categories": ["strength"],
+    "difficulty": "moderate",
+    "joints": ["hips", "knees"],
+    "muscles": ["quadriceps", "glutes", "core"],
+    "contraindications": [
+      {
+        "condition": "knee_pain",
+        "severity": "caution",
+        "note": "Use bodyweight only if discomfort arises."
+      }
+    ],
+    "regressions": ["chair_sit_to_stand"],
+    "progressions": [],
+    "time": { "type": "reps", "sets": 3, "reps": "8-10", "restSeconds": 60 },
+    "equipment": ["chair", "light weight (optional)"],
+    "cues": ["Hold weight close to chest.", "Drive through heels and stand tall.", "Control the descent."],
+    "safetyTips": ["Keep knees aligned with toes.", "Stop if knee pain increases."]
+  },
+  {
+    "id": "wall_pushup",
+    "name": "Wall Push-Up",
+    "description": "Upper-body and core strength with minimal joint stress.",
+    "categories": ["strength", "core"],
+    "difficulty": "easy",
+    "joints": ["shoulders", "elbows", "wrists"],
+    "muscles": ["chest", "triceps", "anterior deltoids", "core"],
+    "contraindications": [
+      {
+        "condition": "shoulder_irritation",
+        "severity": "caution",
+        "note": "Keep elbows closer to sides and range pain-free."
+      }
+    ],
+    "regressions": [],
+    "progressions": ["incline_pushup"],
+    "time": { "type": "reps", "sets": 2, "reps": "8-12", "restSeconds": 45 },
+    "equipment": ["wall"],
+    "cues": ["Step back to create gentle lean.", "Brace core, lower with control.", "Press away keeping neck long."],
+    "safetyTips": ["Stop if shoulder pain sharpens.", "Keep wrists neutral."]
+  },
+  {
+    "id": "incline_pushup",
+    "name": "Incline Push-Up",
+    "description": "Progressed push-up using counter height for added load.",
+    "categories": ["strength", "core"],
+    "difficulty": "moderate",
+    "joints": ["shoulders", "elbows", "wrists"],
+    "muscles": ["chest", "triceps", "anterior deltoids", "core"],
+    "contraindications": [
+      {
+        "condition": "shoulder_irritation",
+        "severity": "caution",
+        "note": "Keep range shorter and elbows close if symptomatic."
+      }
+    ],
+    "regressions": ["wall_pushup"],
+    "progressions": [],
+    "time": { "type": "reps", "sets": 2, "reps": "8-10", "restSeconds": 60 },
+    "equipment": ["counter", "sturdy table"],
+    "cues": ["Body in straight line, brace core.", "Lower chest toward support.", "Press through full hand, avoid shrugging."],
+    "safetyTips": ["Use stable surface that will not move.", "Stop if wrist or shoulder pain increases."]
+  },
+  {
+    "id": "standing_hip_abduction",
+    "name": "Standing Hip Abduction",
+    "description": "Hip strengthening with light balance demand.",
+    "categories": ["strength", "balance"],
+    "difficulty": "easy",
+    "joints": ["hips", "ankles"],
+    "muscles": ["glute medius", "core"],
+    "contraindications": [
+      {
+        "condition": "balance_issue",
+        "severity": "caution",
+        "note": "Keep one hand on stable surface."
+      }
+    ],
+    "regressions": [],
+    "progressions": [],
+    "time": { "type": "reps", "sets": 2, "reps": "8-12 each", "restSeconds": 30 },
+    "equipment": ["stable surface"],
+    "cues": ["Stand tall, hold support lightly.", "Move leg out to side without leaning.", "Control back to start."],
+    "safetyTips": ["Avoid trunk lean.", "Stop if hip pain increases."]
+  },
+  {
+    "id": "cat_cow_mobility",
+    "name": "Cat-Cow Mobility",
+    "description": "Spine mobility flow to reduce stiffness.",
+    "categories": ["mobility", "core"],
+    "difficulty": "very_easy",
+    "joints": ["spine", "shoulders", "hips"],
+    "muscles": ["spinal extensors", "abdominals"],
+    "contraindications": [
+      {
+        "condition": "wrist_pain",
+        "severity": "caution",
+        "note": "Use fists or elevated hands if wrists are sensitive."
+      },
+      {
+        "condition": "dizziness",
+        "severity": "caution",
+        "note": "Move slowly and within comfort."
+      }
+    ],
+    "regressions": [],
+    "progressions": [],
+    "time": { "type": "reps", "sets": 2, "reps": "6-8", "restSeconds": 30 },
+    "equipment": ["mat (optional)"],
+    "cues": ["Hands under shoulders, knees under hips.", "Alternate rounding and gently arching the spine.", "Move with slow breath."],
+    "safetyTips": ["Avoid painful ranges.", "Come up slowly to avoid dizziness."]
+  }
+]
+

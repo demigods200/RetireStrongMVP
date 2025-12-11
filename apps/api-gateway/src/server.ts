@@ -13,6 +13,10 @@ import { handler as submitQuizHandler } from "./handlers/motivation/submit.js";
 import { handler as healthHandler } from "./handlers/health.js";
 import { handler as onboardingHandler } from "./handlers/users/onboarding.js";
 import { handler as profileHandler } from "./handlers/users/profile.js";
+import { handler as starterPlanHandler } from "./handlers/plans/starter.js";
+import { handler as currentPlanHandler } from "./handlers/plans/current.js";
+import { handler as getSessionHandler } from "./handlers/sessions/get.js";
+import { handler as completeSessionHandler } from "./handlers/sessions/complete.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -159,6 +163,22 @@ app.get("/users/me", (req, res) => {
   sendApiGatewayResponse(profileHandler, req, res);
 });
 
+app.post("/plans/starter", (req, res) => {
+  sendApiGatewayResponse(starterPlanHandler, req, res);
+});
+
+app.get("/plans/current", (req, res) => {
+  sendApiGatewayResponse(currentPlanHandler, req, res);
+});
+
+app.get("/sessions/:id", (req, res) => {
+  sendApiGatewayResponse(getSessionHandler, req, res);
+});
+
+app.post("/sessions/:id/complete", (req, res) => {
+  sendApiGatewayResponse(completeSessionHandler, req, res);
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 API Gateway running on http://localhost:${PORT}`);
@@ -171,16 +191,25 @@ app.listen(PORT, () => {
   
   // Log configuration status
   const usersTable = process.env.USERS_TABLE_NAME || process.env.DYNAMO_TABLE_USERS;
+  const sessionsTable = process.env.SESSIONS_TABLE_NAME || process.env.DYNAMO_TABLE_SESSIONS;
   console.log(`\n📝 Configuration:`);
   console.log(`   USERS_TABLE_NAME: ${process.env.USERS_TABLE_NAME || "❌ NOT SET"}`);
   console.log(`   DYNAMO_TABLE_USERS: ${process.env.DYNAMO_TABLE_USERS || "❌ NOT SET (fallback)"}`);
-  console.log(`   Using table: ${usersTable || "❌ NOT SET"}`);
+  console.log(`   Using users table: ${usersTable || "❌ NOT SET"}`);
+  console.log(`   SESSIONS_TABLE_NAME: ${process.env.SESSIONS_TABLE_NAME || "❌ NOT SET"}`);
+  console.log(`   DYNAMO_TABLE_SESSIONS: ${process.env.DYNAMO_TABLE_SESSIONS || "❌ NOT SET (fallback)"}`);
+  console.log(`   Using sessions table: ${sessionsTable || "❌ NOT SET"}`);
   console.log(`   AWS_REGION: ${process.env.AWS_REGION || "us-east-2 (default)"}`);
   if (!usersTable) {
     console.log(`\n⚠️  Warning: USERS_TABLE_NAME or DYNAMO_TABLE_USERS is not set. Create a .env file in apps/api-gateway/ with:`);
     console.log(`   USERS_TABLE_NAME=retire-strong-users-dev`);
     console.log(`   (or DYNAMO_TABLE_USERS=retire-strong-users-dev)`);
     console.log(`   See ENV_SETUP.md for details.`);
+  }
+  if (!sessionsTable) {
+    console.log(`\n⚠️  Warning: SESSIONS_TABLE_NAME or DYNAMO_TABLE_SESSIONS is not set. Add to .env in apps/api-gateway/:`);
+    console.log(`   SESSIONS_TABLE_NAME=retire-strong-sessions-dev`);
+    console.log(`   (or DYNAMO_TABLE_SESSIONS=retire-strong-sessions-dev)`);
   }
 });
 

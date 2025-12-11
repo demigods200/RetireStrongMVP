@@ -115,6 +115,98 @@ Resources:
             Path: /motivation/quiz/submit
             Method: post
 
+  StarterPlanFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/plans/starter.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          DYNAMO_TABLE_USERS: !Ref UsersTable
+          DYNAMO_TABLE_SESSIONS: !Ref SessionsTable
+      Events:
+        StarterPlan:
+          Type: Api
+          Properties:
+            Path: /plans/starter
+            Method: post
+
+  CurrentPlanFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/plans/current.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          DYNAMO_TABLE_USERS: !Ref UsersTable
+          DYNAMO_TABLE_SESSIONS: !Ref SessionsTable
+      Events:
+        CurrentPlan:
+          Type: Api
+          Properties:
+            Path: /plans/current
+            Method: get
+
+  GetSessionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/sessions/get.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          DYNAMO_TABLE_USERS: !Ref UsersTable
+          DYNAMO_TABLE_SESSIONS: !Ref SessionsTable
+      Events:
+        GetSession:
+          Type: Api
+          Properties:
+            Path: /sessions/{id}
+            Method: get
+
+  CompleteSessionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/sessions/complete.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          DYNAMO_TABLE_USERS: !Ref UsersTable
+          DYNAMO_TABLE_SESSIONS: !Ref SessionsTable
+      Events:
+        CompleteSession:
+          Type: Api
+          Properties:
+            Path: /sessions/{id}/complete
+            Method: post
+
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      TableName: retire-strong-users-dev
+
+  SessionsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: sessionId
+          AttributeType: S
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: sessionId
+          KeyType: HASH
+        - AttributeName: userId
+          KeyType: RANGE
+      TableName: retire-strong-sessions-dev
+
 Outputs:
   ApiUrl:
     Description: API Gateway endpoint URL

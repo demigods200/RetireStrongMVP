@@ -28,13 +28,13 @@ export default function OnboardingPage() {
         try {
           // Decode JWT token to get userId (sub claim)
           const parts = idToken.split(".");
-          if (parts.length === 3) {
+          if (parts.length === 3 && parts[1]) {
             const payload = parts[1];
             const paddedPayload = payload + "=".repeat((4 - (payload.length % 4)) % 4);
             const decoded = JSON.parse(atob(paddedPayload));
-            if (decoded.sub) {
+            if (decoded.sub && typeof decoded.sub === "string") {
               storedUserId = decoded.sub;
-              localStorage.setItem("userId", storedUserId);
+              localStorage.setItem("userId", decoded.sub);
             }
           }
         } catch (error) {

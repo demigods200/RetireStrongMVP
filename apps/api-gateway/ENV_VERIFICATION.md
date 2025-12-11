@@ -16,8 +16,24 @@ This document confirms that all environment variable usage is consistent across 
 - ✅ `packages/infra-cdk/lib/api-stack.ts` - Line 73 (sets for all Lambdas)
 
 ### Used in Configuration:
-- ✅ `packages/shared-config/src/env.ts` - Line 12 (schema definition)
-- ✅ `apps/api-gateway/src/server.ts` - Line 110 (logs on startup)
+- ✅ `packages/shared-config/src/env.ts` - schema definition
+- ✅ `apps/api-gateway/src/server.ts` - logs on startup
+
+## ✅ Environment Variable Name: `DYNAMO_TABLE_SESSIONS`
+
+### Used in Handlers:
+- ✅ `apps/api-gateway/src/handlers/plans/starter.ts`
+- ✅ `apps/api-gateway/src/handlers/plans/current.ts`
+- ✅ `apps/api-gateway/src/handlers/sessions/get.ts`
+- ✅ `apps/api-gateway/src/handlers/sessions/complete.ts`
+
+### Used in Infrastructure:
+- ✅ `packages/infra-cdk/lib/api-stack.ts` - passed to plan/session lambdas
+- ✅ `apps/api-gateway/template.yaml` - should be set for plan/session functions (update if using SAM)
+
+### Used in Configuration:
+- ✅ `packages/shared-config/src/env.ts` - schema definition
+- ✅ `apps/api-gateway/src/server.ts` - logs on startup
 
 ## ✅ Environment Variable Name: `AWS_REGION`
 
@@ -32,6 +48,7 @@ This document confirms that all environment variable usage is consistent across 
 **Required Variables:**
 ```env
 DYNAMO_TABLE_USERS=retire-strong-users-dev
+DYNAMO_TABLE_SESSIONS=retire-strong-sessions-dev
 AWS_REGION=us-east-2
 ```
 
@@ -49,7 +66,7 @@ All code references use:
 
 1. **Local Development:** Server loads `.env` file via `dotenv/config` in `server.ts`
 2. **AWS Lambda (CDK):** Environment variables set in `api-stack.ts` from table names
-3. **AWS Lambda (SAM):** Environment variables set in `template.yaml` from `!Ref UsersTable`
+3. **AWS Lambda (SAM):** Environment variables set in `template.yaml` from the table references (ensure sessions is wired)
 
-All paths use the same variable name: `DYNAMO_TABLE_USERS`
+All paths use the same variable names: `DYNAMO_TABLE_USERS`, `DYNAMO_TABLE_SESSIONS`, `AWS_REGION`
 

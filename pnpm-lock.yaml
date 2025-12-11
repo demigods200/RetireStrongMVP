@@ -133,6 +133,15 @@ importers:
       '@aws-sdk/lib-dynamodb':
         specifier: ^3.700.0
         version: 3.943.0(@aws-sdk/client-dynamodb@3.943.0)
+      '@retire-strong/movement-engine':
+        specifier: workspace:*
+        version: link:../movement-engine
+      '@retire-strong/movement-library':
+        specifier: workspace:*
+        version: link:../movement-library
+      '@retire-strong/shared-api':
+        specifier: workspace:*
+        version: link:../shared-api
       '@retire-strong/shared-config':
         specifier: workspace:*
         version: link:../shared-config
@@ -170,6 +179,32 @@ importers:
         version: 5.9.3
 
   packages/motivation-engine:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.18.0
+        version: 20.19.25
+      typescript:
+        specifier: ^5.6.0
+        version: 5.9.3
+
+  packages/movement-engine:
+    dependencies:
+      '@retire-strong/movement-library':
+        specifier: workspace:*
+        version: link:../movement-library
+    devDependencies:
+      '@types/node':
+        specifier: ^20.18.0
+        version: 20.19.25
+      typescript:
+        specifier: ^5.6.0
+        version: 5.9.3
+
+  packages/movement-library:
+    dependencies:
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
     devDependencies:
       '@types/node':
         specifier: ^20.18.0

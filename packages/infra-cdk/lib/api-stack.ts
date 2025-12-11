@@ -72,6 +72,7 @@ export class ApiStack extends cdk.Stack {
       COGNITO_USER_POOL_ID: props.userPool.userPoolId,
       COGNITO_CLIENT_ID: props.userPoolClient.userPoolClientId,
       DYNAMO_TABLE_USERS: props.usersTable.tableName,
+      DYNAMO_TABLE_SESSIONS: props.sessionsTable.tableName,
     };
 
     // Health Lambda
@@ -185,8 +186,66 @@ export class ApiStack extends cdk.Stack {
       environment: commonEnvironment,
     });
 
+    const starterPlanLambda = new lambdaNodejs.NodejsFunction(this, "StarterPlanFunction", {
+      functionName: `retire-strong-plan-starter-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/plans/starter.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    const currentPlanLambda = new lambdaNodejs.NodejsFunction(this, "CurrentPlanFunction", {
+      functionName: `retire-strong-plan-current-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/plans/current.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    const getSessionLambda = new lambdaNodejs.NodejsFunction(this, "GetSessionFunction", {
+      functionName: `retire-strong-session-get-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/sessions/get.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    const completeSessionLambda = new lambdaNodejs.NodejsFunction(this, "CompleteSessionFunction", {
+      functionName: `retire-strong-session-complete-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/sessions/complete.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
     // Grant Lambda permissions to DynamoDB tables
-    const lambdas = [healthLambda, signupLambda, loginLambda, verifyLambda, resendCodeLambda, onboardingLambda, quizLambda, submitQuizLambda, profileLambda];
+    const lambdas = [
+      healthLambda,
+      signupLambda,
+      loginLambda,
+      verifyLambda,
+      resendCodeLambda,
+      onboardingLambda,
+      quizLambda,
+      submitQuizLambda,
+      profileLambda,
+      starterPlanLambda,
+      currentPlanLambda,
+      getSessionLambda,
+      completeSessionLambda,
+    ];
     lambdas.forEach((lambdaFn) => {
       props.usersTable.grantReadWriteData(lambdaFn);
       props.sessionsTable.grantReadWriteData(lambdaFn);
@@ -235,6 +294,21 @@ export class ApiStack extends cdk.Stack {
 
     const submitResource = quizResource.addResource("submit");
     submitResource.addMethod("POST", new apigateway.LambdaIntegration(submitQuizLambda));
+
+    // Plans routes
+    const plansResource = this.api.root.addResource("plans");
+    const starterPlanResource = plansResource.addResource("starter");
+    starterPlanResource.addMethod("POST", new apigateway.LambdaIntegration(starterPlanLambda));
+
+    const currentPlanResource = plansResource.addResource("current");
+    currentPlanResource.addMethod("GET", new apigateway.LambdaIntegration(currentPlanLambda));
+
+    // Sessions routes
+    const sessionsResource = this.api.root.addResource("sessions");
+    const sessionIdResource = sessionsResource.addResource("{id}");
+    sessionIdResource.addMethod("GET", new apigateway.LambdaIntegration(getSessionLambda));
+    const completeSessionResource = sessionIdResource.addResource("complete");
+    completeSessionResource.addMethod("POST", new apigateway.LambdaIntegration(completeSessionLambda));
 
     // Outputs
     this.apiUrl = this.api.url;

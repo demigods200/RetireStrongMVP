@@ -5,9 +5,10 @@ For local development, create a `.env` file in the `apps/api-gateway/` directory
 ## Required Variables
 
 ```env
-# DynamoDB Table Name
+# DynamoDB Table Names
 # Replace 'dev' with your actual stage (dev, staging, or prod)
 DYNAMO_TABLE_USERS=retire-strong-users-dev
+DYNAMO_TABLE_SESSIONS=retire-strong-sessions-dev
 
 # AWS Region
 AWS_REGION=us-east-2
@@ -27,9 +28,10 @@ AWS_ENDPOINT_URL=http://localhost:8000
 ## Table Names by Stage
 
 Based on your CDK configuration, the table names follow this pattern:
-- **dev**: `retire-strong-users-dev`
-- **staging**: `retire-strong-users-staging`
-- **prod**: `retire-strong-users-prod`
+- **users**: `retire-strong-users-<stage>`
+- **sessions**: `retire-strong-sessions-<stage>`
+- **checkins**: `retire-strong-checkins-<stage>`
+- **logs**: `retire-strong-logs-<stage>`
 
 ## Quick Setup
 
@@ -37,6 +39,7 @@ Based on your CDK configuration, the table names follow this pattern:
    ```bash
    cd apps/api-gateway
    echo "DYNAMO_TABLE_USERS=retire-strong-users-dev" > .env
+   echo "DYNAMO_TABLE_SESSIONS=retire-strong-sessions-dev" >> .env
    echo "AWS_REGION=us-east-2" >> .env
    ```
 
