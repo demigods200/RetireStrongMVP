@@ -116,40 +116,40 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ userId }) =>
   const activeStep = STEPS[currentStep - 1];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">Welcome to Retire Strong</h1>
-          <p className="text-lg text-gray-600">Let's create your personalized wellness plan</p>
+        <div className="text-center mb-12 sm:mb-16">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">Welcome to Retire Strong</h1>
+          <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">Let's create your personalized wellness plan</p>
         </div>
 
         {/* Progress Bar */}
-        <div className="mb-10">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-sm font-medium text-gray-700">
+        <div className="mb-10 sm:mb-12">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-base sm:text-lg font-semibold text-gray-700">
               Step {currentStep} of {STEPS.length}
             </span>
-            <span className="text-sm font-medium text-primary">{Math.round(progressPercentage)}%</span>
+            <span className="text-base sm:text-lg font-semibold text-primary">{Math.round(progressPercentage)}%</span>
           </div>
-          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
             <div
-              className="h-full bg-primary rounded-full transition-all duration-500 ease-out"
+              className="h-full bg-primary rounded-full transition-all duration-500 ease-out shadow-soft"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-medium border border-gray-200 overflow-hidden">
           {/* Step Header */}
-          <div className="px-8 py-6 border-b border-gray-200 bg-gray-50">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">{activeStep?.title}</h2>
-            <p className="text-base text-gray-600">{activeStep?.description}</p>
+          <div className="px-6 sm:px-8 lg:px-10 py-6 sm:py-8 border-b border-gray-200 bg-gray-50">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">{activeStep?.title}</h2>
+            <p className="text-base sm:text-lg text-gray-600 leading-relaxed">{activeStep?.description}</p>
           </div>
 
           {/* Step Content */}
-          <div className="px-8 py-10">
+          <div className="px-6 sm:px-8 lg:px-10 py-8 sm:py-10 lg:py-12">
             {currentStep === 1 && (
               <DemographicsStep
                 data={formData.demographics || { age: 60, gender: "prefer_not_to_say", location: "" }}
@@ -193,7 +193,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ userId }) =>
           </div>
 
           {/* Navigation */}
-          <div className="px-8 py-6 border-t border-gray-200 bg-gray-50 flex justify-between items-center gap-4">
+          <div className="px-6 sm:px-8 lg:px-10 py-6 sm:py-8 border-t border-gray-200 bg-gray-50 flex justify-between items-center gap-4">
             <Button
               variant="outline"
               onClick={prevStep}
@@ -236,10 +236,10 @@ const DemographicsStep: React.FC<{
   onChange: (data: OnboardingData["demographics"]) => void;
 }> = ({ data, onChange }) => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 sm:space-y-10">
       {/* Age */}
       <div>
-        <label htmlFor="age" className="block text-base font-semibold text-gray-900 mb-3">
+        <label htmlFor="age" className="block text-lg sm:text-xl font-semibold text-gray-900 mb-4">
           Age <span className="text-red-500">*</span>
         </label>
         <input
@@ -254,22 +254,22 @@ const DemographicsStep: React.FC<{
               onChange({ ...data, age });
             }
           }}
-          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+          className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
           placeholder="Enter your age"
         />
-        <p className="mt-2 text-sm text-gray-500">Must be between 50 and 100</p>
+        <p className="mt-3 text-sm sm:text-base text-gray-500">Must be between 50 and 100</p>
       </div>
 
       {/* Gender */}
       <div>
-        <label htmlFor="gender" className="block text-base font-semibold text-gray-900 mb-3">
+        <label htmlFor="gender" className="block text-lg sm:text-xl font-semibold text-gray-900 mb-4">
           Gender <span className="text-red-500">*</span>
         </label>
         <select
           id="gender"
           value={data?.gender || "prefer_not_to_say"}
           onChange={(e) => onChange({ ...data, gender: e.target.value as any })}
-          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all bg-white appearance-none"
+          className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 bg-white appearance-none"
         >
           <option value="male">Male</option>
           <option value="female">Female</option>
@@ -280,15 +280,15 @@ const DemographicsStep: React.FC<{
 
       {/* Location */}
       <div>
-        <label htmlFor="location" className="block text-base font-semibold text-gray-900 mb-3">
-          Location <span className="text-sm font-normal text-gray-500">(Optional)</span>
+        <label htmlFor="location" className="block text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+          Location <span className="text-sm sm:text-base font-normal text-gray-500">(Optional)</span>
         </label>
         <input
           id="location"
           type="text"
           value={data?.location || ""}
           onChange={(e) => onChange({ ...data, location: e.target.value })}
-          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+          className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
           placeholder="City, State"
         />
       </div>
@@ -311,10 +311,10 @@ const HealthContextStep: React.FC<{
     <div className="space-y-8">
       {/* Activity Level */}
       <div>
-        <label className="block text-base font-semibold text-gray-900 mb-4">
+        <label className="block text-lg sm:text-xl font-semibold text-gray-900 mb-5">
           Current Activity Level <span className="text-red-500">*</span>
         </label>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {activityLevels.map((level) => {
             const isSelected = data?.activityLevel === level.value;
             return (
@@ -322,18 +322,18 @@ const HealthContextStep: React.FC<{
                 key={level.value}
                 type="button"
                 onClick={() => onChange({ ...data, activityLevel: level.value as any })}
-                className={`w-full px-5 py-4 rounded-lg border-2 text-left transition-all relative ${
+                className={`w-full px-6 py-4.5 rounded-xl border-2 text-left transition-all duration-200 relative ${
                   isSelected
-                    ? "border-primary bg-white shadow-sm"
-                    : "border-gray-300 bg-white hover:border-gray-400"
+                    ? "border-primary bg-white shadow-soft"
+                    : "border-gray-300 bg-white hover:border-gray-400 hover:shadow-soft"
                 }`}
               >
                 {isSelected && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-l-lg" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-xl" />
                 )}
                 <div>
-                  <div className="font-semibold text-base text-gray-900 mb-1">{level.label}</div>
-                  <div className="text-sm text-gray-600">{level.description}</div>
+                  <div className="font-semibold text-lg sm:text-xl text-gray-900 mb-1.5">{level.label}</div>
+                  <div className="text-sm sm:text-base text-gray-600 leading-relaxed">{level.description}</div>
                 </div>
               </button>
             );
@@ -343,21 +343,21 @@ const HealthContextStep: React.FC<{
 
       {/* Health Conditions */}
       <div>
-        <label htmlFor="healthConditions" className="block text-base font-semibold text-gray-900 mb-3">
-          Health Conditions <span className="text-sm font-normal text-gray-500">(Optional)</span>
+        <label htmlFor="healthConditions" className="block text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+          Health Conditions <span className="text-sm sm:text-base font-normal text-gray-500">(Optional)</span>
         </label>
         <input
           id="healthConditions"
           type="text"
           defaultValue={data?.healthConditions?.join(", ") || ""}
           placeholder="e.g., Arthritis, High blood pressure, Diabetes"
-          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+          className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
           onBlur={(e) => {
             const conditions = e.target.value.split(",").map((s) => s.trim()).filter(Boolean);
             onChange({ ...data, healthConditions: conditions });
           }}
         />
-        <p className="mt-2 text-sm text-gray-500">Separate multiple conditions with commas</p>
+        <p className="mt-3 text-sm sm:text-base text-gray-500">Separate multiple conditions with commas</p>
       </div>
     </div>
   );
@@ -387,12 +387,12 @@ const GoalsStep: React.FC<{
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       <div>
-        <label className="block text-base font-semibold text-gray-900 mb-4">
+        <label className="block text-lg sm:text-xl font-semibold text-gray-900 mb-5">
           Select all that apply: <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {availableGoals.map((goal) => {
             const isSelected = data.includes(goal);
             return (
@@ -400,16 +400,16 @@ const GoalsStep: React.FC<{
                 key={goal}
                 type="button"
                 onClick={() => toggleGoal(goal)}
-                className={`w-full px-5 py-4 rounded-lg border-2 text-left transition-all relative ${
+                className={`w-full px-6 py-4.5 rounded-xl border-2 text-left transition-all duration-200 relative ${
                   isSelected
-                    ? "border-primary bg-white shadow-sm"
-                    : "border-gray-300 bg-white hover:border-gray-400"
+                    ? "border-primary bg-white shadow-soft"
+                    : "border-gray-300 bg-white hover:border-gray-400 hover:shadow-soft"
                 }`}
               >
                 {isSelected && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-l-lg" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-xl" />
                 )}
-                <span className="font-medium text-base text-gray-900">{goal}</span>
+                <span className="font-semibold text-lg sm:text-xl text-gray-900">{goal}</span>
               </button>
             );
           })}
@@ -417,8 +417,8 @@ const GoalsStep: React.FC<{
       </div>
 
       {data.length === 0 && (
-        <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-lg">
-          <p className="text-sm font-medium text-amber-800">Please select at least one goal to continue</p>
+        <div className="p-5 bg-amber-50 border-2 border-amber-200 rounded-xl">
+          <p className="text-sm sm:text-base font-semibold text-amber-800">Please select at least one goal to continue</p>
         </div>
       )}
     </div>
@@ -452,10 +452,10 @@ const ScheduleStep: React.FC<{
     <div className="space-y-8">
       {/* Preferred Days */}
       <div>
-        <label className="block text-base font-semibold text-gray-900 mb-4">
+        <label className="block text-lg sm:text-xl font-semibold text-gray-900 mb-5">
           Preferred Days <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7 gap-2 sm:gap-3">
           {days.map((day) => {
             const isSelected = data?.preferredDays?.includes(day.value);
             return (
@@ -463,9 +463,9 @@ const ScheduleStep: React.FC<{
                 key={day.value}
                 type="button"
                 onClick={() => toggleDay(day.value)}
-                className={`px-3 py-3 rounded-lg border-2 font-semibold transition-all ${
+                className={`px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl border-2 font-semibold transition-all duration-200 text-base sm:text-lg min-h-[44px] ${
                   isSelected
-                    ? "border-primary bg-primary text-white shadow-md"
+                    ? "border-primary bg-primary text-white shadow-soft"
                     : "border-gray-300 bg-white text-gray-700 hover:border-primary hover:bg-primary/5"
                 }`}
               >
@@ -475,21 +475,21 @@ const ScheduleStep: React.FC<{
           })}
         </div>
         {(!data?.preferredDays || data.preferredDays.length === 0) && (
-          <p className="mt-3 text-sm text-amber-600">Please select at least one day</p>
+          <p className="mt-4 text-sm sm:text-base text-amber-600">Please select at least one day</p>
         )}
       </div>
 
       {/* Time and Duration */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
         <div>
-          <label htmlFor="preferredTime" className="block text-base font-semibold text-gray-900 mb-3">
+          <label htmlFor="preferredTime" className="block text-lg sm:text-xl font-semibold text-gray-900 mb-4">
             Preferred Time
           </label>
           <select
             id="preferredTime"
             value={data?.preferredTime || "flexible"}
             onChange={(e) => onChange({ ...data, preferredTime: e.target.value as any })}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+            className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
           >
             <option value="morning">Morning</option>
             <option value="afternoon">Afternoon</option>
@@ -499,7 +499,7 @@ const ScheduleStep: React.FC<{
         </div>
 
         <div>
-          <label htmlFor="sessionDuration" className="block text-base font-semibold text-gray-900 mb-3">
+          <label htmlFor="sessionDuration" className="block text-lg sm:text-xl font-semibold text-gray-900 mb-4">
             Session Duration
           </label>
           <div className="relative">
@@ -511,9 +511,9 @@ const ScheduleStep: React.FC<{
               step={5}
               value={data?.sessionDuration || 30}
               onChange={(e) => onChange({ ...data, sessionDuration: parseInt(e.target.value, 10) || 30 })}
-              className="w-full px-4 py-3 pr-16 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+              className="w-full px-5 py-3.5 pr-20 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
             />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">minutes</span>
+            <span className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 font-semibold text-base">minutes</span>
           </div>
         </div>
       </div>

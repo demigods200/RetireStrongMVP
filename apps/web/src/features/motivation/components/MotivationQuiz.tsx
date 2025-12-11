@@ -244,49 +244,49 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
   const canContinue = currentAnswer !== undefined;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">Motivation Quiz</h1>
-          <p className="text-lg text-gray-600">Help us understand what motivates you</p>
+        <div className="text-center mb-12 sm:mb-16">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">Motivation Quiz</h1>
+          <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">Help us understand what motivates you</p>
         </div>
 
         {/* Error Display */}
         {error && (
-          <div className="mb-8 bg-red-50 border-2 border-red-200 rounded-lg overflow-hidden">
-            <div className="px-6 py-4">
+          <div className="mb-10 sm:mb-12 bg-red-50 border-2 border-red-200 rounded-xl overflow-hidden shadow-soft">
+            <div className="px-6 sm:px-8 py-5 sm:py-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-red-900 mb-2">
+                  <h3 className="text-lg sm:text-xl font-semibold text-red-900 mb-3">
                     ❌ Error: {error.message}
                   </h3>
                   {error.code && (
-                    <p className="text-sm text-red-700 mb-2">
+                    <p className="text-sm sm:text-base text-red-700 mb-2">
                       <span className="font-medium">Error Code:</span> {error.code}
                     </p>
                   )}
                   {error.requestId && (
-                    <p className="text-sm text-red-700 mb-2">
+                    <p className="text-sm sm:text-base text-red-700 mb-2">
                       <span className="font-medium">Request ID:</span> {error.requestId}
                     </p>
                   )}
                 </div>
                 <button
                   onClick={() => setShowErrorDetails(!showErrorDetails)}
-                  className="ml-4 text-red-700 hover:text-red-900 text-sm font-medium"
+                  className="ml-4 text-red-700 hover:text-red-900 text-sm sm:text-base font-semibold transition-colors duration-200"
                 >
                   {showErrorDetails ? "▼ Hide" : "▶ Show"} Details
                 </button>
               </div>
               
               {showErrorDetails && (
-                <div className="mt-4 pt-4 border-t border-red-200">
-                  <div className="space-y-3">
+                <div className="mt-5 pt-5 border-t border-red-200">
+                  <div className="space-y-4">
                     {error.details && (
                       <div>
-                        <p className="text-sm font-medium text-red-900 mb-1">Error Details:</p>
-                        <pre className="bg-red-100 p-3 rounded text-xs overflow-auto max-h-64 text-red-800">
+                        <p className="text-sm sm:text-base font-semibold text-red-900 mb-2">Error Details:</p>
+                        <pre className="bg-red-100 p-4 rounded-xl text-xs sm:text-sm overflow-auto max-h-64 text-red-800">
                           {typeof error.details === 'string' 
                             ? error.details 
                             : JSON.stringify(error.details, null, 2)}
@@ -295,14 +295,14 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
                     )}
                     {error.stack && (
                       <div>
-                        <p className="text-sm font-medium text-red-900 mb-1">Stack Trace:</p>
-                        <pre className="bg-red-100 p-3 rounded text-xs overflow-auto max-h-64 text-red-800">
+                        <p className="text-sm sm:text-base font-semibold text-red-900 mb-2">Stack Trace:</p>
+                        <pre className="bg-red-100 p-4 rounded-xl text-xs sm:text-sm overflow-auto max-h-64 text-red-800">
                           {error.stack}
                         </pre>
                       </div>
                     )}
-                    <div className="pt-2">
-                      <p className="text-xs text-red-600 mb-2">
+                    <div className="pt-3">
+                      <p className="text-xs sm:text-sm text-red-600 mb-3 leading-relaxed">
                         💡 <strong>Tip:</strong> Check the browser console (F12) for more detailed logs.
                         All error information has been logged there as well.
                       </p>
@@ -311,7 +311,7 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
                           setError(null);
                           setShowErrorDetails(false);
                         }}
-                        className="text-sm text-red-700 hover:text-red-900 font-medium underline"
+                        className="text-sm sm:text-base text-red-700 hover:text-red-900 font-semibold underline transition-colors duration-200"
                       >
                         Dismiss Error
                       </button>
@@ -324,29 +324,29 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
         )}
 
         {/* Progress Bar */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-sm font-medium text-gray-700">
+        <div className="mb-10 sm:mb-12">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-base sm:text-lg font-semibold text-gray-700">
               Question {currentQuestionIndex + 1} of {questions.length}
             </span>
-            <span className="text-sm font-medium text-primary">{Math.round(progress)}%</span>
+            <span className="text-base sm:text-lg font-semibold text-primary">{Math.round(progress)}%</span>
           </div>
-          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
             <div
-              className="h-full bg-primary rounded-full transition-all duration-500 ease-out"
+              className="h-full bg-primary rounded-full transition-all duration-500 ease-out shadow-soft"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
         {/* Question Card */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden mb-8">
-          <div className="px-8 py-6 border-b border-gray-200 bg-gray-50">
-            <h2 className="text-2xl font-bold text-gray-900">{currentQuestion.text}</h2>
+        <div className="bg-white rounded-2xl shadow-medium border border-gray-200 overflow-hidden mb-8 sm:mb-10">
+          <div className="px-6 sm:px-8 lg:px-10 py-6 sm:py-8 border-b border-gray-200 bg-gray-50">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">{currentQuestion.text}</h2>
           </div>
 
-          <div className="px-8 py-10">
-            <div className="space-y-3">
+          <div className="px-6 sm:px-8 lg:px-10 py-8 sm:py-10 lg:py-12">
+            <div className="space-y-4">
               {currentQuestion.options.map((option) => {
                 const isSelected = currentAnswer === option.value;
                 return (
@@ -354,16 +354,16 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
                     key={option.value}
                     type="button"
                     onClick={() => handleAnswer(option.value)}
-                    className={`w-full px-5 py-4 rounded-lg border-2 text-left transition-all relative ${
+                    className={`w-full px-6 py-4.5 rounded-xl border-2 text-left transition-all duration-200 relative ${
                       isSelected
-                        ? "border-primary bg-white shadow-sm"
-                        : "border-gray-300 bg-white hover:border-gray-400"
+                        ? "border-primary bg-white shadow-soft"
+                        : "border-gray-300 bg-white hover:border-gray-400 hover:shadow-soft"
                     }`}
                   >
                     {isSelected && (
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-l-lg" />
+                      <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-xl" />
                     )}
-                    <span className="font-medium text-base text-gray-900">{option.label}</span>
+                    <span className="font-semibold text-lg sm:text-xl text-gray-900">{option.label}</span>
                   </button>
                 );
               })}
@@ -371,7 +371,7 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
           </div>
 
           {/* Navigation */}
-          <div className="px-8 py-6 border-t border-gray-200 bg-gray-50 flex justify-between items-center gap-4">
+          <div className="px-6 sm:px-8 lg:px-10 py-6 sm:py-8 border-t border-gray-200 bg-gray-50 flex justify-between items-center gap-4">
             <Button
               variant="outline"
               onClick={prevQuestion}

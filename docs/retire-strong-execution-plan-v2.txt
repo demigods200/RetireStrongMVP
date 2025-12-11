@@ -1,0 +1,264 @@
+RETIRE STRONG EXECUTION PLAN V2
+===============================
+
+High level
+----------
+Retire Strong is an MVP for older adults that combines THREE intelligence layers:
+
+1. Conversational Brain (LLM Coach Engine): Claude + RAG for motivation, explanation and behavior change support.
+2. Personalization Brain (Movement Engine): Deterministic rules + ML for exercise selection and progression.
+3. Safety Brain (Safety Engine): Guardrail override layer that enforces safety constraints, detects red flags, and ensures compliance.
+
+The Safety Brain sits above both the Conversational Brain and Personalization Brain, intercepting all outputs before they reach the user.
+
+We use three major content sources from Jim:
+1) Vitality Coach Resources  -> RAG + coach voice + behavior change.
+2) Exercise Resources        -> movement library + safety rules.
+3) YouTube video list        -> RAG + examples + training signal for rules/ML.
+
+Milestone 1  Core skeleton, auth, onboarding, motivation quiz (DONE)
+--------------------------------------------------------------------
+Goals:
+- Users can sign up, log in, complete onboarding and motivation quiz.
+- Data is persisted in AWS (Cognito + Dynamo).
+- Infra is defined in CDK and deployable.
+
+Scope:
+- Cognito user pool + app client for web.
+- Dynamo tables:
+  - retire-strong-users-dev
+  - retire-strong-sessions-dev
+  - retire-strong-logs-dev
+  - retire-strong-checkins-dev
+- API Gateway + Lambda stack with routes:
+  - /health
+  - /auth/*
+  - /onboarding/*
+  - /motivation/quiz/*
+- Web app flows:
+  - Sign up / Sign in using Cognito.
+  - Onboarding (goals, limitations, equipment, time).
+  - Motivation quiz with stored persona.
+- Basic observability (CloudWatch logs, /health).
+
+Milestone 2  Movement library + deterministic Movement Engine
+-------------------------------------------------------------
+Goals:
+- Seed a PT‑reviewed movement library from the Exercise Resources.
+- Implement a deterministic movement engine that builds a safe starter plan.
+- Expose this plan in the UI (no LLM yet).
+
+Scope:
+- packages/movement-library:
+  - Define MovementDefinition: id, name, description, categories, difficulty,
+    joints, muscles, contraindications, regressions, progressions, time, equipment.
+  - Extract atomic movements from Exercise Resources (workouts, routines, guides).
+  - Validate and store them as JSON (movements.json, progressions.json, etc).
+- packages/movement-engine:
+  - Pure functions:
+    - buildStarterPlan(userProfile, motivationProfile)
+    - selectMovementsForSession(input)
+    - updatePlanOnCompletion(plan, result)
+  - Hard safety rules (knee pain, balance issues, dizziness, etc).
+  - Deterministic outputs.
+- domain-core + api-gateway:
+  - PlanService, SessionService.
+  - Routes:
+    - POST /plans/starter
+    - GET /plans/current
+    - GET /sessions/:id
+    - POST /sessions/:id/complete
+  - All handlers validate input using shared-api schemas.
+  - All handlers log via audit-log for safety-critical operations.
+- Web:
+  - Plan page that generates and displays a 3‑day starter plan.
+  - Session detail with movement list and descriptions.
+  - Mark session complete and persist it.
+
+Milestone 3  Coach Engine + RAG + LLM integration + Safety Brain
+---------------------------------------------------------------
+Goals:
+- Use Claude as a narrative coach with RAG.
+- Strictly separate LLM from safety‑critical exercise selection.
+- Implement tools where LLM calls the movement engine via structured JSON.
+- Implement Safety Brain as the final guardrail layer that intercepts all outputs.
+
+Scope:
+- content-rag:
+  - Ingest Vitality Coach Resources and major guidelines into collections:
+    - clinical_guidelines (WHO, ACSM, US Guidelines).
+    - behavior_change (Tiny Habits, Atomic Habits, stages of change, SDT).
+    - longevity_and_exercise (Outlive, Younger Next Year).
+    - internal_coaching_materials (Vitality / brand docs).
+    - movement_explanations (text linked to specific movement ids).
+  - Ingest YouTube transcripts into the right collections.
+- coach-engine:
+  - System prompts for Retire Strong voice and safety.
+  - Tools:
+    - generate_engine_input (turn chat into engine JSON).
+    - explain_plan (plan + RAG -> human explanation).
+    - clarify_limitations (follow‑up questions).
+  - Orchestrator that:
+    - parses user input,
+    - calls movement-engine via domain-core,
+    - uses RAG to explain the plan.
+  - Must never invent exercises or change plan parameters directly.
+  - Must only reference movement ids from movement-library.
+- safety-engine:
+  - Detect red flags in LLM outputs (medical advice, unsafe exercises, inappropriate content).
+  - Override unsafe suggestions from personalization engine.
+  - Enforce age-aware safety rules.
+  - Provide safe fallback messages when content is blocked.
+  - Prevent LLM from offering medical diagnosis or treatment.
+  - Deterministic and auditable rule-based system (no LLM, no RAG).
+  - Can halt or escalate unsafe outputs.
+- audit-log:
+  - Log all movement-engine calls with input/output.
+  - Log all coach recommendations and LLM interactions.
+  - Log all Safety Brain interventions and overrides.
+  - Store in retire-strong-logs-<env> Dynamo table.
+- api-gateway:
+  - POST /coach/chat (outputs pass through Safety Brain)
+  - POST /coach/explain-plan (outputs pass through Safety Brain)
+- Web:
+  - Simple coach chat / "session intro" where user talks to coach and sees explanations.
+  - All coach outputs are filtered through Safety Brain before display.
+
+Milestone 4  Personalization, ML hints, Safety Brain refinement, polish
+-----------------------------------------------------------------------
+Goals:
+- Use adherence and check‑ins to refine difficulty and progressions.
+- Add optional ML hints that never override hard safety rules.
+- Refine Safety Brain rules based on real-world usage patterns.
+- Polish the UX for "Today", progress and reminders.
+
+Scope:
+- Data:
+  - Extend sessions and checkins with difficulty, pain, adherence.
+- Movement engine (Personalization Brain):
+  - Use checkin history to choose progressions/regressions.
+- Optional ML:
+  - Simple models to detect drop‑off risk or suggest intensity bands.
+  - ML only suggests; movement-engine decides within constraints.
+  - All ML suggestions pass through Safety Brain before reaching user.
+- Coach (Conversational Brain):
+  - References user history and uses behavior_change content to support habits.
+  - All outputs pass through Safety Brain before reaching user.
+- Safety Brain:
+  - Refine red-flag detection patterns based on audit logs.
+  - Add age-specific safety rules and fallback messages.
+  - Ensure zero unsafe outputs goal is met.
+- Web:
+  - Check‑in flows, better Today screen, copy aligned with brand manifesto.
+
+Principles
+----------
+- Safety Brain has the highest authority and can override any output.
+- Movement Engine is the single source of truth for exercises and safety.
+- LLM never invents movements or changes rules.
+- RAG only explains and motivates using Jim's content and guidelines.
+- All outputs from Conversational Brain and Personalization Brain must pass through Safety Brain.
+- Infra is fully defined by CDK.
+- Code follows DRY and KISS; small, modular, typed, testable.
+- Zero unsafe outputs goal: Safety Brain ensures compliance.
+
+Architectural Rules
+-------------------
+- Safety Engine (packages/safety-engine):
+  - Highest authority layer that intercepts all outputs.
+  - Detects red flags, overrides unsafe outputs, enforces compliance.
+  - Uses deterministic rules (no LLM, no RAG).
+  - Can halt or escalate unsafe content.
+  - Provides safe fallback messages.
+  - All outputs from Conversational Brain and Personalization Brain pass through Safety Brain.
+
+- Movement Engine / Personalization Brain (packages/movement-engine + packages/movement-library):
+  - Owns all exercise selection, progressions, regressions and safety logic.
+  - Deterministic and auditable.
+  - Does not call LLMs or RAG.
+  - Outputs pass through Safety Brain before reaching user.
+
+- Coach Engine / Conversational Brain (packages/coach-engine + packages/content-rag):
+  - Uses Claude with RAG to interpret input, explain plans and motivate.
+  - Calls movement-engine via domain-core or api-gateway when it needs a plan.
+  - Must not invent exercises or change exercise parameters.
+  - All outputs pass through Safety Brain before reaching user.
+
+- Movement-library:
+  - Single source of truth for exercises, seeded from Exercise Resources.
+  - No hardcoded movement ids or params in handlers, UI or prompts.
+  - If you need an exercise, reference the library by id.
+
+- RAG Collections:
+  - clinical_guidelines: For safety/dosage questions (WHO, ACSM, US Guidelines).
+  - behavior_change: For habits/motivation (Tiny Habits, Atomic Habits, SDT).
+  - longevity_and_exercise: For long-term framing (Outlive, Younger Next Year).
+  - internal_coaching_materials: For tone and philosophy (Vitality / brand docs).
+  - movement_explanations: Text linked to specific movement ids.
+
+Layering
+--------
+- apps/web:
+  - Next.js App Router.
+  - No direct AWS SDK or LLM calls.
+  - Talks to apps/api-gateway via shared-api client.
+
+- apps/api-gateway:
+  - HTTP routes and handlers only.
+  - Handlers: validate input (shared-api schemas), resolve auth context,
+    call domain-core services, map responses to shared-api schemas.
+
+- packages/domain-core:
+  - Business orchestration (UserService, PlanService, SessionService,
+    MotivationService, CoachService).
+  - Depends on repos, movement-engine, motivation-engine, coach-engine, safety-engine.
+  - Orchestrates flow: Coach/Personalization outputs → Safety Brain → user.
+  - No HTTP, UI or framework imports.
+
+- packages/infra-cdk:
+  - The only place where AWS resources are defined.
+  - Avoid manual AWS resources for things CDK already manages.
+
+Safety and LLM Rules
+--------------------
+- Safety Brain has the highest authority and can override any output.
+- All LLM recommendations MUST pass through Safety Brain filters.
+- Safety Engine must be deterministic and auditable.
+- Safety Engine can halt or escalate unsafe outputs.
+- Any feature that affects exercise plans must go through movement-engine.
+- LLM (Conversational Brain):
+  - Uses only movement ids provided by plans or movement-library.
+  - Cannot add or remove movements on its own.
+  - Must use RAG to ground explanations but keep answers general and conservative.
+  - Must not offer diagnosis or individualized medical treatment.
+  - All outputs are intercepted by Safety Brain before reaching user.
+- Personalization Brain:
+  - All suggestions pass through Safety Brain before reaching user.
+  - Safety Brain can override unsafe personalization suggestions.
+
+Error Handling and Logging
+--------------------------
+- Do not swallow errors.
+- Log with context: userId (if available), endpoint, key ids, error type.
+- Never send raw stack traces to clients.
+- Use audit-log package for safety critical logs (engine calls, coach recommendations).
+
+Next.js UI Rules
+----------------
+- Use server components by default; client components only when needed.
+- Keep feature modules under src/features.
+- Presentational components in shared-ui or src/components, with no business logic.
+- Data fetching and side effects live near the page layer or in hooks.
+
+Infra Conventions
+-----------------
+- All infra in packages/infra-cdk.
+- Use env variables for resource names and IDs.
+- Prefer per-env naming (dev, staging, prod) managed through CDK.
+
+When in Doubt
+-------------
+- Read docs in docs/ (especially jim-hybrid-ai-architecture.md,
+  safety-and-rules-principles.md, rag-pipeline-notes.md).
+- Prefer deterministic, inspectable code over cleverness.
+- Keep older adult safety and clarity as top priorities.

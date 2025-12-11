@@ -10,7 +10,7 @@ function LoginContent() {
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto py-8">
+      <div className="max-w-md mx-auto py-8 sm:py-12">
         <LoginForm />
       </div>
     </Layout>

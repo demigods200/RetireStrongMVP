@@ -65,15 +65,15 @@ export const SignupForm: React.FC = () => {
 
   return (
     <Card title="Create Your Account" subtitle="Join Retire Strong today">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-lg text-base">
+          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-5 py-4 rounded-xl text-base sm:text-lg">
             {error}
           </div>
         )}
 
         <div>
-          <label htmlFor="firstName" className="block text-lg font-medium text-gray-700 mb-2">
+          <label htmlFor="firstName" className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
             First Name
           </label>
           <input
@@ -83,13 +83,13 @@ export const SignupForm: React.FC = () => {
             required
             value={formData.firstName}
             onChange={handleChange}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
             placeholder="Enter your first name"
           />
         </div>
 
         <div>
-          <label htmlFor="lastName" className="block text-lg font-medium text-gray-700 mb-2">
+          <label htmlFor="lastName" className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
             Last Name
           </label>
           <input
@@ -99,13 +99,13 @@ export const SignupForm: React.FC = () => {
             required
             value={formData.lastName}
             onChange={handleChange}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
             placeholder="Enter your last name"
           />
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-lg font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
             Email Address
           </label>
           <input
@@ -115,13 +115,13 @@ export const SignupForm: React.FC = () => {
             required
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
             placeholder="your.email@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-lg font-medium text-gray-700 mb-2">
+          <label htmlFor="password" className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
             Password
           </label>
           <input
@@ -132,19 +132,19 @@ export const SignupForm: React.FC = () => {
             minLength={8}
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
             placeholder="At least 8 characters"
           />
-          <p className="mt-1 text-sm text-gray-600">Password must be at least 8 characters long</p>
+          <p className="mt-2 text-sm sm:text-base text-gray-600">Password must be at least 8 characters long</p>
         </div>
 
         <Button type="submit" size="lg" className="w-full" disabled={loading}>
           {loading ? "Creating Account..." : "Create Account"}
         </Button>
 
-        <p className="text-center text-base text-gray-600">
+        <p className="text-center text-base sm:text-lg text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-primary hover:text-primary-dark font-semibold">
+          <a href="/login" className="text-primary hover:text-primary-dark font-semibold transition-colors duration-200">
             Sign in here
           </a>
         </p>

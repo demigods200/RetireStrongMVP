@@ -98,9 +98,9 @@ export const VerifyEmailForm: React.FC = () => {
   if (success) {
     return (
       <Card title="Email Verified!" subtitle="Your account is now active">
-        <div className="text-center space-y-4">
-          <div className="text-6xl mb-4">✅</div>
-          <p className="text-lg text-gray-700">
+        <div className="text-center space-y-6">
+          <div className="text-6xl sm:text-7xl mb-4">✅</div>
+          <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
             Your email has been successfully verified. Redirecting to login...
           </p>
         </div>
@@ -110,15 +110,15 @@ export const VerifyEmailForm: React.FC = () => {
 
   return (
     <Card title="Verify Your Email" subtitle="Check your inbox for the verification code">
-      <form onSubmit={handleVerify} className="space-y-4">
+      <form onSubmit={handleVerify} className="space-y-6">
         {error && (
-          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-lg text-base">
+          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-5 py-4 rounded-xl text-base sm:text-lg">
             {error}
           </div>
         )}
 
         <div>
-          <label htmlFor="email" className="block text-lg font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
             Email Address
           </label>
           <input
@@ -127,13 +127,13 @@ export const VerifyEmailForm: React.FC = () => {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
             placeholder="your.email@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="code" className="block text-lg font-medium text-gray-700 mb-2">
+          <label htmlFor="code" className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
             Verification Code
           </label>
           <input
@@ -142,11 +142,11 @@ export const VerifyEmailForm: React.FC = () => {
             required
             value={code}
             onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg text-center text-2xl font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg text-center text-2xl sm:text-3xl font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
             placeholder="123456"
             maxLength={6}
           />
-          <p className="mt-1 text-sm text-gray-600">
+          <p className="mt-2 text-sm sm:text-base text-gray-600">
             Enter the 6-digit code sent to your email
           </p>
         </div>
@@ -155,23 +155,23 @@ export const VerifyEmailForm: React.FC = () => {
           {loading ? "Verifying..." : "Verify Email"}
         </Button>
 
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-3">
           <button
             type="button"
             onClick={handleResendCode}
             disabled={resending || !email}
-            className="text-primary hover:text-primary-dark font-semibold text-base disabled:opacity-50 disabled:cursor-not-allowed"
+            className="text-primary hover:text-primary-dark font-semibold text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
             {resending ? "Sending..." : "Resend Code"}
           </button>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600">
             Didn't receive the code? Check your spam folder or click "Resend Code"
           </p>
         </div>
 
-        <p className="text-center text-base text-gray-600">
+        <p className="text-center text-base sm:text-lg text-gray-600">
           Already verified?{" "}
-          <a href="/login" className="text-primary hover:text-primary-dark font-semibold">
+          <a href="/login" className="text-primary hover:text-primary-dark font-semibold transition-colors duration-200">
             Sign in here
           </a>
         </p>

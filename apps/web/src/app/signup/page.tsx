@@ -9,7 +9,7 @@ export default function SignupPage() {
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto py-8">
+      <div className="max-w-md mx-auto py-8 sm:py-12">
         <SignupForm />
       </div>
     </Layout>

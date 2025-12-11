@@ -1,0 +1,142 @@
+CURSOR PROJECT RULES - RETIRE STRONG (FULL)
+===========================================
+
+Project context
+---------------
+- Retire Strong is an MVP for older adults.
+- Three brains:
+  1. Conversational Brain (Coach Engine): LLM + RAG for conversation, explanation and motivation.
+  2. Personalization Brain (Movement Engine): deterministic, rules based, safety critical.
+  3. Safety Brain (Safety Engine): guardrail override layer that sits above both.
+- Three content sources from Jim:
+  - Vitality Coach Resources (RAG + coach voice).
+  - Exercise Resources (movement library + safety rules).
+  - YouTube videos (RAG + movement explanations + rules/ML signal).
+- Authoritative docs live under docs/:
+  - retire-strong-execution-plan-v2.txt
+  - retire-strong-project-structure-v2.txt
+  - jim-hybrid-ai-architecture.md
+  - brand-manifesto-summary.md
+  - rag-pipeline-notes.md
+  - safety-and-rules-principles.md
+  - aws-infra-overview.md
+  - cursor-project-rules-full.txt
+
+Architecture rules
+------------------
+- Safety Engine (packages/safety-engine):
+  - Highest authority layer that intercepts all outputs.
+  - Detects red flags, overrides unsafe outputs, enforces compliance.
+  - Uses deterministic rules (no LLM, no RAG).
+  - Can halt or escalate unsafe content.
+  - Provides safe fallback messages.
+  - All outputs from Conversational Brain and Personalization Brain pass through Safety Brain.
+
+- Movement Engine / Personalization Brain (packages/movement-engine + packages/movement-library):
+  - Owns all exercise selection, progressions, regressions and safety logic.
+  - Deterministic and auditable.
+  - Does not call LLMs or RAG.
+  - Outputs pass through safety-engine before reaching user.
+
+- Coach Engine / Conversational Brain (packages/coach-engine + packages/content-rag):
+  - Uses Claude with RAG to interpret input, explain plans and motivate.
+  - Calls movement-engine via domain-core or api-gateway when it needs a plan.
+  - Must not invent exercises or change exercise parameters.
+  - All outputs pass through safety-engine before reaching user.
+
+- Movement-library:
+  - Single source of truth for exercises, seeded from Exercise Resources.
+  - No hardcoded movement ids or params in handlers, UI or prompts.
+  - If you need an exercise, reference the library by id.
+
+- RAG:
+  - Implemented in content-rag with collections:
+    - clinical_guidelines
+    - behavior_change
+    - longevity_and_exercise
+    - internal_coaching_materials
+    - movement_explanations
+  - For safety/dosage, prefer clinical_guidelines.
+  - For habits/motivation, prefer behavior_change.
+  - For long-term framing, prefer longevity_and_exercise.
+  - For tone and philosophy, prefer internal_coaching_materials.
+
+Coding behavior
+---------------
+- Use TypeScript with strict typing.
+- Avoid any except at clear boundaries.
+- Prefer small, cohesive modules and named exports.
+- Follow DRY and KISS:
+  - Extract shared logic into helpers or packages.
+  - Do not duplicate business logic across handlers or UI.
+
+Layering
+--------
+- apps/web:
+  - Next.js App Router.
+  - No direct AWS SDK or LLM calls.
+  - Talks to apps/api-gateway via shared-api client.
+
+- apps/api-gateway:
+  - HTTP routes and handlers only.
+  - Handlers:
+    - validate input (shared-api schemas),
+    - resolve auth context,
+    - call domain-core services,
+    - map responses to shared-api schemas.
+
+- packages/domain-core:
+  - Business orchestration (UserService, PlanService, SessionService, MotivationService, CoachService).
+  - Depends on repos, movement-engine, motivation-engine, coach-engine, safety-engine.
+  - Orchestrates flow: Coach/Personalization outputs → Safety Brain → user.
+  - No HTTP, UI or framework imports.
+
+- packages/infra-cdk:
+  - The only place where AWS resources are defined.
+  - Avoid manual AWS resources for things CDK already manages.
+
+Error handling and logging
+--------------------------
+- Do not swallow errors.
+- Log with context: userId (if available), endpoint, key ids, error type.
+- Never send raw stack traces to clients.
+- Use audit-log package for safety critical logs (engine calls, coach recommendations, Safety Brain interventions).
+- All Safety Brain overrides and interventions must be logged.
+
+Next.js UI rules
+----------------
+- Use server components by default; client components only when needed.
+- Keep feature modules under src/features.
+- Presentational components in shared-ui or src/components, with no business logic.
+- Data fetching and side effects live near the page layer or in hooks.
+
+Safety and LLM rules
+--------------------
+- Safety Brain has the highest authority and can override any output.
+- All LLM recommendations MUST pass through Safety Brain filters.
+- Safety Engine must be deterministic and auditable.
+- Safety Engine can halt or escalate unsafe outputs.
+- Any feature that affects exercise plans must go through movement-engine.
+- LLM (Conversational Brain):
+  - Uses only movement ids provided by plans or movement-library.
+  - Cannot add or remove movements on its own.
+  - Must use RAG to ground explanations but keep answers general and conservative.
+  - Must not offer diagnosis or individualized medical treatment.
+  - All outputs are intercepted by Safety Brain before reaching user.
+- Personalization Brain:
+  - All suggestions pass through Safety Brain before reaching user.
+  - Safety Brain can override unsafe personalization suggestions.
+
+Infra conventions
+-----------------
+- All infra in packages/infra-cdk.
+- Use env variables for resource names and IDs.
+- Prefer per-env naming (dev, staging, prod) managed through CDK.
+
+When in doubt
+-------------
+- Read docs in docs/ (especially jim-hybrid-ai-architecture.md, safety-and-rules-principles.md, rag-pipeline-notes.md).
+- Prefer deterministic, inspectable code over cleverness.
+- Keep older adult safety and clarity as top priorities.
+- Remember: Safety Brain has the highest authority. All outputs must pass through it.
+- Zero unsafe outputs goal: Safety Brain ensures compliance.

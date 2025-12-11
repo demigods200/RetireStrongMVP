@@ -90,22 +90,22 @@ export const LoginForm: React.FC = () => {
   return (
     <Card title="Sign In" subtitle="Welcome back to Retire Strong">
       {signupSuccess && (
-        <div className="bg-green-50 border-2 border-green-200 text-green-700 px-4 py-3 rounded-lg text-base mb-4">
+        <div className="bg-green-50 border-2 border-green-200 text-green-700 px-5 py-4 rounded-xl text-base sm:text-lg mb-6">
           {window.location.search.includes("verified=true")
             ? "Email verified successfully! Please sign in."
             : "Account created successfully! Please sign in."}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-lg text-base">
+          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-5 py-4 rounded-xl text-base sm:text-lg">
             {error}
           </div>
         )}
 
         <div>
-          <label htmlFor="email" className="block text-lg font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
             Email Address
           </label>
           <input
@@ -115,13 +115,13 @@ export const LoginForm: React.FC = () => {
             required
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
             placeholder="your.email@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-lg font-medium text-gray-700 mb-2">
+          <label htmlFor="password" className="block text-lg sm:text-xl font-semibold text-gray-700 mb-3">
             Password
           </label>
           <input
@@ -131,7 +131,7 @@ export const LoginForm: React.FC = () => {
             required
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-5 py-3.5 border-2 border-gray-300 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
             placeholder="Enter your password"
           />
         </div>
@@ -140,9 +140,9 @@ export const LoginForm: React.FC = () => {
           {loading ? "Signing In..." : "Sign In"}
         </Button>
 
-        <p className="text-center text-base text-gray-600">
+        <p className="text-center text-base sm:text-lg text-gray-600">
           Don't have an account?{" "}
-          <a href="/signup" className="text-primary hover:text-primary-dark font-semibold">
+          <a href="/signup" className="text-primary hover:text-primary-dark font-semibold transition-colors duration-200">
             Create one here
           </a>
         </p>

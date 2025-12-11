@@ -29,8 +29,8 @@ export default function MotivationQuizPage() {
   if (loading) {
     return (
       <Layout>
-        <div className="text-center py-12">
-          <p className="text-xl text-gray-600">Loading...</p>
+        <div className="text-center py-16 sm:py-20">
+          <p className="text-xl sm:text-2xl text-gray-600">Loading...</p>
         </div>
       </Layout>
     );
@@ -42,7 +42,7 @@ export default function MotivationQuizPage() {
 
   return (
     <Layout>
-      <div className="py-8">
+      <div className="py-0">
         <MotivationQuiz userId={userId} />
       </div>
     </Layout>

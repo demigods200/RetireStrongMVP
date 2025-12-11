@@ -1,0 +1,300 @@
+RETIRE STRONG PROJECT STRUCTURE V2
+=================================
+
+Monorepo root: retire-strong/
+
+apps/
+  web/                         # Next.js (App Router) user app
+    app/
+      (auth)/
+      (onboarding)/
+      (quiz)/
+      (plan)/
+      (today)/
+      api/                     # API routes that proxy to api-gateway or call services
+    src/
+      features/
+        auth/
+        onboarding/
+        motivation/
+        plan/
+        sessions/
+        account/
+        coach/
+      components/              # Presentational UI
+      lib/                     # Hooks, API client, utilities
+      config/
+    public/
+
+  api-gateway/                 # HTTP API (BFF for web, tools for Claude)
+    src/
+      server.ts
+      routes/
+        auth/
+        onboarding/
+        motivation/
+        plans/
+        sessions/
+        coach/
+        account/
+        health.ts
+      handlers/                # One handler per endpoint, thin glue
+        # Handlers: validate input (shared-api schemas), resolve auth context,
+        # call domain-core services, map responses to shared-api schemas.
+      middleware/              # Auth, logging, error handling
+      lib/                     # Dynamo client, Cognito helpers (no business logic)
+      config/
+    test/
+
+packages/
+  domain-core/                 # Pure business orchestration
+    src/
+      models/
+      value-objects/
+      repos/                   # Interfaces for users, sessions, logs, checkins
+      services/                # UserService, MotivationService, PlanService, SessionService, CoachService
+      ports/                   # LLM, RAG, time, id generator, etc.
+    test/
+
+  motivation-engine/           # Motivation quiz logic
+    src/
+      questions/
+      scoring/
+      schemas/
+    test/
+
+  movement-library/            # Static PT‑reviewed movement definitions
+    # Single source of truth for exercises, seeded from Exercise Resources.
+    # No hardcoded movement ids or params in handlers, UI or prompts.
+    src/
+      schemas/
+      data/
+        movements.json
+        categories.json
+        progressions.json
+        regressions.json
+        contraindications.json
+        tags.json
+      loaders/
+    test/
+
+  movement-engine/             # Deterministic rules for exercise selection (Personalization Brain)
+    # Owns all exercise selection, progressions, regressions and safety logic.
+    # Deterministic and auditable. Does not call LLMs or RAG.
+    # Outputs pass through safety-engine before reaching user.
+    src/
+      rules/
+        safety-rules.ts
+        progression-rules.ts
+        regression-rules.ts
+        session-templates.ts
+      engine/
+        build-starter-plan.ts
+        select-movements.ts
+        update-plan.ts
+      mappers/
+        from-user-profile.ts
+    test/
+
+  coach-engine/                # LLM orchestration (Conversational Brain)
+    # Uses Claude with RAG to interpret input, explain plans and motivate.
+    # Calls movement-engine via domain-core when it needs a plan.
+    # Must not invent exercises or change exercise parameters.
+    # All outputs pass through safety-engine before reaching user.
+    src/
+      prompts/
+        system/
+        tools/
+      tools/
+        generate_engine_input.ts
+        explain_plan.ts
+        clarify_limitations.ts
+      orchestrators/
+        chat-session.ts
+      mappers/
+        to-engine-request.ts
+        to-user-facing-copy.ts
+    test/
+
+  safety-engine/               # Safety guardrail override layer (Safety Brain)
+    # Highest authority layer that intercepts all outputs.
+    # Detects red flags, overrides unsafe outputs, enforces compliance.
+    # Uses deterministic rules (no LLM, no RAG).
+    # Can halt or escalate unsafe content.
+    # All outputs from Conversational Brain and Personalization Brain pass through here.
+    src/
+      rules/
+        red-flag-detection.ts
+        age-aware-safety.ts
+        medical-advice-detection.ts
+        unsafe-content-detection.ts
+      filters/
+        llm-output-filter.ts
+        personalization-filter.ts
+        plan-filter.ts
+      fallbacks/
+        safe-messages.ts
+        escalation-handler.ts
+      engine/
+        validate-output.ts
+        override-unsafe.ts
+        halt-or-escalate.ts
+    test/
+
+  content-rag/                 # RAG ingestion and query utilities
+    # Collections: clinical_guidelines, behavior_change, longevity_and_exercise,
+    # internal_coaching_materials, movement_explanations
+    src/
+      pipeline/
+        youtube_ingest.ts
+        doc_ingest.ts
+        chunking.ts
+        embeddings.ts
+        index-writer.ts
+      query/
+        search.ts
+        collections.ts
+    test/
+
+  audit-log/
+    # For safety critical logs: engine calls, coach recommendations.
+    src/
+      models/
+        RecommendationLog.ts
+        EngineCallLog.ts
+        LlmInteractionLog.ts
+      writers/
+        dynamo-writer.ts
+        s3-writer.ts
+      logger.ts
+    test/
+
+  shared-api/
+    src/
+      schemas/
+        AuthSchemas.ts
+        OnboardingSchemas.ts
+        MotivationSchemas.ts
+        PlanSchemas.ts
+        SessionSchemas.ts
+        CoachSchemas.ts
+      client/
+        apiClient.ts
+    test/
+
+  shared-config/
+    src/
+      env.ts
+      constants.ts
+      featureFlags.ts
+    test/
+
+  shared-ui/
+    src/
+      components/
+        Button.tsx
+        Card.tsx
+        Layout.tsx
+        ProgressBar.tsx
+        FormControls.tsx
+        CoachBubble.tsx
+      theme/
+        colors.ts
+        typography.ts
+        spacing.ts
+    test/
+
+  infra-cdk/
+    bin/
+      retire-strong.ts
+    lib/
+      auth-stack.ts
+      data-stack.ts
+      rag-stack.ts
+      api-stack.ts
+      web-stack.ts
+      logging-stack.ts
+      permissions-stack.ts
+    cdk.json
+
+content/
+  exercises_raw/               # Exercise Resources from Drive
+  vitality_raw/                # Vitality Coach Resources from Drive
+  vitality_clean/              # Cleaned text for RAG
+  manifests/                   # JSON manifests mapping files -> metadata
+
+scripts/
+  ingest-videos.ts             # Use content-rag to ingest YouTube list
+  ingest-docs.ts               # Ingest PDFs/DOCX from vitality_raw into RAG
+  sync-movements.ts            # Parse Exercise Resources into movement-library data
+
+docs/
+  retire-strong-execution-plan-v2.txt
+  retire-strong-project-structure-v2.txt
+  jim-hybrid-ai-architecture.md
+  brand-manifesto-summary.md
+  rag-pipeline-notes.md
+  safety-and-rules-principles.md
+  aws-infra-overview.md
+  cursor-project-rules-full.txt
+
+Architectural Notes
+===================
+
+Layering Rules
+--------------
+- apps/web:
+  - Next.js App Router with server components by default.
+  - No direct AWS SDK or LLM calls.
+  - Talks to apps/api-gateway via shared-api client.
+  - Feature modules under src/features.
+  - Presentational components in shared-ui or src/components.
+
+- apps/api-gateway:
+  - HTTP routes and handlers only (thin glue layer).
+  - Handlers: validate input (shared-api schemas), resolve auth context,
+    call domain-core services, map responses to shared-api schemas.
+  - No business logic in handlers.
+
+- packages/domain-core:
+  - Pure business orchestration (UserService, PlanService, SessionService,
+    MotivationService, CoachService).
+  - Depends on repos, movement-engine, motivation-engine, coach-engine, safety-engine.
+  - Orchestrates flow: Coach/Personalization outputs → Safety Brain → user.
+  - No HTTP, UI or framework imports.
+
+- packages/infra-cdk:
+  - The only place where AWS resources are defined.
+  - Avoid manual AWS resources for things CDK already manages.
+
+Package Dependencies
+--------------------
+- movement-engine depends on movement-library (reads movement definitions).
+- coach-engine depends on content-rag (queries RAG collections) and movement-engine
+  (via domain-core, never directly).
+- safety-engine is independent (no dependencies on LLM or RAG).
+- domain-core orchestrates movement-engine, motivation-engine, coach-engine, and safety-engine.
+  - Flow: Coach/Personalization outputs → safety-engine → user.
+- api-gateway depends on domain-core and shared-api.
+- web depends on shared-api and shared-ui.
+
+Safety Boundaries
+-----------------
+- safety-engine: Highest authority, deterministic rules only (no LLM, no RAG).
+  Can override any output from coach-engine or movement-engine.
+- movement-engine: Deterministic, no LLM calls, no network calls.
+  Outputs pass through safety-engine.
+- coach-engine: Uses LLM + RAG, but must call movement-engine via domain-core
+  for any exercise selection. Never invents exercises. All outputs pass through safety-engine.
+- movement-library: Single source of truth for all exercises. No hardcoded
+  movement ids elsewhere.
+
+RAG Collections (content-rag)
+------------------------------
+- clinical_guidelines: For safety/dosage questions.
+- behavior_change: For habits/motivation.
+- longevity_and_exercise: For long-term framing.
+- internal_coaching_materials: For tone and philosophy.
+- movement_explanations: Text linked to specific movement ids.
+
+See cursor-project-rules-full.txt for complete architectural rules.

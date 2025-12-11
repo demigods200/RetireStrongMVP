@@ -60,8 +60,8 @@ export default function OnboardingResultPage() {
   if (loading) {
     return (
       <Layout>
-        <div className="text-center py-12">
-          <p className="text-xl text-gray-600">Loading...</p>
+        <div className="text-center py-16 sm:py-20">
+          <p className="text-xl sm:text-2xl text-gray-600">Loading...</p>
         </div>
       </Layout>
     );
@@ -70,9 +70,9 @@ export default function OnboardingResultPage() {
   if (!result) {
     return (
       <Layout>
-        <div className="text-center py-12">
-          <p className="text-xl text-gray-600">No onboarding data found</p>
-          <Button onClick={() => router.push("/onboarding")} className="mt-4">
+        <div className="text-center py-16 sm:py-20">
+          <p className="text-xl sm:text-2xl text-gray-600 mb-6">No onboarding data found</p>
+          <Button onClick={() => router.push("/onboarding")}>
             Complete Onboarding
           </Button>
         </div>
@@ -82,23 +82,23 @@ export default function OnboardingResultPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gray-50 py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <div className="text-6xl mb-4">✅</div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">Onboarding Complete!</h1>
-            <p className="text-lg text-gray-600">Your profile has been saved successfully</p>
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="text-6xl sm:text-7xl mb-6">✅</div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">Onboarding Complete!</h1>
+            <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">Your profile has been saved successfully</p>
           </div>
 
           {/* Success Card */}
           <Card title="Profile Summary" subtitle="Here's what we've saved">
-            <div className="space-y-6">
+            <div className="space-y-8 sm:space-y-10">
               {/* Demographics */}
               {result.onboardingData?.demographics && (
-                <div className="border-b border-gray-200 pb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">About You</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-5">About You</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 text-base sm:text-lg">
                     {result.onboardingData.demographics.age && (
                       <div>
                         <span className="text-gray-500">Age:</span>
@@ -129,9 +129,9 @@ export default function OnboardingResultPage() {
 
               {/* Health Context */}
               {result.onboardingData?.healthContext && (
-                <div className="border-b border-gray-200 pb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Health & Activity</h3>
-                  <div className="space-y-2 text-sm">
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-5">Health & Activity</h3>
+                  <div className="space-y-3 text-base sm:text-lg">
                     {result.onboardingData.healthContext.activityLevel && (
                       <div>
                         <span className="text-gray-500">Activity Level:</span>
@@ -155,13 +155,13 @@ export default function OnboardingResultPage() {
 
               {/* Goals */}
               {result.onboardingData?.goals && result.onboardingData.goals.length > 0 && (
-                <div className="border-b border-gray-200 pb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Your Goals</h3>
-                  <div className="flex flex-wrap gap-2">
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-5">Your Goals</h3>
+                  <div className="flex flex-wrap gap-3">
                     {result.onboardingData.goals.map((goal, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                        className="px-4 py-2 bg-primary/10 text-primary rounded-xl text-base sm:text-lg font-semibold"
                       >
                         {goal}
                       </span>
@@ -173,8 +173,8 @@ export default function OnboardingResultPage() {
               {/* Schedule */}
               {result.onboardingData?.schedulePreferences && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Schedule Preferences</h3>
-                  <div className="space-y-2 text-sm">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-5">Schedule Preferences</h3>
+                  <div className="space-y-3 text-base sm:text-lg">
                     {result.onboardingData.schedulePreferences.preferredDays &&
                       result.onboardingData.schedulePreferences.preferredDays.length > 0 && (
                         <div>
@@ -225,8 +225,8 @@ export default function OnboardingResultPage() {
           </Card>
 
           {/* Continue Button */}
-          <div className="mt-8 text-center">
-            <Button onClick={handleContinue} size="lg" className="min-w-[200px]">
+          <div className="mt-10 sm:mt-12 text-center">
+            <Button onClick={handleContinue} size="lg" className="min-w-[240px]">
               Continue to Motivation Quiz
             </Button>
           </div>
