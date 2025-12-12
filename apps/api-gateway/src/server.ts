@@ -17,6 +17,10 @@ import { handler as starterPlanHandler } from "./handlers/plans/starter.js";
 import { handler as currentPlanHandler } from "./handlers/plans/current.js";
 import { handler as getSessionHandler } from "./handlers/sessions/get.js";
 import { handler as completeSessionHandler } from "./handlers/sessions/complete.js";
+import { handler as signupHandler } from "./handlers/auth/signup.js";
+import { handler as loginHandler } from "./handlers/auth/login.js";
+import { handler as verifyHandler } from "./handlers/auth/verify.js";
+import { handler as resendCodeHandler } from "./handlers/auth/resend-code.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -163,6 +167,22 @@ app.get("/users/me", (req, res) => {
   sendApiGatewayResponse(profileHandler, req, res);
 });
 
+app.post("/auth/signup", (req, res) => {
+  sendApiGatewayResponse(signupHandler, req, res);
+});
+
+app.post("/auth/login", (req, res) => {
+  sendApiGatewayResponse(loginHandler, req, res);
+});
+
+app.post("/auth/verify", (req, res) => {
+  sendApiGatewayResponse(verifyHandler, req, res);
+});
+
+app.post("/auth/resend-code", (req, res) => {
+  sendApiGatewayResponse(resendCodeHandler, req, res);
+});
+
 app.post("/plans/starter", (req, res) => {
   sendApiGatewayResponse(starterPlanHandler, req, res);
 });
@@ -184,6 +204,10 @@ app.listen(PORT, () => {
   console.log(`🚀 API Gateway running on http://localhost:${PORT}`);
   console.log(`📋 Available endpoints:`);
   console.log(`   GET  /health`);
+  console.log(`   POST /auth/signup`);
+  console.log(`   POST /auth/login`);
+  console.log(`   POST /auth/verify`);
+  console.log(`   POST /auth/resend-code`);
   console.log(`   GET  /motivation/quiz`);
   console.log(`   POST /motivation/quiz/submit`);
   console.log(`   POST /users/onboarding`);

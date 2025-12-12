@@ -174,8 +174,8 @@ export default function PlanPage() {
                   <div className="rounded-xl bg-amber-50 border-2 border-amber-200 p-4 sm:p-5">
                     <p className="font-semibold text-lg sm:text-xl text-amber-800 mb-3">⚠️ Cautions</p>
                     <ul className="list-disc list-inside text-base sm:text-lg text-amber-800 space-y-2 leading-relaxed">
-                      {plan.cautions.map((caution) => (
-                        <li key={caution}>{caution}</li>
+                      {plan.cautions.map((caution, index) => (
+                        <li key={`caution-${index}`}>{caution}</li>
                       ))}
                     </ul>
                   </div>

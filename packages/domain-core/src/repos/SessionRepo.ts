@@ -16,9 +16,18 @@ export class SessionRepo {
     region: string = "us-east-2",
     endpoint?: string
   ) {
+    // Support local DynamoDB endpoint for development
+    const endpointUrl = endpoint || process.env.AWS_ENDPOINT_URL;
     const dynamoClient = new DynamoDBClient({
       region,
-      ...(endpoint ? { endpoint } : {}),
+      ...(endpointUrl && { endpoint: endpointUrl }),
+      // Use dummy credentials for local development
+      ...(endpointUrl && {
+        credentials: {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID || "dummy",
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "dummy",
+        },
+      }),
     });
     this.client = DynamoDBDocumentClient.from(dynamoClient, {
       marshallOptions: {
