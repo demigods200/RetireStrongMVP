@@ -20,8 +20,12 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.700.0",
     "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "@retire-strong/audit-log": "workspace:*",
+    "@retire-strong/coach-engine": "workspace:*",
+    "@retire-strong/content-rag": "workspace:*",
     "@retire-strong/movement-engine": "workspace:*",
     "@retire-strong/movement-library": "workspace:*",
+    "@retire-strong/safety-engine": "workspace:*",
     "@retire-strong/shared-api": "workspace:*",
     "@retire-strong/shared-config": "workspace:*"
   },

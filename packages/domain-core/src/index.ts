@@ -6,4 +6,5 @@ export * from "./repos/PlanRepo.js";
 export * from "./repos/SessionRepo.js";
 export * from "./services/PlanService.js";
 export * from "./services/SessionService.js";
+export * from "./services/CoachService.js";
 

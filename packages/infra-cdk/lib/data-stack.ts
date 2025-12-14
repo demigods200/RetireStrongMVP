@@ -65,14 +65,16 @@ export class DataStack extends cdk.Stack {
     });
 
     // Logs Table
+    // Used by audit-log package for safety-critical logging
+    // Stores: recommendation logs, engine call logs, LLM interaction logs, safety intervention logs
     this.logsTable = new dynamodb.Table(this, "LogsTable", {
       tableName: `retire-strong-logs-${props.stage}`,
       partitionKey: {
-        name: "userId",
+        name: "pk", // Format: LOG#{type}#{id}
         type: dynamodb.AttributeType.STRING,
       },
       sortKey: {
-        name: "timestamp",
+        name: "sk", // Timestamp for sorting
         type: dynamodb.AttributeType.STRING,
       },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,

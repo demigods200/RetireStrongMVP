@@ -21,6 +21,8 @@ import { handler as signupHandler } from "./handlers/auth/signup.js";
 import { handler as loginHandler } from "./handlers/auth/login.js";
 import { handler as verifyHandler } from "./handlers/auth/verify.js";
 import { handler as resendCodeHandler } from "./handlers/auth/resend-code.js";
+import { handler as coachChatHandler } from "./handlers/coach/chat.js";
+import { handler as coachExplainPlanHandler } from "./handlers/coach/explain-plan.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -199,6 +201,14 @@ app.post("/sessions/:id/complete", (req, res) => {
   sendApiGatewayResponse(completeSessionHandler, req, res);
 });
 
+app.post("/coach/chat", (req, res) => {
+  sendApiGatewayResponse(coachChatHandler, req, res);
+});
+
+app.post("/coach/explain-plan", (req, res) => {
+  sendApiGatewayResponse(coachExplainPlanHandler, req, res);
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 API Gateway running on http://localhost:${PORT}`);
@@ -212,6 +222,12 @@ app.listen(PORT, () => {
   console.log(`   POST /motivation/quiz/submit`);
   console.log(`   POST /users/onboarding`);
   console.log(`   GET  /users/me`);
+  console.log(`   POST /plans/starter`);
+  console.log(`   GET  /plans/current`);
+  console.log(`   GET  /sessions/:id`);
+  console.log(`   POST /sessions/:id/complete`);
+  console.log(`   POST /coach/chat`);
+  console.log(`   POST /coach/explain-plan`);
   
   // Log configuration status
   const usersTable = process.env.USERS_TABLE_NAME || process.env.DYNAMO_TABLE_USERS;
