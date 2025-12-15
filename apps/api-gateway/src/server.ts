@@ -8,6 +8,8 @@ import "dotenv/config";
 
 import express from "express";
 import cors from "cors";
+import { join } from "path";
+import { loadSeedContent } from "@retire-strong/content-rag";
 import { handler as quizHandler } from "./handlers/motivation/quiz.js";
 import { handler as submitQuizHandler } from "./handlers/motivation/submit.js";
 import { handler as healthHandler } from "./handlers/health.js";
@@ -23,6 +25,11 @@ import { handler as verifyHandler } from "./handlers/auth/verify.js";
 import { handler as resendCodeHandler } from "./handlers/auth/resend-code.js";
 import { handler as coachChatHandler } from "./handlers/coach/chat.js";
 import { handler as coachExplainPlanHandler } from "./handlers/coach/explain-plan.js";
+// M4 checkin handlers temporarily disabled - ml-hints package not ready yet
+// import { handler as createSessionCheckinHandler } from "./handlers/checkins/create-session-checkin.js";
+// import { handler as createWeeklyCheckinHandler } from "./handlers/checkins/create-weekly-checkin.js";
+// import { handler as getCheckinsHandler } from "./handlers/checkins/get-checkins.js";
+// import { handler as getAdherenceSummaryHandler } from "./handlers/checkins/adherence-summary.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -209,8 +216,25 @@ app.post("/coach/explain-plan", (req, res) => {
   sendApiGatewayResponse(coachExplainPlanHandler, req, res);
 });
 
+// M4 checkin routes temporarily disabled
+// app.post("/checkins/session", (req, res) => {
+//   sendApiGatewayResponse(createSessionCheckinHandler, req, res);
+// });
+
+// app.post("/checkins/weekly", (req, res) => {
+//   sendApiGatewayResponse(createWeeklyCheckinHandler, req, res);
+// });
+
+// app.get("/checkins", (req, res) => {
+//   sendApiGatewayResponse(getCheckinsHandler, req, res);
+// });
+
+// app.get("/checkins/adherence-summary", (req, res) => {
+//   sendApiGatewayResponse(getAdherenceSummaryHandler, req, res);
+// });
+
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 API Gateway running on http://localhost:${PORT}`);
   console.log(`📋 Available endpoints:`);
   console.log(`   GET  /health`);
@@ -228,6 +252,11 @@ app.listen(PORT, () => {
   console.log(`   POST /sessions/:id/complete`);
   console.log(`   POST /coach/chat`);
   console.log(`   POST /coach/explain-plan`);
+  // M4 checkin routes temporarily disabled
+  // console.log(`   POST /checkins/session`);
+  // console.log(`   POST /checkins/weekly`);
+  // console.log(`   GET  /checkins`);
+  // console.log(`   GET  /checkins/adherence-summary`);
   
   // Log configuration status
   const usersTable = process.env.USERS_TABLE_NAME || process.env.DYNAMO_TABLE_USERS;
@@ -250,6 +279,17 @@ app.listen(PORT, () => {
     console.log(`\n⚠️  Warning: SESSIONS_TABLE_NAME or DYNAMO_TABLE_SESSIONS is not set. Add to .env in apps/api-gateway/:`);
     console.log(`   SESSIONS_TABLE_NAME=retire-strong-sessions-dev`);
     console.log(`   (or DYNAMO_TABLE_SESSIONS=retire-strong-sessions-dev)`);
+  }
+
+  // Load RAG seed content
+  console.log('\n');
+  try {
+    // Path to content/seed in the monorepo root
+    const contentPath = join(process.cwd(), '..', '..', 'content', 'seed');
+    await loadSeedContent({ contentPath, verbose: true });
+  } catch (error) {
+    console.error('❌ Failed to load RAG content:', error);
+    console.error('   Coach will still work but without grounded context');
   }
 });
 

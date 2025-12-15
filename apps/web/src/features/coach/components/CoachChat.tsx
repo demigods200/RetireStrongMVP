@@ -155,14 +155,14 @@ export function CoachChat({ userId }: CoachChatProps) {
                 <div
                   className={`max-w-[80%] rounded-lg p-4 shadow-sm ${
                     msg.role === "user"
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-gray-800 border border-gray-300"
+                      ? "bg-emerald-600 text-white"
+                      : "bg-gray-100 text-gray-800 border border-gray-300"
                   }`}
                   style={{
                     wordBreak: "break-word",
                     overflowWrap: "break-word",
                     // Force background and text colors inline to override any CSS conflicts
-                    backgroundColor: msg.role === "user" ? "#2563eb" : "#ffffff",
+                    backgroundColor: msg.role === "user" ? "#059669" : "#f3f4f6",
                     color: msg.role === "user" ? "#ffffff" : "#1f2937",
                     border: msg.role === "assistant" ? "1px solid #d1d5db" : "none",
                   }}

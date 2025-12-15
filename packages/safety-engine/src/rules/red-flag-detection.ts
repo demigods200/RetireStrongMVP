@@ -90,6 +90,64 @@ export const RED_FLAGS: RedFlag[] = [
     severity: 'high',
     description: 'Inappropriate or sexualized language',
   },
+
+  // NEW (Milestone 4): Pain management red flags
+  {
+    pattern: /\b(pain is (normal|fine|good)|pain means (progress|it's working))\b/i,
+    category: 'unsafe-exercise',
+    severity: 'high',
+    description: 'Normalizing or encouraging pain during exercise',
+  },
+  {
+    pattern: /\b(take (ibuprofen|advil|tylenol|aspirin) (and|then) exercise)\b/i,
+    category: 'medical-diagnosis',
+    severity: 'critical',
+    description: 'Recommending medication to mask pain',
+  },
+
+  // NEW (Milestone 4): Adherence pressure red flags
+  {
+    pattern: /\b(you must|you have to|you need to|no excuses)\b/i,
+    category: 'fear-based',
+    severity: 'medium',
+    description: 'Applying excessive pressure that may harm motivation',
+  },
+  {
+    pattern: /\b(every day|daily without (rest|break)|never skip|always do)\b/i,
+    category: 'unsafe-exercise',
+    severity: 'medium',
+    description: 'Encouraging overtraining or insufficient rest',
+  },
+
+  // NEW (Milestone 4): Age-inappropriate language
+  {
+    pattern: /\b(for someone your age|at your age|elderly|senior citizen|old people)\b/i,
+    category: 'inappropriate',
+    severity: 'medium',
+    description: 'Potentially ageist or patronizing language',
+  },
+  {
+    pattern: /\b(before it's too late|while you still can|running out of time)\b/i,
+    category: 'fear-based',
+    severity: 'medium',
+    description: 'Using urgency-based fear tactics',
+  },
+
+  // NEW (Milestone 4): Unrealistic timeline promises
+  {
+    pattern: /\b(in (just )?\d+ days|within a week|overnight results|instant)\b/i,
+    category: 'over-promising',
+    severity: 'medium',
+    description: 'Promising unrealistic timelines for results',
+  },
+
+  // NEW (Milestone 4): Comparison and competition
+  {
+    pattern: /\b(keep up with|as good as|better than|compete with)\b/i,
+    category: 'inappropriate',
+    severity: 'low',
+    description: 'Encouraging unhealthy comparison or competition',
+  },
 ];
 
 /**

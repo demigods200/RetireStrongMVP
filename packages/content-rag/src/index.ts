@@ -23,6 +23,12 @@ export {
 } from './pipeline/embeddings';
 
 export {
+  loadSeedContent,
+  getRagStatus,
+  type LoaderConfig,
+} from './pipeline/content-loader';
+
+export {
   COLLECTIONS,
   type CollectionName,
   type RagDocument,

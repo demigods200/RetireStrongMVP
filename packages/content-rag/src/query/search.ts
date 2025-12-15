@@ -35,7 +35,7 @@ export interface SearchResult {
  */
 export class RagSearchEngine {
   private embeddingGenerator: EmbeddingGenerator;
-  private chunks: RagChunk[] = [];
+  public chunks: RagChunk[] = []; // Public so content-loader can access it directly
 
   constructor() {
     this.embeddingGenerator = new EmbeddingGenerator();
