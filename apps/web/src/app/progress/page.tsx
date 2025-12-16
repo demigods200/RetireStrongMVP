@@ -33,13 +33,11 @@ export default function ProgressPage() {
   const [loading, setLoading] = useState(true);
   const [adherenceSummary, setAdherenceSummary] = useState<AdherenceSummary | null>(null);
   const [dropoffRisk, setDropoffRisk] = useState<DropoffRisk | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
 
   useAuthGuard(); // Redirect to login if not authenticated
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
-    setUserId(storedUserId);
 
     const fetchData = async () => {
       try {
@@ -83,22 +81,22 @@ export default function ProgressPage() {
   // Calculate vitality score (0-100)
   const calculateVitalityScore = () => {
     if (!adherenceSummary) return 0;
-    
+
     let score = 0;
-    
+
     // Adherence (40 points)
     score += adherenceSummary.adherenceRate * 40;
-    
+
     // Pain management (30 points) - lower pain = higher score
     score += (1 - adherenceSummary.averagePainLevel / 3) * 30;
-    
+
     // Energy trend (15 points)
     const energyImprovement = adherenceSummary.averageEnergyAfter - adherenceSummary.averageEnergyBefore;
     score += Math.max(0, Math.min(15, (energyImprovement + 2) * 7.5));
-    
+
     // Consistency (15 points) - no skip streaks
     score += adherenceSummary.recentSkipStreak === 0 ? 15 : Math.max(0, 15 - adherenceSummary.recentSkipStreak * 5);
-    
+
     return Math.round(Math.min(100, Math.max(0, score)));
   };
 
@@ -122,8 +120,8 @@ export default function ProgressPage() {
         </div>
 
         {/* Vitality Score Card */}
-        <Card 
-          title="Vitality Index" 
+        <Card
+          title="Vitality Index"
           subtitle="Your overall wellness score"
           className={`mb-6 border-2 ${vitalityLevel.border} ${vitalityLevel.bg}`}
         >
@@ -139,14 +137,14 @@ export default function ProgressPage() {
             <div className="text-right">
               <div className="text-sm text-gray-600 mb-1">Based on:</div>
               <div className="text-sm text-gray-700">
-                • Adherence<br/>
-                • Pain levels<br/>
-                • Energy trends<br/>
+                • Adherence<br />
+                • Pain levels<br />
+                • Energy trends<br />
                 • Consistency
               </div>
             </div>
           </div>
-          
+
           {adherenceSummary && (
             <div className="pt-4 border-t border-gray-200">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -192,10 +190,10 @@ export default function ProgressPage() {
                       {adherenceSummary.sessionsCompleted}/{adherenceSummary.sessionsPlanned} sessions
                     </span>
                   </div>
-                  
+
                   {/* Visual bar */}
                   <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-                    <div 
+                    <div
                       className="bg-primary h-full rounded-full transition-all duration-500"
                       style={{ width: `${adherenceSummary.adherenceRate * 100}%` }}
                     />
@@ -226,17 +224,16 @@ export default function ProgressPage() {
                       {adherenceSummary.averageDifficulty.toFixed(1)}/5
                     </span>
                   </div>
-                  
+
                   {/* Visual difficulty scale */}
                   <div className="flex gap-1 mb-2">
                     {[1, 2, 3, 4, 5].map((level) => (
                       <div
                         key={level}
-                        className={`flex-1 h-8 rounded ${
-                          level <= Math.round(adherenceSummary.averageDifficulty)
-                            ? "bg-primary"
-                            : "bg-gray-200"
-                        }`}
+                        className={`flex-1 h-8 rounded ${level <= Math.round(adherenceSummary.averageDifficulty)
+                          ? "bg-primary"
+                          : "bg-gray-200"
+                          }`}
                       />
                     ))}
                   </div>
@@ -273,7 +270,7 @@ export default function ProgressPage() {
                   ) : (
                     <p className="text-green-600">✓ Pain levels are stable or improving.</p>
                   )}
-                  
+
                   {adherenceSummary.frequentPainLocations.length > 0 && (
                     <div>
                       <p className="font-medium mb-1">Frequent discomfort areas:</p>
@@ -300,7 +297,7 @@ export default function ProgressPage() {
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                      <div 
+                      <div
                         className="bg-blue-400 h-full rounded-full transition-all duration-500"
                         style={{ width: `${(adherenceSummary.averageEnergyBefore / 5) * 100}%` }}
                       />
@@ -315,7 +312,7 @@ export default function ProgressPage() {
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                      <div 
+                      <div
                         className="bg-green-400 h-full rounded-full transition-all duration-500"
                         style={{ width: `${(adherenceSummary.averageEnergyAfter / 5) * 100}%` }}
                       />
@@ -341,22 +338,20 @@ export default function ProgressPage() {
 
             {/* Drop-off Risk Assessment */}
             {dropoffRisk && (
-              <Card 
-                title="Engagement Health" 
+              <Card
+                title="Engagement Health"
                 subtitle="How we can support you"
-                className={`border-2 ${
-                  dropoffRisk.riskLevel === "high" ? "border-orange-200 bg-orange-50" :
+                className={`border-2 ${dropoffRisk.riskLevel === "high" ? "border-orange-200 bg-orange-50" :
                   dropoffRisk.riskLevel === "medium" ? "border-yellow-200 bg-yellow-50" :
-                  "border-green-200 bg-green-50"
-                }`}
+                    "border-green-200 bg-green-50"
+                  }`}
               >
                 <div className="mb-4">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className={`text-3xl font-bold ${
-                      dropoffRisk.riskLevel === "high" ? "text-orange-600" :
+                    <span className={`text-3xl font-bold ${dropoffRisk.riskLevel === "high" ? "text-orange-600" :
                       dropoffRisk.riskLevel === "medium" ? "text-yellow-600" :
-                      "text-green-600"
-                    }`}>
+                        "text-green-600"
+                      }`}>
                       {dropoffRisk.riskLevel === "high" ? "⚠" : dropoffRisk.riskLevel === "medium" ? "⚡" : "✓"}
                     </span>
                     <div>

@@ -51,7 +51,6 @@ export default function TodayPage() {
   const [plan, setPlan] = useState<Plan | null>(null);
   const [adherenceSummary, setAdherenceSummary] = useState<AdherenceSummary | null>(null);
   const [dropoffRisk, setDropoffRisk] = useState<DropoffRisk | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
 
   useAuthGuard(); // Redirect to login if not authenticated
 
@@ -64,7 +63,6 @@ export default function TodayPage() {
 
     // Get userId from localStorage
     const storedUserId = localStorage.getItem("userId");
-    setUserId(storedUserId);
 
     // Fetch user's plan and adherence data
     const fetchData = async () => {
@@ -207,13 +205,12 @@ export default function TodayPage() {
 
         {/* Personalized Insight Card */}
         {insight && (
-          <Card 
-            title={insight.title} 
-            className={`mb-6 border-2 ${
-              insight.type === "warning" ? "border-orange-200 bg-orange-50" :
-              insight.type === "success" ? "border-green-200 bg-green-50" :
-              "border-blue-200 bg-blue-50"
-            }`}
+          <Card
+            title={insight.title}
+            className={`mb-6 border-2 ${insight.type === "warning" ? "border-orange-200 bg-orange-50" :
+                insight.type === "success" ? "border-green-200 bg-green-50" :
+                  "border-blue-200 bg-blue-50"
+              }`}
           >
             <p className="text-lg text-gray-700 leading-relaxed">{insight.message}</p>
           </Card>
@@ -245,7 +242,7 @@ export default function TodayPage() {
             <div className="bg-white p-4 rounded-lg border-2 border-gray-200 hover:shadow-soft transition-all duration-200">
               <div className="text-3xl font-bold text-primary mb-1">
                 {adherenceSummary.motivationTrend === "increasing" ? "↗" :
-                 adherenceSummary.motivationTrend === "decreasing" ? "↘" : "→"}
+                  adherenceSummary.motivationTrend === "decreasing" ? "↘" : "→"}
               </div>
               <div className="text-sm text-gray-600">Motivation Trend</div>
             </div>
@@ -280,8 +277,8 @@ export default function TodayPage() {
         ) : (
           <Card title="Your Session Plan" subtitle="Get started today">
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              {plan ? "Great job! You've completed all pending sessions. Check your plan for updates." : 
-               "Complete your onboarding to get your personalized session plan."}
+              {plan ? "Great job! You've completed all pending sessions. Check your plan for updates." :
+                "Complete your onboarding to get your personalized session plan."}
             </p>
             <Link href={plan ? "/plan" : "/onboarding"}>
               <Button size="lg" className="w-full">
@@ -294,15 +291,15 @@ export default function TodayPage() {
         {/* Quick Actions */}
         <Card title="Quick Actions" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Link 
-              href="/coach" 
+            <Link
+              href="/coach"
               className="block p-5 border-2 border-gray-200 rounded-xl hover:border-primary hover:shadow-soft transition-all duration-200 bg-gray-50 hover:bg-white"
             >
               <h3 className="text-xl font-semibold mb-2 text-gray-900">💬 Chat with Coach</h3>
               <p className="text-base text-gray-600 leading-relaxed">Get guidance and motivation</p>
             </Link>
-            <Link 
-              href="/progress" 
+            <Link
+              href="/progress"
               className="block p-5 border-2 border-gray-200 rounded-xl hover:border-primary hover:shadow-soft transition-all duration-200 bg-gray-50 hover:bg-white"
             >
               <h3 className="text-xl font-semibold mb-2 text-gray-900">📊 View Progress</h3>

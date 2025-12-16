@@ -1,9 +1,4 @@
-import {
-  DynamoDBClient,
-  QueryCommand,
-  GetItemCommand,
-  PutItemCommand,
-} from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, QueryCommand as DocQueryCommand, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import type { Checkin, SessionCheckin, WeeklyCheckin, AdherenceSummary } from "../models/Checkin";
 
@@ -205,7 +200,7 @@ export class CheckinRepo {
     const difficultyMap = { too_easy: 2, just_right: 3, too_hard: 4, varied: 3 };
     const difficultyScores = sessionCheckins.map((c) => difficultyMap[c.difficulty]);
     const averageDifficulty = difficultyScores.reduce((a, b) => a + b, 0) / difficultyScores.length;
-    
+
     // Check if trending easier (compare first half vs second half)
     const halfPoint = Math.floor(difficultyScores.length / 2);
     const firstHalf = difficultyScores.slice(0, halfPoint);
@@ -218,7 +213,7 @@ export class CheckinRepo {
     const painMap = { none: 0, mild: 1, moderate: 2, severe: 3 };
     const painScores = sessionCheckins.map((c) => painMap[c.painLevel]);
     const averagePainLevel = painScores.reduce((a, b) => a + b, 0) / painScores.length;
-    
+
     const painIncreasing = firstHalf.length > 0 && secondHalf.length > 0 &&
       (secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length) >
       (firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length);
@@ -242,7 +237,7 @@ export class CheckinRepo {
     const energyAfterScores = sessionCheckins
       .filter((c) => c.energyAfter)
       .map((c) => energyMap[c.energyAfter!]);
-    
+
     const averageEnergyBefore = energyBeforeScores.length > 0
       ? energyBeforeScores.reduce((a, b) => a + b, 0) / energyBeforeScores.length
       : 3;
@@ -272,7 +267,8 @@ export class CheckinRepo {
     // Recent skip streak
     let recentSkipStreak = 0;
     for (let i = sessionCheckins.length - 1; i >= 0; i--) {
-      if (sessionCheckins[i].adherence.startsWith("skipped")) {
+      const checkin = sessionCheckins[i];
+      if (checkin && checkin.adherence.startsWith("skipped")) {
         recentSkipStreak++;
       } else {
         break;

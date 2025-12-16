@@ -11,7 +11,7 @@ export class SessionService {
     private readonly sessionRepo: SessionRepo,
     private readonly userRepo: UserRepo,
     private readonly checkinRepo?: CheckinRepo // Optional for enhanced personalization
-  ) {}
+  ) { }
 
   async getSession(sessionId: string, userId: string): Promise<MovementSession | null> {
     return this.sessionRepo.getSession(sessionId, userId);
@@ -43,8 +43,8 @@ export class SessionService {
           .split("T")[0];
         adherenceSummary = await this.checkinRepo.calculateAdherenceSummary(
           userId,
-          startDate,
-          endDate
+          startDate || '',
+          endDate || ''
         );
       } catch (error) {
         // If adherence calculation fails, continue without it

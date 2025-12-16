@@ -116,9 +116,12 @@ export class EngagementAnalyzer {
 
     for (const session of sessionHistory) {
       if (session.timeOfDay && timeOfDayCompletions[session.timeOfDay]) {
-        timeOfDayCompletions[session.timeOfDay].total++;
-        if (session.completed) {
-          timeOfDayCompletions[session.timeOfDay].completed++;
+        const timeStats = timeOfDayCompletions[session.timeOfDay];
+        if (timeStats) {
+          timeStats.total++;
+          if (session.completed) {
+            timeStats.completed++;
+          }
         }
       }
     }
@@ -141,7 +144,7 @@ export class EngagementAnalyzer {
     const completedDurations = sessionHistory
       .filter((s) => s.completed && s.durationMinutes)
       .map((s) => s.durationMinutes!);
-    
+
     if (completedDurations.length >= 3) {
       const avgDuration = completedDurations.reduce((a, b) => a + b, 0) / completedDurations.length;
       signals.sessionDurationPreference = Math.round(avgDuration);
@@ -149,7 +152,7 @@ export class EngagementAnalyzer {
 
     // Movement category preferences
     const categoryEnjoyment: Record<string, { enjoyed: number; total: number }> = {};
-    
+
     for (const session of sessionHistory) {
       if (session.movementCategories && session.enjoyed !== undefined) {
         for (const category of session.movementCategories) {
@@ -169,9 +172,12 @@ export class EngagementAnalyzer {
       .filter(([_, stats]) => stats.total >= 2)
       .map(([cat, stats]) => ({ category: cat, rate: stats.enjoyed / stats.total }))
       .sort((a, b) => b.rate - a.rate);
-    
-    if (sortedCategories.length > 0 && sortedCategories[0].rate > 0.6) {
-      signals.favoriteMovementCategories = sortedCategories.slice(0, 2).map((c) => c.category);
+
+    if (sortedCategories.length > 0) {
+      const topCategory = sortedCategories[0];
+      if (topCategory && topCategory.rate > 0.6) {
+        signals.favoriteMovementCategories = sortedCategories.slice(0, 2).map((c) => c.category);
+      }
     }
 
     // Find least favorite (low enjoyment rate)
@@ -183,22 +189,27 @@ export class EngagementAnalyzer {
     // Day of week analysis
     const dayCompletions: Record<string, { completed: number; total: number }> = {};
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    
+
     for (const session of sessionHistory) {
       const dayOfWeek = dayNames[new Date(session.date).getDay()];
-      if (!dayCompletions[dayOfWeek]) {
-        dayCompletions[dayOfWeek] = { completed: 0, total: 0 };
-      }
-      dayCompletions[dayOfWeek].total++;
-      if (session.completed) {
-        dayCompletions[dayOfWeek].completed++;
+      if (dayOfWeek) {
+        if (!dayCompletions[dayOfWeek]) {
+          dayCompletions[dayOfWeek] = { completed: 0, total: 0 };
+        }
+        const dayStats = dayCompletions[dayOfWeek];
+        if (dayStats) {
+          dayStats.total++;
+          if (session.completed) {
+            dayStats.completed++;
+          }
+        }
       }
     }
 
     const bestDays = Object.entries(dayCompletions)
       .filter(([_, stats]) => stats.total >= 2 && stats.completed / stats.total > 0.7)
       .map(([day]) => day);
-    
+
     if (bestDays.length > 0) {
       signals.bestDayOfWeek = bestDays;
     }

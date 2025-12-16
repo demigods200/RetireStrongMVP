@@ -40,7 +40,11 @@ export function validateTextOutput(
   const filterResult: FilterResult = filterLlmOutput(content);
 
   // Check age-aware safety rules if context provided
-  let ageAwareResult = { passed: true, failedRules: [] as string[], severity: 'low' as const };
+  let ageAwareResult: { passed: boolean; failedRules: string[]; severity: 'low' | 'medium' | 'high' | 'critical' } = {
+    passed: true,
+    failedRules: [],
+    severity: 'low'
+  };
   if (context) {
     ageAwareResult = validateAgeAwareSafety(context);
   }
@@ -78,7 +82,7 @@ export function validateTextOutput(
   }
 
   // Escalate critical issues for human review
-  const shouldEscalate = severity === 'critical' || 
+  const shouldEscalate = severity === 'critical' ||
     (severity === 'high' && filterResult.medicalAdviceDetected);
 
   return {
@@ -105,7 +109,7 @@ export function validatePlanOutput(
   // For now, plans from movement engine are trusted
   // But we still check the descriptive text if any
   const planStr = JSON.stringify(plan, null, 2);
-  
+
   // Validate any text descriptions in the plan
   return validateTextOutput(planStr, context);
 }

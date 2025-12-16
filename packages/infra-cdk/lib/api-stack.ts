@@ -5,6 +5,7 @@ import * as lambdaNodejs from "aws-cdk-lib/aws-lambda-nodejs";
 import * as cognito from "aws-cdk-lib/aws-cognito";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as s3 from "aws-cdk-lib/aws-s3";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
 export interface ApiStackProps extends cdk.StackProps {
@@ -230,6 +231,95 @@ export class ApiStack extends cdk.Stack {
       environment: commonEnvironment,
     });
 
+    // ============================================
+    // MILESTONE 3: Coach Engine Lambda Functions
+    // ============================================
+
+    const coachEnvironment = {
+      ...commonEnvironment,
+      DYNAMO_TABLE_LOGS: props.logsTable.tableName,
+      DYNAMO_TABLE_CHECKINS: props.checkinsTable.tableName,
+      // Bedrock model IDs
+      BEDROCK_CLAUDE_MODEL_ID: "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+      BEDROCK_TITAN_EMBED_MODEL_ID: "amazon.titan-embed-text-v2:0",
+    };
+
+    // Coach Chat Lambda (Milestone 3)
+    const coachChatLambda = new lambdaNodejs.NodejsFunction(this, "CoachChatFunction", {
+      functionName: `retire-strong-coach-chat-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/coach/chat.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(60), // Increased for LLM calls
+      memorySize: 1024, // Increased for LLM processing
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // Explain Plan Lambda (Milestone 3)
+    const explainPlanLambda = new lambdaNodejs.NodejsFunction(this, "ExplainPlanFunction", {
+      functionName: `retire-strong-explain-plan-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/coach/explain-plan.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(60),
+      memorySize: 1024,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // ============================================
+    // MILESTONE 4: Check-in Lambda Functions
+    // ============================================
+
+    // Create Session Check-in Lambda
+    const createSessionCheckinLambda = new lambdaNodejs.NodejsFunction(this, "CreateSessionCheckinFunction", {
+      functionName: `retire-strong-checkin-session-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/checkins/create-session-checkin.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 512,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // Create Weekly Check-in Lambda
+    const createWeeklyCheckinLambda = new lambdaNodejs.NodejsFunction(this, "CreateWeeklyCheckinFunction", {
+      functionName: `retire-strong-checkin-weekly-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/checkins/create-weekly-checkin.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 512,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // Get Check-ins Lambda
+    const getCheckinsLambda = new lambdaNodejs.NodejsFunction(this, "GetCheckinsFunction", {
+      functionName: `retire-strong-checkins-get-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/checkins/get-checkins.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 512,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // Get Adherence Summary Lambda
+    const adherenceSummaryLambda = new lambdaNodejs.NodejsFunction(this, "AdherenceSummaryFunction", {
+      functionName: `retire-strong-adherence-summary-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/checkins/adherence-summary.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 512,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
     // Grant Lambda permissions to DynamoDB tables
     const lambdas = [
       healthLambda,
@@ -245,6 +335,12 @@ export class ApiStack extends cdk.Stack {
       currentPlanLambda,
       getSessionLambda,
       completeSessionLambda,
+      coachChatLambda,
+      explainPlanLambda,
+      createSessionCheckinLambda,
+      createWeeklyCheckinLambda,
+      getCheckinsLambda,
+      adherenceSummaryLambda,
     ];
     lambdas.forEach((lambdaFn) => {
       props.usersTable.grantReadWriteData(lambdaFn);
@@ -258,6 +354,22 @@ export class ApiStack extends cdk.Stack {
     props.userPool.grant(signupLambda, "cognito-idp:AdminCreateUser", "cognito-idp:AdminSetUserPassword");
     props.userPool.grant(loginLambda, "cognito-idp:AdminInitiateAuth");
     // Verify and resend code use public Cognito APIs (no admin permissions needed)
+
+    // Grant Bedrock permissions to coach lambdas (Milestone 3)
+    const bedrockPolicy = new iam.PolicyStatement({
+      actions: [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream",
+      ],
+      resources: [
+        `arn:aws:bedrock:${this.region}:${this.account}:inference-profile/us.anthropic.claude-3-5-sonnet-20241022-v2:0`,
+        `arn:aws:bedrock:*::foundation-model/anthropic.claude-3-5-sonnet-20241022-v2:0`,
+        `arn:aws:bedrock:${this.region}::foundation-model/amazon.titan-embed-text-v2:0`,
+      ],
+    });
+
+    coachChatLambda.addToRolePolicy(bedrockPolicy);
+    explainPlanLambda.addToRolePolicy(bedrockPolicy);
 
     // API Routes
 
@@ -283,7 +395,7 @@ export class ApiStack extends cdk.Stack {
     const usersResource = this.api.root.addResource("users");
     const onboardingResource = usersResource.addResource("onboarding");
     onboardingResource.addMethod("POST", new apigateway.LambdaIntegration(onboardingLambda));
-    
+
     const meResource = usersResource.addResource("me");
     meResource.addMethod("GET", new apigateway.LambdaIntegration(profileLambda));
 
@@ -309,6 +421,35 @@ export class ApiStack extends cdk.Stack {
     sessionIdResource.addMethod("GET", new apigateway.LambdaIntegration(getSessionLambda));
     const completeSessionResource = sessionIdResource.addResource("complete");
     completeSessionResource.addMethod("POST", new apigateway.LambdaIntegration(completeSessionLambda));
+
+    // ============================================
+    // MILESTONE 3: Coach Routes
+    // ============================================
+
+    const coachResource = this.api.root.addResource("coach");
+    const chatResource = coachResource.addResource("chat");
+    chatResource.addMethod("POST", new apigateway.LambdaIntegration(coachChatLambda));
+
+    const explainResource = coachResource.addResource("explain-plan");
+    explainResource.addMethod("POST", new apigateway.LambdaIntegration(explainPlanLambda));
+
+    // ============================================
+    // MILESTONE 4: Check-in Routes
+    // ============================================
+
+    const checkinsResource = this.api.root.addResource("checkins");
+
+    const sessionCheckinResource = checkinsResource.addResource("session");
+    sessionCheckinResource.addMethod("POST", new apigateway.LambdaIntegration(createSessionCheckinLambda));
+
+    const weeklyCheckinResource = checkinsResource.addResource("weekly");
+    weeklyCheckinResource.addMethod("POST", new apigateway.LambdaIntegration(createWeeklyCheckinLambda));
+
+    // GET /checkins - list check-ins
+    checkinsResource.addMethod("GET", new apigateway.LambdaIntegration(getCheckinsLambda));
+
+    const adherenceResource = checkinsResource.addResource("adherence-summary");
+    adherenceResource.addMethod("GET", new apigateway.LambdaIntegration(adherenceSummaryLambda));
 
     // Outputs
     this.apiUrl = this.api.url;

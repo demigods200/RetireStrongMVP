@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from "uuid";
  * Supports session check-ins, weekly check-ins, and milestone check-ins.
  */
 export class CheckinService {
-  constructor(private checkinRepo: CheckinRepo) {}
+  constructor(private checkinRepo: CheckinRepo) { }
 
   /**
    * Create a session check-in after completing (or skipping) a workout
@@ -44,11 +44,11 @@ export class CheckinService {
     const timestamp = now.toISOString();
 
     const checkin: SessionCheckin = {
-      checkinId: uuidv4(),
+      checkinId: uuidv4() || '',
       checkinType: "session",
       userId: input.userId,
-      sessionId: input.sessionId,
-      date,
+      sessionId: input.sessionId || '',
+      date: date || '',
       timestamp,
       adherence: input.adherence,
       movementsCompleted: input.movementsCompleted,
@@ -100,11 +100,11 @@ export class CheckinService {
     const timestamp = now.toISOString();
 
     const checkin: WeeklyCheckin = {
-      checkinId: uuidv4(),
+      checkinId: uuidv4() || '',
       checkinType: "weekly",
       userId: input.userId,
       weekStartDate: input.weekStartDate,
-      date,
+      date: date || '',
       timestamp,
       sessionsCompletedThisWeek: input.sessionsCompletedThisWeek,
       sessionsPlannedThisWeek: input.sessionsPlannedThisWeek,
@@ -150,11 +150,11 @@ export class CheckinService {
     const timestamp = now.toISOString();
 
     const checkin: MilestoneCheckin = {
-      checkinId: uuidv4(),
+      checkinId: uuidv4() || '',
       checkinType: "milestone",
       userId: input.userId,
       milestoneType: input.milestoneType,
-      date,
+      date: date || '',
       timestamp,
       totalSessionsCompleted: input.totalSessionsCompleted,
       totalDaysActive: input.totalDaysActive,
@@ -226,8 +226,8 @@ export class CheckinService {
     const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000)
       .toISOString()
       .split("T")[0];
-    
-    return this.getAdherenceSummary(userId, startDate, endDate);
+
+    return this.getAdherenceSummary(userId, startDate || '', endDate || '');
   }
 
   /**
