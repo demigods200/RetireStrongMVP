@@ -5,6 +5,8 @@ import { Layout, Card, Button } from "@retire-strong/shared-ui";
 import { useAuthGuard } from "@/lib/auth/guards";
 import Link from "next/link";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 interface AdherenceSummary {
   periodStart: string;
   periodEnd: string;
@@ -73,14 +75,14 @@ export default function TodayPage() {
         }
 
         // Fetch current plan
-        const planRes = await fetch(`/api/plans/current?userId=${storedUserId}`);
+        const planRes = await fetch(`${API_BASE_URL}/plans/current?userId=${storedUserId}`);
         if (planRes.ok) {
           const planData = await planRes.json();
           setPlan(planData.data);
         }
 
         // Fetch adherence summary
-        const adherenceRes = await fetch(`/api/checkins/adherence-summary?userId=${storedUserId}&days=30`);
+        const adherenceRes = await fetch(`${API_BASE_URL}/checkins/adherence-summary?userId=${storedUserId}&days=30`);
         if (adherenceRes.ok) {
           const adherenceData = await adherenceRes.json();
           setAdherenceSummary(adherenceData.summary);
@@ -97,7 +99,8 @@ export default function TodayPage() {
   }, []);
 
   // Get today's session
-  const todaySession = plan?.sessions.find(s => s.status === "pending");
+  // Get today's session
+  const todaySession = plan?.sessions?.find(s => s.status === "pending");
 
   // Generate personalized greeting based on time of day
   const getGreeting = () => {
@@ -208,8 +211,8 @@ export default function TodayPage() {
           <Card
             title={insight.title}
             className={`mb-6 border-2 ${insight.type === "warning" ? "border-orange-200 bg-orange-50" :
-                insight.type === "success" ? "border-green-200 bg-green-50" :
-                  "border-blue-200 bg-blue-50"
+              insight.type === "success" ? "border-green-200 bg-green-50" :
+                "border-blue-200 bg-blue-50"
               }`}
           >
             <p className="text-lg text-gray-700 leading-relaxed">{insight.message}</p>

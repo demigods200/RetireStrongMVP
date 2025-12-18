@@ -1,8 +1,9 @@
+import { withCORS } from "../../lib/cors";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { QUIZ_QUESTIONS } from "@retire-strong/motivation-engine";
 import { QuizQuestionsResponseSchema } from "@retire-strong/shared-api";
 
-export const handler = async (
+const handlerImpl = async (
   _event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
@@ -37,3 +38,6 @@ export const handler = async (
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

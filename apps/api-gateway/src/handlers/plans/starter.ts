@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import {
   CreateStarterPlanRequestSchema,
@@ -5,7 +6,7 @@ import {
 } from "@retire-strong/shared-api";
 import { PlanRepo, PlanService, SessionRepo, UserRepo } from "@retire-strong/domain-core";
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     const body = JSON.parse(event.body || "{}");
     const input = CreateStarterPlanRequestSchema.parse(body);
@@ -81,3 +82,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

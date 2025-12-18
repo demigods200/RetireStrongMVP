@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { CheckinService, CheckinRepo } from "@retire-strong/domain-core";
 import { DropoffPredictor } from "@retire-strong/ml-hints";
@@ -12,7 +13,7 @@ import type { DropoffRiskFactors } from "@retire-strong/ml-hints";
  * - days: number (optional, default 30)
  */
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     const { userId, days: daysParam } = event.queryStringParameters || {};
 
@@ -140,3 +141,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

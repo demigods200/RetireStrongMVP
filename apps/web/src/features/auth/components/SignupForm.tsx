@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Button, Card } from "@retire-strong/shared-ui";
 import { useRouter } from "next/navigation";
+import { getApiUrl } from "@/lib/api-client";
 
 export const SignupForm: React.FC = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ export const SignupForm: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/signup", {
+      const response = await fetch(getApiUrl("/auth/signup"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

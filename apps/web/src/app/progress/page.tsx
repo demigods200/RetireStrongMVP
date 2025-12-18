@@ -5,6 +5,8 @@ import { Layout, Card, Button } from "@retire-strong/shared-ui";
 import { useAuthGuard } from "@/lib/auth/guards";
 import Link from "next/link";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 interface AdherenceSummary {
   periodStart: string;
   periodEnd: string;
@@ -46,7 +48,7 @@ export default function ProgressPage() {
           return;
         }
 
-        const adherenceRes = await fetch(`/api/checkins/adherence-summary?userId=${storedUserId}&days=30`);
+        const adherenceRes = await fetch(`${API_BASE_URL}/checkins/adherence-summary?userId=${storedUserId}&days=30`);
         if (adherenceRes.ok) {
           const adherenceData = await adherenceRes.json();
           setAdherenceSummary(adherenceData.summary);

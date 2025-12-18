@@ -2,6 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
+import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import { Construct } from "constructs";
 
 export interface WebStackProps extends cdk.StackProps {
@@ -27,9 +28,14 @@ export class WebStack extends cdk.Stack {
     });
 
     // CloudFront Distribution
+    const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, "WebOAI");
+    webBucket.grantRead(originAccessIdentity);
+
     this.distribution = new cloudfront.Distribution(this, "WebDistribution", {
       defaultBehavior: {
-        origin: new origins.S3Origin(webBucket),
+        origin: new origins.S3Origin(webBucket, {
+          originAccessIdentity: originAccessIdentity,
+        }),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD,
@@ -38,12 +44,25 @@ export class WebStack extends cdk.Stack {
       defaultRootObject: "index.html",
       errorResponses: [
         {
+          httpStatus: 403,
+          responseHttpStatus: 200,
+          responsePagePath: "/index.html",
+        },
+        {
           httpStatus: 404,
           responseHttpStatus: 200,
           responsePagePath: "/index.html",
         },
       ],
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
+    });
+
+    // Deploy site contents to S3 bucket
+    new s3deploy.BucketDeployment(this, "DeployWithInvalidation", {
+      sources: [s3deploy.Source.asset("../../apps/web/out")],
+      destinationBucket: webBucket,
+      distribution: this.distribution,
+      distributionPaths: ["/*"],
     });
 
     // Outputs

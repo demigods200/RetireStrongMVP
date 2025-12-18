@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { CheckinService, CheckinRepo } from "@retire-strong/domain-core";
 
@@ -12,7 +13,7 @@ import { CheckinService, CheckinRepo } from "@retire-strong/domain-core";
  * - limit: number (optional, default 10)
  */
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     const { userId, startDate, endDate, limit } = event.queryStringParameters || {};
 
@@ -85,3 +86,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

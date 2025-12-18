@@ -45,6 +45,27 @@ export class ApiStack extends cdk.Stack {
       },
     });
 
+    // Add Gateway Responses to include CORS headers in API Gateway error responses
+    // This handles 4xx/5xx errors from API Gateway itself
+    // Lambda responses use the CORS helper functions in apps/api-gateway/src/lib/cors.ts
+    const corsResponseParameters = {
+      "gatewayresponse.header.Access-Control-Allow-Origin": "'http://localhost:3000'",
+      "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+      "gatewayresponse.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+    };
+
+    new apigateway.GatewayResponse(this, "Default4xxResponse", {
+      restApi: this.api,
+      type: apigateway.ResponseType.DEFAULT_4XX,
+      responseHeaders: corsResponseParameters,
+    });
+
+    new apigateway.GatewayResponse(this, "Default5xxResponse", {
+      restApi: this.api,
+      type: apigateway.ResponseType.DEFAULT_5XX,
+      responseHeaders: corsResponseParameters,
+    });
+
     // Cognito Authorizer (will be created and attached when needed for protected endpoints)
     // Example usage when needed:
     // const cognitoAuthorizer = new apigateway.CognitoUserPoolsAuthorizer(this, "CognitoAuthorizer", {
@@ -53,16 +74,14 @@ export class ApiStack extends cdk.Stack {
     // });
     // Then use in addMethod: resource.addMethod("GET", integration, { authorizer: cognitoAuthorizer });
 
-    // Common Lambda configuration
+    // Common Lambda configuration - optimized for performance
     const commonBundling = {
-      minify: false,
-      sourceMap: true,
+      minify: true, // Enable minification to reduce bundle size and cold start time
+      sourceMap: false, // Disable source maps in production for smaller bundles
       target: "es2022",
       format: lambdaNodejs.OutputFormat.CJS,
-      externalModules: ["aws-sdk"],
-      // Ensure workspace dependencies are bundled
+      externalModules: ["aws-sdk", "@aws-sdk/*"], // Exclude AWS SDK (available in Lambda runtime)
       bundle: true,
-      // Use the root directory for resolving workspace packages
       projectRoot: "../../",
     };
 

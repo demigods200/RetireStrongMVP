@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button, Card } from "@retire-strong/shared-ui";
+import { getApiUrl } from "@/lib/api-client";
 
 interface SessionCheckinFormProps {
   sessionId: string;
@@ -10,11 +11,11 @@ interface SessionCheckinFormProps {
   onComplete?: () => void;
 }
 
-export function SessionCheckinForm({ 
-  sessionId, 
-  userId, 
+export function SessionCheckinForm({
+  sessionId,
+  userId,
   movementsTotal,
-  onComplete 
+  onComplete
 }: SessionCheckinFormProps) {
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -36,7 +37,7 @@ export function SessionCheckinForm({
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      const response = await fetch("/api/checkins/session", {
+      const response = await fetch(getApiUrl("/checkins/session"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -76,11 +77,10 @@ export function SessionCheckinForm({
             <button
               key={option.value}
               onClick={() => setFormData({ ...formData, adherence: option.value as any })}
-              className={`w-full text-left p-4 border-2 rounded-lg transition-all duration-200 ${
-                formData.adherence === option.value
+              className={`w-full text-left p-4 border-2 rounded-lg transition-all duration-200 ${formData.adherence === option.value
                   ? "border-primary bg-primary/5"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <span className="text-lg">{option.label}</span>
             </button>
@@ -104,9 +104,9 @@ export function SessionCheckinForm({
         </div>
       )}
 
-      <Button 
-        onClick={() => setStep(2)} 
-        size="lg" 
+      <Button
+        onClick={() => setStep(2)}
+        size="lg"
         className="w-full"
       >
         Next
@@ -130,11 +130,10 @@ export function SessionCheckinForm({
             <button
               key={option.value}
               onClick={() => setFormData({ ...formData, difficulty: option.value as any })}
-              className={`w-full text-left p-4 border-2 rounded-lg transition-all duration-200 ${
-                formData.difficulty === option.value
+              className={`w-full text-left p-4 border-2 rounded-lg transition-all duration-200 ${formData.difficulty === option.value
                   ? "border-primary bg-primary/5"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <div className="flex items-center justify-between">
                 <span className="text-lg">{option.label}</span>
@@ -194,11 +193,10 @@ export function SessionCheckinForm({
             <button
               key={option.value}
               onClick={() => setFormData({ ...formData, painLevel: option.value as any })}
-              className={`p-3 border-2 rounded-lg transition-all duration-200 ${
-                formData.painLevel === option.value
+              className={`p-3 border-2 rounded-lg transition-all duration-200 ${formData.painLevel === option.value
                   ? "border-primary bg-primary/5"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               {option.label}
             </button>
@@ -220,11 +218,10 @@ export function SessionCheckinForm({
                       : [...formData.painLocations, location];
                     setFormData({ ...formData, painLocations: newLocations });
                   }}
-                  className={`p-2 text-sm border-2 rounded-lg transition-all duration-200 ${
-                    formData.painLocations.includes(location)
+                  className={`p-2 text-sm border-2 rounded-lg transition-all duration-200 ${formData.painLocations.includes(location)
                       ? "border-orange-500 bg-orange-50"
                       : "border-gray-200 hover:border-gray-300"
-                  }`}
+                    }`}
                 >
                   {location.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase())}
                 </button>
@@ -258,7 +255,7 @@ export function SessionCheckinForm({
         <label className="block text-lg font-semibold text-gray-900 mb-3">
           Energy levels
         </label>
-        
+
         <div className="space-y-4">
           <div>
             <label className="block text-base text-gray-700 mb-2">Before session:</label>
@@ -273,11 +270,10 @@ export function SessionCheckinForm({
                 <button
                   key={option.value}
                   onClick={() => setFormData({ ...formData, energyBefore: option.value as any })}
-                  className={`flex-1 p-2 text-sm border-2 rounded-lg transition-all duration-200 ${
-                    formData.energyBefore === option.value
+                  className={`flex-1 p-2 text-sm border-2 rounded-lg transition-all duration-200 ${formData.energyBefore === option.value
                       ? "border-primary bg-primary/5"
                       : "border-gray-200 hover:border-gray-300"
-                  }`}
+                    }`}
                 >
                   {option.label}
                 </button>
@@ -298,11 +294,10 @@ export function SessionCheckinForm({
                 <button
                   key={option.value}
                   onClick={() => setFormData({ ...formData, energyAfter: option.value as any })}
-                  className={`flex-1 p-2 text-sm border-2 rounded-lg transition-all duration-200 ${
-                    formData.energyAfter === option.value
+                  className={`flex-1 p-2 text-sm border-2 rounded-lg transition-all duration-200 ${formData.energyAfter === option.value
                       ? "border-primary bg-primary/5"
                       : "border-gray-200 hover:border-gray-300"
-                  }`}
+                    }`}
                 >
                   {option.label}
                 </button>
@@ -319,22 +314,20 @@ export function SessionCheckinForm({
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => setFormData({ ...formData, enjoyed: true })}
-            className={`p-4 border-2 rounded-lg transition-all duration-200 ${
-              formData.enjoyed
+            className={`p-4 border-2 rounded-lg transition-all duration-200 ${formData.enjoyed
                 ? "border-primary bg-primary/5"
                 : "border-gray-200 hover:border-gray-300"
-            }`}
+              }`}
           >
             <span className="text-2xl mb-2 block">😊</span>
             <span className="text-base">Yes!</span>
           </button>
           <button
             onClick={() => setFormData({ ...formData, enjoyed: false })}
-            className={`p-4 border-2 rounded-lg transition-all duration-200 ${
-              !formData.enjoyed
+            className={`p-4 border-2 rounded-lg transition-all duration-200 ${!formData.enjoyed
                 ? "border-orange-500 bg-orange-50"
                 : "border-gray-200 hover:border-gray-300"
-            }`}
+              }`}
           >
             <span className="text-2xl mb-2 block">😕</span>
             <span className="text-base">Not really</span>
@@ -359,9 +352,9 @@ export function SessionCheckinForm({
         <Button onClick={() => setStep(3)} variant="outline" className="flex-1">
           Back
         </Button>
-        <Button 
-          onClick={handleSubmit} 
-          size="lg" 
+        <Button
+          onClick={handleSubmit}
+          size="lg"
           className="flex-1"
           disabled={submitting}
         >
@@ -378,9 +371,8 @@ export function SessionCheckinForm({
         {[1, 2, 3, 4].map((s) => (
           <div
             key={s}
-            className={`flex-1 h-2 rounded-full transition-all duration-200 ${
-              s <= step ? "bg-primary" : "bg-gray-200"
-            }`}
+            className={`flex-1 h-2 rounded-full transition-all duration-200 ${s <= step ? "bg-primary" : "bg-gray-200"
+              }`}
           />
         ))}
       </div>

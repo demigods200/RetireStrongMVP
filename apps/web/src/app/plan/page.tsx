@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Layout, Card, Button } from "@retire-strong/shared-ui";
 import { useAuthGuard, isAuthenticated } from "@/lib/auth/guards";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 type MovementInstance = {
   movementId: string;
   name: string;
@@ -59,7 +61,7 @@ export default function PlanPage() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/plans/current?userId=${uid}`);
+      const response = await fetch(`${API_BASE_URL}/plans/current?userId=${uid}`);
       const data = await response.json();
       if (!data.success) {
         throw new Error(data.error?.message || "Failed to load plan");
@@ -83,7 +85,7 @@ export default function PlanPage() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/plans/starter", {
+      const response = await fetch(`${API_BASE_URL}/plans/starter`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
@@ -104,7 +106,7 @@ export default function PlanPage() {
     if (!userId) return;
     setCompleting(sessionId);
     try {
-      const response = await fetch(`/api/sessions/${sessionId}/complete`, {
+      const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}/complete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

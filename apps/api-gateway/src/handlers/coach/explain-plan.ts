@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import {
   ExplainPlanRequestSchema,
@@ -15,7 +16,7 @@ import {
  * 
  * Flow: Coach Engine → Safety Brain → User
  */
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     const body = JSON.parse(event.body || "{}");
     const input = ExplainPlanRequestSchema.parse(body);
@@ -119,3 +120,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

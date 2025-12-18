@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { CheckinService, CheckinRepo } from "@retire-strong/domain-core";
 import { z } from "zod";
@@ -29,7 +30,7 @@ const weeklyCheckinSchema = z.object({
   notes: z.string().max(1000).optional(),
 });
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     const body = JSON.parse(event.body || "{}");
     const input = weeklyCheckinSchema.parse(body);
@@ -113,3 +114,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

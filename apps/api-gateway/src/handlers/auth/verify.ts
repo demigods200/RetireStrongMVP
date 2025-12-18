@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { AuthService } from "../../lib/auth";
 
@@ -6,7 +7,7 @@ interface VerifyRequest {
   code: string;
 }
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     // Parse and validate request
     const body = JSON.parse(event.body || "{}");
@@ -104,3 +105,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

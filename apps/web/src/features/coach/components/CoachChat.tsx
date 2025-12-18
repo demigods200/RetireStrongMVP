@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Card, Button } from "@retire-strong/shared-ui";
+import { getApiUrl } from "@/lib/api-client";
 
 interface Message {
   role: "user" | "assistant";
@@ -23,9 +24,9 @@ export function CoachChat({ userId }: CoachChatProps) {
 
   const sendMessage = async (e: React.FormEvent, retryMessage?: string) => {
     e.preventDefault();
-    
+
     const messageToSend = retryMessage || input;
-    
+
     if (!messageToSend.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -44,13 +45,13 @@ export function CoachChat({ userId }: CoachChatProps) {
         timestamp: userMessage.timestamp
       });
     }
-    
+
     setLastUserMessage(messageToSend);
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await fetch("/api/coach/chat", {
+      const response = await fetch(getApiUrl("/coach/chat"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -68,7 +69,7 @@ export function CoachChat({ userId }: CoachChatProps) {
       if (!response.ok || !data.success) {
         // More helpful error messages based on the error type
         let errorMessage = "I'm having trouble responding right now. Please try again.";
-        
+
         if (response.status === 500) {
           errorMessage = "I'm experiencing technical difficulties. Please try again in a moment.";
         } else if (response.status === 400) {
@@ -81,7 +82,7 @@ export function CoachChat({ userId }: CoachChatProps) {
           // Use backend error message if it's user-friendly
           errorMessage = data.error.message;
         }
-        
+
         throw new Error(errorMessage);
       }
 
@@ -100,7 +101,7 @@ export function CoachChat({ userId }: CoachChatProps) {
 
       setMessages((prev) => [...prev, assistantMessage]);
       setError(null); // Clear any previous errors
-      
+
       console.log("✅ Message added to UI:", {
         role: assistantMessage.role,
         contentLength: assistantMessage.content.length,
@@ -108,12 +109,12 @@ export function CoachChat({ userId }: CoachChatProps) {
         safetyFiltered: assistantMessage.safetyFiltered
       });
     } catch (err) {
-      const errorMessage = err instanceof Error 
-        ? err.message 
+      const errorMessage = err instanceof Error
+        ? err.message
         : "I'm having trouble connecting right now. Please try again.";
-      
+
       setError(errorMessage);
-      
+
       // Log detailed error for debugging
       console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
       console.error("Coach chat error:");
@@ -133,8 +134,8 @@ export function CoachChat({ userId }: CoachChatProps) {
 
   return (
     <div className="space-y-4">
-      <Card 
-        title="Chat with Your Coach" 
+      <Card
+        title="Chat with Your Coach"
         subtitle={`Ask questions, get personalized guidance ${messages.length > 0 ? `• ${messages.length} message${messages.length === 1 ? '' : 's'}` : ''}`}
       >
         <div className="space-y-4">
@@ -146,18 +147,17 @@ export function CoachChat({ userId }: CoachChatProps) {
                 <p className="mt-2">Ask me anything about your exercise plan, movement, or wellness journey.</p>
               </div>
             )}
-            
+
             {messages.map((msg, index) => (
               <div
                 key={index}
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-4 shadow-sm ${
-                    msg.role === "user"
+                  className={`max-w-[80%] rounded-lg p-4 shadow-sm ${msg.role === "user"
                       ? "bg-emerald-600 text-white"
                       : "bg-gray-100 text-gray-800 border border-gray-300"
-                  }`}
+                    }`}
                   style={{
                     wordBreak: "break-word",
                     overflowWrap: "break-word",

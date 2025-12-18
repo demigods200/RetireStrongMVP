@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import {
   CoachChatRequestSchema,
@@ -15,7 +16,7 @@ import {
  * 
  * Flow: User → Coach Engine → Safety Brain → User
  */
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     const body = JSON.parse(event.body || "{}");
     const input = CoachChatRequestSchema.parse(body);
@@ -95,7 +96,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     };
   } catch (error) {
     console.error("Coach chat error:", error);
-    
+
     // Handle validation errors
     if (error && typeof error === "object" && "issues" in error) {
       return {
@@ -126,3 +127,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

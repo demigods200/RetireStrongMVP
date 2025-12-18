@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card } from "@retire-strong/shared-ui";
 import { useRouter } from "next/navigation";
+import { getApiUrl } from "@/lib/api-client";
 
 export const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ export const LoginForm: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch(getApiUrl("/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

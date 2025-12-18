@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { UserService } from "@retire-strong/domain-core";
 import { UserRepo } from "@retire-strong/domain-core";
@@ -23,7 +24,7 @@ function decodeJWT(token: string): any {
   }
 }
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     // Get authorization header
     const authHeader = event.headers?.authorization || event.headers?.Authorization;
@@ -135,3 +136,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

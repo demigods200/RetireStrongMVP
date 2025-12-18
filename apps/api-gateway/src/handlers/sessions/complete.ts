@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import {
   CompleteSessionRequestSchema,
@@ -5,7 +6,7 @@ import {
 } from "@retire-strong/shared-api";
 import { PlanRepo, SessionRepo, SessionService, UserRepo } from "@retire-strong/domain-core";
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     const sessionId = event.pathParameters?.id || event.pathParameters?.sessionId;
     const body = JSON.parse(event.body || "{}");
@@ -66,3 +67,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);
