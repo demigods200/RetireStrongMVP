@@ -44,6 +44,11 @@ export const MEDICAL_ADVICE_PATTERNS: MedicalAdvicePattern[] = [
     description: 'Diagnosing cause of symptoms',
   },
   {
+    pattern: /\b(this exercise will (cure|fix|treat|heal) (your )?(pain|injury|condition))\b/i,
+    category: 'treatment',
+    description: 'Promising medical outcomes from exercise',
+  },
+  {
     pattern: /\b(you (don't|do not) need to see a doctor|no need for (a )?doctor)\b/i,
     category: 'treatment',
     description: 'Advising against medical consultation',
@@ -58,6 +63,12 @@ export const ACCEPTABLE_MEDICAL_PATTERNS: RegExp[] = [
   /\b(consult (with )?(your )?doctor|talk to (your )?doctor|see (your )?doctor)\b/i,
   /\b(before starting|check with (your )?doctor first)\b/i,
   /\b(general (wellness|fitness|exercise) guidance)\b/i,
+  // Allow discussion of exercises for pain management/relief
+  /\b(exercises? (to|that|can|may) (help|reduce|improve|manage|alleviate|relieve|soothe) (pain|discomfort|stiffness|soreness))\b/i,
+  /\b(movements? (to|that|can|may) (help|reduce|improve|manage|alleviate|relieve|soothe) (pain|discomfort|stiffness|soreness))\b/i,
+  /\b(stretches? (to|that|can|may) (help|reduce|improve|manage|alleviate|relieve|soothe) (pain|discomfort|stiffness|soreness))\b/i,
+  // Specific knee/joint support allowance
+  /\b(what exercises? can (help|support|improve) (my|the) knee)\b/i,
 ];
 
 /**
@@ -78,7 +89,7 @@ export function detectMedicalAdvice(content: string): {
   }
 
   // Check if content is acceptable medical guidance
-  const isAcceptable = ACCEPTABLE_MEDICAL_PATTERNS.some(pattern => 
+  const isAcceptable = ACCEPTABLE_MEDICAL_PATTERNS.some(pattern =>
     pattern.test(content)
   ) && detectedPatterns.length === 0;
 

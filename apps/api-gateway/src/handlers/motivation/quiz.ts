@@ -1,11 +1,9 @@
 import { withCORS } from "../../lib/cors";
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { QUIZ_QUESTIONS } from "@retire-strong/motivation-engine";
 import { QuizQuestionsResponseSchema } from "@retire-strong/shared-api";
 
-const handlerImpl = async (
-  _event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (_event) => {
   try {
     const response = QuizQuestionsResponseSchema.parse({
       success: true,

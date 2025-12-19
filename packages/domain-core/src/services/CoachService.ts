@@ -94,6 +94,11 @@ export class CoachService {
         content: msg.content,
         timestamp: msg.timestamp,
       })),
+      coachPersona: user.coachPersona ? {
+        name: user.coachPersona.name,
+        description: user.coachPersona.description,
+        tone: user.coachPersona.tone,
+      } : undefined,
     };
 
     // Get response from Coach Engine (Conversational Brain)
@@ -105,12 +110,12 @@ export class CoachService {
 
     console.log('🔵 CoachService: About to call ChatOrchestrator.chat()');
     console.log('🔵 User message:', userMessage);
-    
+
     let coachResponse;
     try {
       coachResponse = await this.chatOrchestrator.chat(chatRequest);
-    console.log('🔵 CoachService: Got response from ChatOrchestrator');
-    console.log('🔵 Response message length:', coachResponse?.message?.length || 0);
+      console.log('🔵 CoachService: Got response from ChatOrchestrator');
+      console.log('🔵 Response message length:', coachResponse?.message?.length || 0);
     } catch (error: any) {
       console.error('🔴 CoachService: ChatOrchestrator.chat() failed');
       console.error('🔴 Error:', error);

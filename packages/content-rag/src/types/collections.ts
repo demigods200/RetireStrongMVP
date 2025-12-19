@@ -7,7 +7,8 @@ export type CollectionName =
   | 'behavior_change'
   | 'longevity_and_exercise'
   | 'internal_coaching_materials'
-  | 'movement_explanations';
+  | 'movement_explanations'
+  | 'youtube_content';
 
 export interface RagDocument {
   /** Unique document ID */
@@ -58,6 +59,10 @@ export const COLLECTIONS: Record<CollectionName, { description: string; use: str
   movement_explanations: {
     description: 'Explanations of specific exercises linked to movement IDs',
     use: 'Use to explain why specific movements matter and how to do them safely',
+  },
+  youtube_content: {
+    description: 'Transcripts from curated YouTube videos about exercise and longevity',
+    use: 'Use for video-based explanations and alternative perspectives',
   },
 };
 

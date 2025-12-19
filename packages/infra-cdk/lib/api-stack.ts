@@ -271,7 +271,19 @@ export class ApiStack extends cdk.Stack {
       handler: "handler",
       timeout: cdk.Duration.seconds(60), // Increased for LLM calls
       memorySize: 1024, // Increased for LLM processing
-      bundling: commonBundling,
+      bundling: {
+        ...commonBundling,
+        commandHooks: {
+          beforeBundling(inputDir: string, outputDir: string): string[] {
+            return [
+              `mkdir -p ${outputDir}/content/seed`,
+              `cp -r ${inputDir}/content/seed/* ${outputDir}/content/seed/`
+            ];
+          },
+          beforeInstall() { return []; },
+          afterBundling() { return []; }
+        }
+      },
       environment: coachEnvironment,
     });
 

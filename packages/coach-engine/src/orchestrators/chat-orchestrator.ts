@@ -26,8 +26,8 @@ export class ChatOrchestrator {
     });
     // Using Claude 3.5 Sonnet v2 via cross-region inference profile
     // This supports ON_DEMAND throughput (direct model IDs require INFERENCE_PROFILE)
-    this.modelId = config.modelId || 
-      process.env.BEDROCK_CLAUDE_MODEL_ID || 
+    this.modelId = config.modelId ||
+      process.env.BEDROCK_CLAUDE_MODEL_ID ||
       'us.anthropic.claude-3-5-sonnet-20241022-v2:0';
   }
 
@@ -101,7 +101,7 @@ export class ChatOrchestrator {
    */
   async explainPlan(plan: unknown, context: any): Promise<CoachResponse> {
     const planStr = JSON.stringify(plan, null, 2);
-    
+
     const userMessage = `Please explain this exercise plan to me in a warm, encouraging way. 
     
     Help me understand:
@@ -153,21 +153,32 @@ export class ChatOrchestrator {
   private buildSystemPrompt(context: any, ragContext: string): string {
     let prompt = COACH_SYSTEM_PROMPT;
 
+    // Add coach persona context if available
+    if (context.coachPersona) {
+      prompt += `\n\n# Your Persona\n\n`;
+      prompt += `Your name is ${context.coachPersona.name}.\n`;
+      if (context.coachPersona.description) {
+        prompt += `Description: ${context.coachPersona.description}\n`;
+      }
+      // Add specific instruction to adopt this persona
+      prompt += `You must embody this persona in your response. Introduce yourself as ${context.coachPersona.name} if asked.`;
+    }
+
     // Add user context
     prompt += '\n\n# User Context\n\n';
-    
+
     if (context.userName) {
       prompt += `User's name: ${context.userName}\n`;
     }
-    
+
     if (context.userAge) {
       prompt += `User's age: ${context.userAge}\n`;
     }
-    
+
     if (context.limitations && context.limitations.length > 0) {
       prompt += `User's limitations: ${context.limitations.join(', ')}\n`;
     }
-    
+
     if (context.motivationProfile) {
       prompt += `Motivation profile: ${context.motivationProfile}\n`;
     }
@@ -191,7 +202,7 @@ export class ChatOrchestrator {
     try {
       console.log('🟡 Using Converse API with inference profile');
       console.log('🟡 Inference Profile ID:', this.modelId);
-      
+
       const command = new ConverseCommand({
         modelId: this.modelId, // This is the inference profile ID
         messages: messages.map(msg => ({

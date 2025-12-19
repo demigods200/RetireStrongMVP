@@ -45,6 +45,7 @@ export async function loadSeedContent(config: LoaderConfig = {}): Promise<void> 
     'longevity_and_exercise',
     'internal_coaching_materials',
     'movement_explanations',
+    'youtube_content',
   ];
 
   let totalLoaded = 0;
@@ -131,6 +132,7 @@ export function getRagStatus(): {
     longevity_and_exercise: searchEngine.getChunksByCollection('longevity_and_exercise').length,
     internal_coaching_materials: searchEngine.getChunksByCollection('internal_coaching_materials').length,
     movement_explanations: searchEngine.getChunksByCollection('movement_explanations').length,
+    youtube_content: searchEngine.getChunksByCollection('youtube_content').length,
   };
 
   return {

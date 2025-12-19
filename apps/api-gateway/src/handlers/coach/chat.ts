@@ -9,6 +9,7 @@ import {
   UserRepo,
   PlanRepo,
 } from "@retire-strong/domain-core";
+import { loadSeedContent } from "@retire-strong/content-rag";
 
 /**
  * POST /coach/chat
@@ -17,6 +18,13 @@ import {
  * Flow: User → Coach Engine → Safety Brain → User
  */
 const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
+  // Initialize RAG content (lazy load, singleton ensures only loads once)
+  try {
+    await loadSeedContent({ verbose: true });
+  } catch (error) {
+    console.warn('⚠️ RAG content load failed (non-fatal):', error);
+  }
+
   try {
     const body = JSON.parse(event.body || "{}");
     const input = CoachChatRequestSchema.parse(body);

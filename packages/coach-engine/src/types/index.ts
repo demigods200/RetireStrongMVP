@@ -23,6 +23,12 @@ export interface CoachContext {
   motivationProfile?: string;
   /** Conversation history */
   conversationHistory?: CoachMessage[];
+  /** Coach Persona */
+  coachPersona?: {
+    name: string;
+    description?: string;
+    tone?: unknown;
+  };
 }
 
 export interface CoachResponse {

@@ -59,6 +59,11 @@ export const LoginForm: React.FC = () => {
           localStorage.setItem("userId", data.data.user.userId);
         }
 
+        // Store coach persona if available (fixes issue where Navbar shows stale or no coach name)
+        if (data.data.user?.coachPersona) {
+          localStorage.setItem("coachPersona", JSON.stringify(data.data.user.coachPersona));
+        }
+
         // Check onboarding status and redirect accordingly
         const onboardingComplete = data.data.user?.onboardingComplete ?? false;
         if (!onboardingComplete) {
