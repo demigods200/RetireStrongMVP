@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card } from "@retire-strong/shared-ui";
 import { useRouter } from "next/navigation";
+import { getApiUrl } from "@/lib/api-client";
 
 export const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ export const LoginForm: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch(getApiUrl("/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -56,6 +57,11 @@ export const LoginForm: React.FC = () => {
         // Store userId if provided
         if (data.data.user?.userId) {
           localStorage.setItem("userId", data.data.user.userId);
+        }
+
+        // Store coach persona if available (fixes issue where Navbar shows stale or no coach name)
+        if (data.data.user?.coachPersona) {
+          localStorage.setItem("coachPersona", JSON.stringify(data.data.user.coachPersona));
         }
 
         // Check onboarding status and redirect accordingly

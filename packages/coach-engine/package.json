@@ -1,0 +1,21 @@
+{
+  "name": "@retire-strong/coach-engine",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.478.0",
+    "@retire-strong/content-rag": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.18.0",
+    "typescript": "^5.6.0"
+  }
+}
+

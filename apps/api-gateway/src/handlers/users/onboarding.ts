@@ -1,9 +1,10 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { OnboardingRequestSchema } from "@retire-strong/shared-api";
 import { UserService } from "@retire-strong/domain-core";
 import { UserRepo } from "@retire-strong/domain-core";
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     // Parse and validate request
     const body = JSON.parse(event.body || "{}");
@@ -97,3 +98,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

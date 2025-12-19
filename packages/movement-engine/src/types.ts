@@ -93,6 +93,31 @@ export interface SessionCompletionInput {
   feedback?: SessionFeedback;
   library: MovementLibrary;
   profile: EngineUserProfile;
+  adherenceSummary?: AdherenceSummary; // Optional: for smarter personalization
+}
+
+export interface AdherenceSummary {
+  userId: string;
+  periodStart: string;
+  periodEnd: string;
+  sessionsCompleted: number;
+  sessionsPlanned: number;
+  adherenceRate: number;
+  averageDifficulty: number;
+  trendingEasier: boolean;
+  averagePainLevel: number;
+  painIncreasing: boolean;
+  frequentPainLocations: string[];
+  averageEnergyBefore: number;
+  averageEnergyAfter: number;
+  frequentModifications: Array<{
+    movementId: string;
+    modificationType: string;
+    count: number;
+  }>;
+  recentSkipStreak: number;
+  motivationTrend: "increasing" | "stable" | "decreasing";
+  riskScore: number;
 }
 
 export interface SafetyCheckResult {

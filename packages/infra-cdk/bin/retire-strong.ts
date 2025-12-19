@@ -10,7 +10,7 @@ const app = new cdk.App();
 
 // Get stage from context or environment variable
 const stage = app.node.tryGetContext("stage") || process.env.RETIRE_STRONG_STAGE || "dev";
-const region = process.env.AWS_REGION || "us-east-1";
+const region = process.env.AWS_REGION || "us-east-2";
 const account = process.env.CDK_DEFAULT_ACCOUNT;
 
 if (!account) {

@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { LoginRequestSchema } from "@retire-strong/shared-api";
 import { AuthService } from "../../lib/auth";
@@ -25,7 +26,7 @@ function decodeJWT(token: string): any {
   }
 }
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     // Parse and validate request
     const body = JSON.parse(event.body || "{}");
@@ -37,7 +38,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     const usersTable = process.env.USERS_TABLE_NAME || process.env.DYNAMO_TABLE_USERS || "";
     // AWS_REGION is automatically set by Lambda runtime
     const region = process.env.AWS_REGION || "us-east-2";
-    
+
     // Note: usersTable is optional for login (we can decode JWT without DB lookup)
     // But if provided, we'll use it to get onboarding status
 
@@ -49,12 +50,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     // Decode JWT ID token to get userId (sub claim)
     let userId: string | null = null;
     let onboardingComplete = false;
-    
+    let user: any = null;
+
     if (authResult.idToken) {
       const decodedToken = decodeJWT(authResult.idToken);
       if (decodedToken && decodedToken.sub) {
         userId = decodedToken.sub;
-        
+
         // Fetch user from DynamoDB to get onboarding status
         try {
           if (!userId) {
@@ -62,8 +64,8 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
           }
           const userRepo = new UserRepo(usersTable, region);
           const userService = new UserService(userRepo);
-          const user = await userService.getUserById(userId);
-          
+          user = await userService.getUserById(userId);
+
           if (user) {
             onboardingComplete = user.onboardingComplete || false;
           }
@@ -89,7 +91,10 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
           user: {
             userId: userId,
             email: validated.email,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
             onboardingComplete: onboardingComplete,
+            coachPersona: user?.coachPersona,
           },
         },
       }),
@@ -148,3 +153,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     };
   }
 };
+
+
+export const handler = withCORS(handlerImpl);

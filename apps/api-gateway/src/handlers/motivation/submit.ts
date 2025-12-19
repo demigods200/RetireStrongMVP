@@ -1,3 +1,4 @@
+import { withCORS } from "../../lib/cors";
 import type { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { calculateMotivationProfile, pickPersona } from "@retire-strong/motivation-engine";
 import { QuizSubmissionSchema, QuizResponseSchema } from "@retire-strong/shared-api";
@@ -5,7 +6,7 @@ import { UserService } from "@retire-strong/domain-core";
 import { UserRepo } from "@retire-strong/domain-core";
 import { ZodError } from "zod";
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+const handlerImpl: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     if (!event.body) {
       return {
@@ -59,7 +60,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     }
     // Use AWS_REGION from Lambda runtime (automatically provided) or fall back to default
     // Note: AWS_REGION is automatically set by Lambda runtime based on deployment region
-    const region = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1";
+    const region = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-2";
     console.log("Initializing services with table:", usersTable, "region:", region);
     console.log("Environment check - AWS_REGION:", process.env.AWS_REGION, "AWS_DEFAULT_REGION:", process.env.AWS_DEFAULT_REGION);
     
@@ -260,3 +261,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   }
 };
 
+
+
+export const handler = withCORS(handlerImpl);

@@ -1,0 +1,22 @@
+{
+  "name": "@retire-strong/ml-hints",
+  "version": "1.0.0",
+  "description": "ML hints for personalization (optional, non-safety-critical)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^9.0.0",
+    "typescript": "^5.3.3"
+  }
+}
+

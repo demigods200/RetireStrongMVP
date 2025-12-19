@@ -37,7 +37,7 @@ export default function Home() {
               Welcome Back!
             </h1>
             <p className="text-xl sm:text-2xl text-gray-600 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
-              Ready to continue your wellness journey?
+              Ready to build on yesterday's progress?
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/today">
@@ -48,22 +48,22 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 auto-rows-fr">
             <div className="flex">
-              <Card title="Today" subtitle="Your daily session" className="w-full">
+              <Card title="Today" subtitle="Your daily movement" className="w-full">
                 <p className="text-lg sm:text-xl text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                  Complete your exercises and check-in for today.
+                  Today's exercises are ready and waiting for you.
                 </p>
                 <div className="mt-auto">
                   <Link href="/today">
-                    <Button className="w-full">Start Session</Button>
+                    <Button className="w-full">Start Today's Session</Button>
                   </Link>
                 </div>
               </Card>
             </div>
 
             <div className="flex">
-              <Card title="Your Plan" subtitle="Weekly overview" className="w-full">
+              <Card title="Your Plan" subtitle="This week's focus" className="w-full">
                 <p className="text-lg sm:text-xl text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                  See your exercise plan for this week.
+                  Review and adjust your personalized movement plan.
                 </p>
                 <div className="mt-auto">
                   <Link href="/plan">
@@ -74,9 +74,9 @@ export default function Home() {
             </div>
 
             <div className="flex">
-              <Card title="Progress" subtitle="Track your journey" className="w-full">
+              <Card title="Progress" subtitle="Your gains" className="w-full">
                 <p className="text-lg sm:text-xl text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                  Monitor your improvements and achievements.
+                  See how your strength, balance, and consistency are building.
                 </p>
                 <div className="mt-auto">
                   <Link href="/progress">
@@ -90,16 +90,16 @@ export default function Home() {
           <Card title="Quick Actions" subtitle="Common tasks">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <Link href="/coach" className="block p-5 sm:p-6 border-2 border-gray-200 rounded-xl hover:border-primary hover:shadow-soft transition-all duration-200 bg-gray-50 hover:bg-white">
-                <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900">Chat with Coach</h3>
-                <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Get guidance and motivation</p>
+                <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900">Talk with Your Coach</h3>
+                <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Get personalized guidance and support</p>
               </Link>
               <Link href="/library" className="block p-5 sm:p-6 border-2 border-gray-200 rounded-xl hover:border-primary hover:shadow-soft transition-all duration-200 bg-gray-50 hover:bg-white">
-                <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900">Content Library</h3>
-                <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Browse exercises and articles</p>
+                <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900">Movement Library</h3>
+                <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Learn about exercises and their benefits</p>
               </Link>
               <Link href="/onboarding" className="block p-5 sm:p-6 border-2 border-gray-200 rounded-xl hover:border-primary hover:shadow-soft transition-all duration-200 bg-gray-50 hover:bg-white">
-                <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900">Complete Onboarding</h3>
-                <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Set up your profile</p>
+                <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900">Get Started</h3>
+                <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Tell us about your goals and abilities</p>
               </Link>
               <Link href="/account" className="block p-5 sm:p-6 border-2 border-gray-200 rounded-xl hover:border-primary hover:shadow-soft transition-all duration-200 bg-gray-50 hover:bg-white">
                 <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900">Account Settings</h3>
@@ -125,7 +125,7 @@ export default function Home() {
             Welcome to Retire Strong
           </h1>
           <p className="text-xl sm:text-2xl text-gray-600 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed">
-            Your AI-powered wellness platform for adults 50+
+            Build strength, balance, and confidence for the life you want to live
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/signup">
@@ -136,31 +136,31 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <Card title="What is Retire Strong?" subtitle="Your personalized wellness journey">
+        <Card title="What is Retire Strong?" subtitle="Movement for independence">
           <div className="space-y-5 sm:space-y-6 text-lg sm:text-xl text-gray-700 leading-relaxed">
             <p>
-              Retire Strong helps you maintain your vitality and independence through personalized exercise plans, 
-              daily check-ins, and AI-powered coaching tailored to your unique needs.
+              Retire Strong helps you build and maintain the strength, balance, and confidence you need for the activities that matter most—
+              whether that's climbing stairs easily, playing with grandchildren, traveling, or simply feeling capable in your daily life.
             </p>
             <p>
-              Whether you're looking to improve strength, flexibility, balance, or overall wellness, 
-              we're here to support your journey every step of the way.
+              Through personalized exercise plans and supportive coaching, we help you stay independent and active on your own terms.
+              No gimmicks, no miracle claims—just evidence-based movement tailored to your goals and abilities.
             </p>
           </div>
         </Card>
-        <Card title="Features" subtitle="What you'll get">
+        <Card title="How We Support You" subtitle="Your path to sustained vitality">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mt-2">
             <div className="p-5 sm:p-6 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white hover:shadow-soft transition-all duration-200">
-              <h3 className="text-xl sm:text-2xl font-semibold mb-3 text-gray-900">Daily Sessions</h3>
-              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Personalized exercises tailored to your goals and abilities</p>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 text-gray-900">Personalized Movement Plans</h3>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Exercises designed for your goals, abilities, and daily life—from climbing stairs to carrying groceries</p>
             </div>
             <div className="p-5 sm:p-6 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white hover:shadow-soft transition-all duration-200">
-              <h3 className="text-xl sm:text-2xl font-semibold mb-3 text-gray-900">AI Coach</h3>
-              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Get guidance and motivation from your personal wellness coach</p>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 text-gray-900">Supportive Coaching</h3>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Evidence-based guidance that respects your experience and celebrates your progress</p>
             </div>
             <div className="p-5 sm:p-6 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white hover:shadow-soft transition-all duration-200">
-              <h3 className="text-xl sm:text-2xl font-semibold mb-3 text-gray-900">Progress Tracking</h3>
-              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Monitor your improvements and celebrate your achievements</p>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 text-gray-900">Adaptive Progression</h3>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Your plan adjusts based on how you're feeling and what you're achieving</p>
             </div>
           </div>
         </Card>

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthGuard } from "@/lib/auth/guards";
+import { getApiUrl } from "@/lib/api-client";
 
 interface CoachPersona {
   name?: string;
@@ -42,7 +43,7 @@ export default function AccountPage() {
 
       try {
         // Fetch user profile from API
-        const response = await fetch("/api/users/me", {
+        const response = await fetch(getApiUrl("/users/me"), {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

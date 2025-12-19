@@ -5,7 +5,7 @@ const envSchema = z.object({
   RETIRE_STRONG_STAGE: z.enum(["dev", "staging", "prod"]).default("dev"),
 
   // AWS
-  AWS_REGION: z.string().default("us-east-1"),
+  AWS_REGION: z.string().default("us-east-2"),
   CDK_DEFAULT_ACCOUNT: z.string().optional(),
 
   // DynamoDB Tables
@@ -27,7 +27,7 @@ const envSchema = z.object({
 
   // Bedrock
   BEDROCK_MODEL_ID: z.string().default("anthropic.claude-3-5-sonnet-20241022-v2:0"),
-  BEDROCK_REGION: z.string().default("us-east-1"),
+  BEDROCK_REGION: z.string().default("us-east-2"),
 
   // Vectors
   VECTORS_INDEX_NAME: z.string().optional(),

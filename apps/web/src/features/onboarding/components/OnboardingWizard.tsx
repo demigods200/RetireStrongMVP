@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@retire-strong/shared-ui";
 import { useRouter } from "next/navigation";
 import type { OnboardingData } from "@retire-strong/shared-api";
+import { getApiUrl } from "@/lib/api-client";
 
 interface OnboardingWizardProps {
   userId: string;
@@ -72,7 +73,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ userId }) =>
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/users/onboarding", {
+      const response = await fetch(getApiUrl("/users/onboarding"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -322,11 +323,10 @@ const HealthContextStep: React.FC<{
                 key={level.value}
                 type="button"
                 onClick={() => onChange({ ...data, activityLevel: level.value as any })}
-                className={`w-full px-6 py-4.5 rounded-xl border-2 text-left transition-all duration-200 relative ${
-                  isSelected
+                className={`w-full px-6 py-4.5 rounded-xl border-2 text-left transition-all duration-200 relative ${isSelected
                     ? "border-primary bg-white shadow-soft"
                     : "border-gray-300 bg-white hover:border-gray-400 hover:shadow-soft"
-                }`}
+                  }`}
               >
                 {isSelected && (
                   <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-xl" />
@@ -400,11 +400,10 @@ const GoalsStep: React.FC<{
                 key={goal}
                 type="button"
                 onClick={() => toggleGoal(goal)}
-                className={`w-full px-6 py-4.5 rounded-xl border-2 text-left transition-all duration-200 relative ${
-                  isSelected
+                className={`w-full px-6 py-4.5 rounded-xl border-2 text-left transition-all duration-200 relative ${isSelected
                     ? "border-primary bg-white shadow-soft"
                     : "border-gray-300 bg-white hover:border-gray-400 hover:shadow-soft"
-                }`}
+                  }`}
               >
                 {isSelected && (
                   <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-xl" />
@@ -463,11 +462,10 @@ const ScheduleStep: React.FC<{
                 key={day.value}
                 type="button"
                 onClick={() => toggleDay(day.value)}
-                className={`px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl border-2 font-semibold transition-all duration-200 text-base sm:text-lg min-h-[44px] ${
-                  isSelected
+                className={`px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl border-2 font-semibold transition-all duration-200 text-base sm:text-lg min-h-[44px] ${isSelected
                     ? "border-primary bg-primary text-white shadow-soft"
                     : "border-gray-300 bg-white text-gray-700 hover:border-primary hover:bg-primary/5"
-                }`}
+                  }`}
               >
                 {day.label}
               </button>

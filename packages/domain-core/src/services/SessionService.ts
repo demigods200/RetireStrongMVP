@@ -3,13 +3,15 @@ import type { CompleteSessionInput, MovementSession } from "../models/Plan.js";
 import { PlanRepo } from "../repos/PlanRepo.js";
 import { SessionRepo } from "../repos/SessionRepo.js";
 import { UserRepo } from "../repos/UserRepo.js";
+import type { CheckinRepo } from "../repos/CheckinRepo.js";
 
 export class SessionService {
   constructor(
     private readonly planRepo: PlanRepo,
     private readonly sessionRepo: SessionRepo,
-    private readonly userRepo: UserRepo
-  ) {}
+    private readonly userRepo: UserRepo,
+    private readonly checkinRepo?: CheckinRepo // Optional for enhanced personalization
+  ) { }
 
   async getSession(sessionId: string, userId: string): Promise<MovementSession | null> {
     return this.sessionRepo.getSession(sessionId, userId);
@@ -31,6 +33,25 @@ export class SessionService {
       throw new Error("Onboarding data required to update plan");
     }
 
+    // Fetch adherence summary for personalized adjustments (if checkinRepo available)
+    let adherenceSummary;
+    if (this.checkinRepo) {
+      try {
+        const endDate = new Date().toISOString().split("T")[0];
+        const startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .split("T")[0];
+        adherenceSummary = await this.checkinRepo.calculateAdherenceSummary(
+          userId,
+          startDate || '',
+          endDate || ''
+        );
+      } catch (error) {
+        // If adherence calculation fails, continue without it
+        console.warn("Failed to calculate adherence summary:", error);
+      }
+    }
+
     const updatedPlan = updatePlanOnCompletion({
       plan,
       sessionId: input.sessionId,
@@ -46,6 +67,7 @@ export class SessionService {
         equipmentAvailable: user.onboardingData.healthContext.equipmentAvailable,
         schedulePreferences: user.onboardingData.schedulePreferences,
       },
+      adherenceSummary, // Enhanced personalization with check-in history
     });
 
     // Persist the completed session and any downstream adjustments

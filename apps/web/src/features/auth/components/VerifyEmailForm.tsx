@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card } from "@retire-strong/shared-ui";
 import { useRouter, useSearchParams } from "next/navigation";
+import { getApiUrl } from "@/lib/api-client";
 
 export const VerifyEmailForm: React.FC = () => {
   const router = useRouter();
@@ -38,7 +39,7 @@ export const VerifyEmailForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch("/api/auth/verify", {
+      const response = await fetch(getApiUrl("/auth/verify"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code }),
@@ -74,7 +75,7 @@ export const VerifyEmailForm: React.FC = () => {
     setResending(true);
 
     try {
-      const response = await fetch("/api/auth/resend-code", {
+      const response = await fetch(getApiUrl("/auth/resend-code"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

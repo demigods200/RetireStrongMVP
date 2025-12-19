@@ -118,8 +118,72 @@ export const buildStarterPlan = (input: BuildPlanInput): MovementPlan => {
   };
 };
 
+/**
+ * Determine if we should progress/regress based on adherence history
+ * Returns: "progress", "regress", "maintain", or null
+ */
+const determineAdjustmentDirection = (
+  movementId: string,
+  currentDifficulty: string | undefined,
+  adherenceSummary?: import("./types.js").AdherenceSummary
+): "progress" | "regress" | "maintain" | null => {
+  // If no adherence data, use immediate feedback only
+  if (!adherenceSummary) {
+    if (currentDifficulty === "too_easy") return "progress";
+    if (currentDifficulty === "too_hard") return "regress";
+    return null;
+  }
+
+  // Check if this movement frequently requires modifications
+  const frequentMod = adherenceSummary.frequentModifications.find(
+    (m) => m.movementId === movementId
+  );
+  
+  // Safety-first: Regress if pain is increasing or if this movement needs frequent regressions
+  if (adherenceSummary.painIncreasing || adherenceSummary.averagePainLevel > 1.5) {
+    return "regress";
+  }
+  
+  if (frequentMod && frequentMod.modificationType === "regression" && frequentMod.count >= 2) {
+    return "regress";
+  }
+
+  // Consider progression if:
+  // 1. Trending easier AND adherence is good AND current feedback is "too_easy"
+  // 2. OR long-term average difficulty is low AND adherence is high
+  if (
+    (adherenceSummary.trendingEasier && 
+     adherenceSummary.adherenceRate > 0.7 && 
+     currentDifficulty === "too_easy") ||
+    (adherenceSummary.averageDifficulty < 2.5 && 
+     adherenceSummary.adherenceRate > 0.8)
+  ) {
+    return "progress";
+  }
+
+  // Consider regression if:
+  // 1. Current feedback is "too_hard"
+  // 2. OR average difficulty is high AND adherence is suffering
+  if (
+    currentDifficulty === "too_hard" ||
+    (adherenceSummary.averageDifficulty > 3.5 && adherenceSummary.adherenceRate < 0.6)
+  ) {
+    return "regress";
+  }
+
+  // Check drop-off risk - if high, regress to maintain engagement
+  if (adherenceSummary.riskScore > 0.6) {
+    return "regress";
+  }
+
+  // Maintain current level
+  return "maintain";
+};
+
 export const updatePlanOnCompletion = (input: SessionCompletionInput): MovementPlan => {
-  const { plan, sessionId, feedback, library, profile } = input;
+  const { plan, sessionId, feedback, library, profile, adherenceSummary } = input;
+  
+  // Mark the session as completed
   const updatedSessions: MovementSession[] = plan.sessions.map((session): MovementSession => {
     if (session.sessionId !== sessionId) return session;
     return {
@@ -130,14 +194,26 @@ export const updatePlanOnCompletion = (input: SessionCompletionInput): MovementP
     };
   });
 
-  if (feedback?.difficulty && feedback.difficulty !== "just_right") {
+  // Determine if we should adjust future sessions
+  const shouldAdjust = feedback?.difficulty && feedback.difficulty !== "just_right";
+
+  if (shouldAdjust || adherenceSummary) {
     for (const session of updatedSessions) {
-      if (session.status === "completed") continue;
+      if (session.status === "completed") continue; // Don't modify completed sessions
+      
       session.movements = session.movements.map((movement) => {
         const movementDef = library.byId[movement.movementId];
         if (!movementDef) return movement;
 
-        if (feedback.difficulty === "too_hard" && movementDef.regressions.length > 0) {
+        // Determine adjustment direction using both immediate feedback and history
+        const direction = determineAdjustmentDirection(
+          movement.movementId,
+          feedback?.difficulty,
+          adherenceSummary
+        );
+
+        // Apply regression
+        if (direction === "regress" && movementDef.regressions.length > 0) {
           const replacementId = movementDef.regressions.find((id) => {
             const candidate = library.byId[id];
             if (!candidate) return false;
@@ -152,13 +228,19 @@ export const updatePlanOnCompletion = (input: SessionCompletionInput): MovementP
                 name: replacement.name,
                 description: replacement.description,
                 prescription: replacement.time,
+                cautions: [...(movement.cautions ?? []), "Adjusted for safety and comfort"],
               };
             }
           }
         }
 
-        if (feedback.difficulty === "too_easy" && movementDef.progressions.length > 0) {
-          const replacementId = movementDef.progressions.find((id) => library.byId[id]);
+        // Apply progression
+        if (direction === "progress" && movementDef.progressions.length > 0) {
+          const replacementId = movementDef.progressions.find((id) => {
+            const candidate = library.byId[id];
+            if (!candidate) return false;
+            return checkMovementSafety(candidate, profile).safe;
+          });
           if (replacementId) {
             const replacement = library.byId[replacementId];
             if (replacement) {
@@ -168,6 +250,7 @@ export const updatePlanOnCompletion = (input: SessionCompletionInput): MovementP
                 name: replacement.name,
                 description: replacement.description,
                 prescription: replacement.time,
+                emphasis: [...(movement.emphasis ?? []), "Progressed for challenge"],
               };
             }
           }

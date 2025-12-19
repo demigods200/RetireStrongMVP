@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@retire-strong/shared-ui";
 import { useRouter } from "next/navigation";
+import { getApiUrl } from "@/lib/api-client";
 
 interface QuizQuestion {
   id: string;
@@ -42,7 +43,7 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
 
   const fetchQuestions = async () => {
     try {
-      const response = await fetch("/api/motivation/quiz");
+      const response = await fetch(getApiUrl("/motivation/quiz"));
       const data = await response.json();
       if (data.success) {
         setQuestions(data.data.questions);
@@ -121,7 +122,7 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
         answers: answerArray,
       });
 
-      const response = await fetch("/api/motivation/submit", {
+      const response = await fetch(getApiUrl("/motivation/submit"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -147,17 +148,17 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
 
       // Log the full data for debugging
       console.log("Quiz submission response data:", JSON.stringify(data, null, 2));
-      
+
       if (!response.ok || !data.success) {
         // Extract error information
-        const errorMessage = 
-          data.error?.message || 
-          data.error?.details || 
+        const errorMessage =
+          data.error?.message ||
+          data.error?.details ||
           (typeof data.error === 'string' ? data.error : null) ||
           data.message ||
           `HTTP ${response.status}: ${response.statusText}` ||
           "Failed to submit quiz";
-        
+
         // Log comprehensive error details to console
         console.error("=".repeat(60));
         console.error("❌ QUIZ SUBMISSION ERROR");
@@ -173,7 +174,7 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
           console.error("Stack Trace:", data.error.stack);
         }
         console.error("=".repeat(60));
-        
+
         // Set error state for UI display
         setError({
           message: errorMessage,
@@ -203,7 +204,7 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
       }
       console.error("Full Error:", error);
       console.error("=".repeat(60));
-      
+
       setError({
         message: error instanceof Error ? error.message : "An unexpected error occurred",
         details: error,
@@ -238,7 +239,7 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
   if (!currentQuestion) {
     return null;
   }
-  
+
   const currentAnswer = answers[currentQuestion.id];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
   const canContinue = currentAnswer !== undefined;
@@ -279,7 +280,7 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
                   {showErrorDetails ? "▼ Hide" : "▶ Show"} Details
                 </button>
               </div>
-              
+
               {showErrorDetails && (
                 <div className="mt-5 pt-5 border-t border-red-200">
                   <div className="space-y-4">
@@ -287,8 +288,8 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
                       <div>
                         <p className="text-sm sm:text-base font-semibold text-red-900 mb-2">Error Details:</p>
                         <pre className="bg-red-100 p-4 rounded-xl text-xs sm:text-sm overflow-auto max-h-64 text-red-800">
-                          {typeof error.details === 'string' 
-                            ? error.details 
+                          {typeof error.details === 'string'
+                            ? error.details
                             : JSON.stringify(error.details, null, 2)}
                         </pre>
                       </div>
@@ -354,11 +355,10 @@ export const MotivationQuiz: React.FC<MotivationQuizProps> = ({ userId }) => {
                     key={option.value}
                     type="button"
                     onClick={() => handleAnswer(option.value)}
-                    className={`w-full px-6 py-4.5 rounded-xl border-2 text-left transition-all duration-200 relative ${
-                      isSelected
+                    className={`w-full px-6 py-4.5 rounded-xl border-2 text-left transition-all duration-200 relative ${isSelected
                         ? "border-primary bg-white shadow-soft"
                         : "border-gray-300 bg-white hover:border-gray-400 hover:shadow-soft"
-                    }`}
+                      }`}
                   >
                     {isSelected && (
                       <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-xl" />
