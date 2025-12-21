@@ -73,8 +73,9 @@ async function main() {
     // Process a subset for MVP safety/speed
     const videosToProcess = videos.slice(0, 5);
 
-    for (const video of videosToProcess) {
-        console.log(`\n▶️ Processing: ${video.title} (${video.id})`);
+    for (let i = 0; i < videosToProcess.length; i++) {
+        const video = videosToProcess[i];
+        console.log(`\n▶️ [${i + 1}/${videosToProcess.length}] Processing: ${video.title} (${video.id})`);
 
         try {
             const transcripts = await YoutubeTranscript.fetchTranscript(video.id);
