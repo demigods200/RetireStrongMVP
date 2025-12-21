@@ -32,6 +32,10 @@ export interface RagDocument {
 export interface RagChunk extends RagDocument {
   /** Embedding vector (when using vector search) */
   embedding?: number[];
+  /** Optional start timestamp (seconds) for video/audio chunks */
+  timestampStart?: number;
+  /** Optional end timestamp (seconds) for video/audio chunks */
+  timestampEnd?: number;
   /** Chunk index within document */
   chunkIndex?: number;
 }

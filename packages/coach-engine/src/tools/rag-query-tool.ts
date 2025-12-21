@@ -66,7 +66,7 @@ export async function queryMovementExplanations(
 ): Promise<RagQueryResult> {
   const searchEngine = getRagSearchEngine();
 
-  const chunks = searchEngine.getChunksByMovementIds(movementIds);
+  const chunks = await searchEngine.getChunksByMovementIds(movementIds);
 
   const results = chunks.map(chunk => ({
     content: chunk.content,

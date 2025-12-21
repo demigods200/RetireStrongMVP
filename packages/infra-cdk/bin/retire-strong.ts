@@ -5,6 +5,7 @@ import { AuthStack } from "../lib/auth-stack";
 import { DataStack } from "../lib/data-stack";
 import { ApiStack } from "../lib/api-stack";
 import { WebStack } from "../lib/web-stack";
+import { RagStack } from "../lib/rag-stack";
 
 const app = new cdk.App();
 
@@ -37,6 +38,13 @@ const dataStack = new DataStack(app, `RetireStrong-Data-${stage}`, {
   description: `Retire Strong Data Stack (${stage})`,
 });
 
+// RAG Stack (OpenSearch Serverless)
+const ragStack = new RagStack(app, `RetireStrong-Rag-${stage}`, {
+  env,
+  environment: stage,
+  description: `Retire Strong RAG Stack (${stage})`,
+});
+
 // API Stack (API Gateway, Lambda)
 const apiStack = new ApiStack(app, `RetireStrong-Api-${stage}`, {
   env,
@@ -48,6 +56,7 @@ const apiStack = new ApiStack(app, `RetireStrong-Api-${stage}`, {
   checkinsTable: dataStack.checkinsTable,
   logsTable: dataStack.logsTable,
   contentBucket: dataStack.contentBucket,
+  ragCollectionEndpoint: ragStack.collectionEndpoint,
   description: `Retire Strong API Stack (${stage})`,
 });
 
@@ -58,6 +67,8 @@ const webStack = new WebStack(app, `RetireStrong-Web-${stage}`, {
   apiUrl: apiStack.apiUrl,
   description: `Retire Strong Web Stack (${stage})`,
 });
+
+
 
 // Add stack dependencies
 apiStack.addDependency(authStack);

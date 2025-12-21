@@ -1,12 +1,5 @@
-/**
- * Content loader for RAG system
- * Loads seed content from JSON files and indexes them for search
- */
-
-import { readFileSync, existsSync } from 'fs';
-import { join } from 'path';
 import { getRagSearchEngine } from '../query/search';
-import type { RagChunk, CollectionName } from '../types/collections';
+import type { CollectionName } from '../types/collections';
 
 export interface LoaderConfig {
   /** Path to seed content directory */
@@ -17,102 +10,24 @@ export interface LoaderConfig {
 
 /**
  * Load all seed content into the RAG search engine
+ * @deprecated For AWS RAG, content is pre-loaded into OpenSearch via scripts/deploy-rag-content.ts
+ * This function now just ensures the SearchEngine is initialized.
  */
 export async function loadSeedContent(config: LoaderConfig = {}): Promise<void> {
-  const {
-    contentPath = join(process.cwd(), 'content', 'seed'),
-    verbose = true,
-  } = config;
-
-  const searchEngine = getRagSearchEngine();
-
-  // Check if search engine already has content
-  const currentCount = searchEngine.getChunkCount();
-  if (currentCount > 0) {
-    if (verbose) {
-      console.log(`📚 RAG already loaded with ${currentCount} chunks, skipping reload`);
-    }
-    return;
-  }
+  const { verbose = true } = config;
 
   if (verbose) {
-    console.log('📚 Loading RAG seed content...');
-  }
-
-  const collections: CollectionName[] = [
-    'clinical_guidelines',
-    'behavior_change',
-    'longevity_and_exercise',
-    'internal_coaching_materials',
-    'movement_explanations',
-    'youtube_content',
-  ];
-
-  let totalLoaded = 0;
-  const chunks: RagChunk[] = [];
-
-  for (const collection of collections) {
-    const filePath = join(contentPath, `${collection}.json`);
-
-    if (!existsSync(filePath)) {
-      if (verbose) {
-        console.log(`⚠️  Skipping ${collection} - file not found: ${filePath}`);
-      }
-      continue;
-    }
-
-    try {
-      const fileContent = readFileSync(filePath, 'utf-8');
-      const collectionChunks: RagChunk[] = JSON.parse(fileContent);
-
-      chunks.push(...collectionChunks);
-      totalLoaded += collectionChunks.length;
-
-      if (verbose) {
-        console.log(`  ✓ ${collection}: ${collectionChunks.length} chunks`);
-      }
-    } catch (error: any) {
-      console.error(`  ✗ Error loading ${collection}:`, error.message);
+    if (process.env.OPENSEARCH_ENDPOINT) {
+      console.log('🔗 RAG System using AWS OpenSearch Serverless.');
+      console.log(`   Endpoint: ${process.env.OPENSEARCH_ENDPOINT}`);
+    } else {
+      console.warn('⚠️  No OPENSEARCH_ENDPOINT found. RAG functionality will be disabled.');
+      console.warn('   Run scripts/deploy-rag-content.ts to hydrate the database.');
     }
   }
 
-  if (chunks.length === 0) {
-    console.warn('⚠️  No RAG content loaded! Coach will respond without grounded context.');
-    return;
-  }
-
-  // Filter out chunks without embeddings (skip generating at startup)
-  const chunksWithEmbeddings = chunks.filter(c => c.embedding && c.embedding.length > 0);
-  const chunksWithoutEmbeddings = chunks.length - chunksWithEmbeddings.length;
-
-  if (chunksWithoutEmbeddings > 0 && verbose) {
-    console.log(`⚠️  Skipping ${chunksWithoutEmbeddings} chunks without pre-computed embeddings`);
-  }
-
-  if (chunksWithEmbeddings.length === 0) {
-    console.warn('⚠️  No chunks with embeddings! Run scripts/generate-rag-embeddings.ts first.');
-    return;
-  }
-
-  // Index chunks (no embedding generation needed, they're pre-computed)
-  if (verbose) {
-    console.log(`🔄 Indexing ${chunksWithEmbeddings.length} chunks with pre-computed embeddings...`);
-  }
-
-  try {
-    // Load chunks directly without generating embeddings
-    for (const chunk of chunksWithEmbeddings) {
-      searchEngine.chunks.push(chunk);
-    }
-
-    if (verbose) {
-      console.log(`✅ RAG loaded successfully: ${chunksWithEmbeddings.length} chunks indexed`);
-      console.log(`   Collections: ${collections.join(', ')}`);
-    }
-  } catch (error: any) {
-    console.error('❌ Failed to index RAG content:', error.message);
-    throw error;
-  }
+  // Ensure engine instance is created
+  getRagSearchEngine();
 }
 
 /**
@@ -124,21 +39,20 @@ export function getRagStatus(): {
   collections: Record<CollectionName, number>;
 } {
   const searchEngine = getRagSearchEngine();
-  const chunkCount = searchEngine.getChunkCount();
-
-  const collections: Record<CollectionName, number> = {
-    clinical_guidelines: searchEngine.getChunksByCollection('clinical_guidelines').length,
-    behavior_change: searchEngine.getChunksByCollection('behavior_change').length,
-    longevity_and_exercise: searchEngine.getChunksByCollection('longevity_and_exercise').length,
-    internal_coaching_materials: searchEngine.getChunksByCollection('internal_coaching_materials').length,
-    movement_explanations: searchEngine.getChunksByCollection('movement_explanations').length,
-    youtube_content: searchEngine.getChunksByCollection('youtube_content').length,
-  };
+  // With VectorStore, real-time counts are expensive/complex to fetch synchronously.
+  // We return placeholder stats indicating "Cloud Managed".
 
   return {
-    loaded: chunkCount > 0,
-    chunkCount,
-    collections,
+    loaded: !!process.env.OPENSEARCH_ENDPOINT,
+    chunkCount: -1, // -1 indicates "Unknown / Cloud Managed"
+    collections: {
+      clinical_guidelines: -1,
+      behavior_change: -1,
+      longevity_and_exercise: -1,
+      internal_coaching_materials: -1,
+      movement_explanations: -1,
+      youtube_content: -1,
+    }
   };
 }
 

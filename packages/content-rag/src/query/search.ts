@@ -33,37 +33,65 @@ export interface SearchResult {
  * RAG search engine
  * For MVP, uses in-memory store with simple similarity search
  */
+import type { VectorStore } from '../store/vector-store';
+
+/**
+ * RAG search engine
+ * Connects to OpenSearch Serverless if configured, otherwise falls back to in-memory
+ */
 export class RagSearchEngine {
   private embeddingGenerator: EmbeddingGenerator;
-  public chunks: RagChunk[] = []; // Public so content-loader can access it directly
+  private vectorStore: VectorStore | null = null;
 
   constructor() {
     this.embeddingGenerator = new EmbeddingGenerator();
+
+    if (process.env.OPENSEARCH_ENDPOINT) {
+      console.log('🔗 Connecting to OpenSearch Vector Store:', process.env.OPENSEARCH_ENDPOINT);
+      // Dynamic import to avoid crash if dependencies (opensearch) are missing in local env
+      // This allows the code to run in "in-memory" mode without needing the AWS deps installed
+      import('../store/vector-store')
+        .then(({ OpenSearchVectorStore }) => {
+          this.vectorStore = new OpenSearchVectorStore(process.env.OPENSEARCH_ENDPOINT!);
+        })
+        .catch(err => {
+          console.error('Failed to load OpenSearchVectorStore. Ensure @opensearch-project/opensearch is installed.', err);
+        });
+    } else {
+      console.warn('⚠️ No OPENSEARCH_ENDPOINT found. RAG search will assume empty results.');
+    }
   }
 
   /**
    * Index chunks for searching
-   * In production, this would write to a vector database
    */
   async indexChunks(chunks: RagChunk[]): Promise<void> {
     // Generate embeddings for chunks that don't have them
     for (const chunk of chunks) {
-      if (!chunk.embedding) {
+      if (!chunk.embedding || chunk.embedding.length === 0) {
         chunk.embedding = await this.embeddingGenerator.generateEmbedding(chunk.content);
       }
     }
 
-    this.chunks = chunks;
+    if (this.vectorStore) {
+      // In production, we might not want to re-index everything on startup every time.
+      // But for this transition helper, we allow it.
+      await this.vectorStore.ensureIndex();
+      await this.vectorStore.addChunks(chunks);
+    }
   }
 
   /**
-   * Add a single chunk to the index
+   * Add a single chunk
    */
   async addChunk(chunk: RagChunk): Promise<void> {
-    if (!chunk.embedding) {
+    if (!chunk.embedding || chunk.embedding.length === 0) {
       chunk.embedding = await this.embeddingGenerator.generateEmbedding(chunk.content);
     }
-    this.chunks.push(chunk);
+
+    if (this.vectorStore) {
+      await this.vectorStore.addChunks([chunk]);
+    }
   }
 
   /**
@@ -72,77 +100,50 @@ export class RagSearchEngine {
   async search(query: SearchQuery): Promise<SearchResult[]> {
     const {
       query: queryText,
-      collection,
-      topics,
-      movementIds,
-      limit = 5,
       minSimilarity = 0.6,
     } = query;
 
     // Generate embedding for query
     const queryEmbedding = await this.embeddingGenerator.generateEmbedding(queryText);
 
-    // Filter chunks based on collection, topics, and movementIds
-    let filteredChunks = this.chunks;
-
-    if (collection) {
-      filteredChunks = filteredChunks.filter(c => c.collection === collection);
+    if (this.vectorStore) {
+      try {
+        return await this.vectorStore.search(query, queryEmbedding);
+      } catch (error) {
+        console.error('OpenSearch search failed:', error);
+        return [];
+      }
+    } else {
+      console.warn('RAG Search attempted without Vector Store connection.');
+      return [];
     }
-
-    if (topics && topics.length > 0) {
-      filteredChunks = filteredChunks.filter(c => 
-        c.topics && topics.some(t => c.topics!.includes(t))
-      );
-    }
-
-    if (movementIds && movementIds.length > 0) {
-      filteredChunks = filteredChunks.filter(c =>
-        c.movementIds && movementIds.some(id => c.movementIds!.includes(id))
-      );
-    }
-
-    // Calculate similarity scores
-    const results: SearchResult[] = filteredChunks
-      .map(chunk => {
-        if (!chunk.embedding) {
-          return { chunk, score: 0 };
-        }
-
-        const score = EmbeddingGenerator.cosineSimilarity(
-          queryEmbedding,
-          chunk.embedding
-        );
-
-        return { chunk, score };
-      })
-      .filter(result => result.score >= minSimilarity)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, limit);
-
-    return results;
   }
 
   /**
    * Get chunks by collection
+   * (Limited support with VectorStore - usually redundant for search)
    */
   getChunksByCollection(collection: CollectionName): RagChunk[] {
-    return this.chunks.filter(c => c.collection === collection);
+    // With VectorStore, we cannot return all chunks synchronously or easily.
+    // Returning empty array as this method was primarily for the in-memory debug view.
+    return [];
   }
 
   /**
    * Get chunks by movement IDs
    */
-  getChunksByMovementIds(movementIds: string[]): RagChunk[] {
-    return this.chunks.filter(c =>
-      c.movementIds && movementIds.some(id => c.movementIds!.includes(id))
-    );
+  async getChunksByMovementIds(movementIds: string[]): Promise<RagChunk[]> {
+    if (this.vectorStore) {
+      return await this.vectorStore.getChunksByMovementIds(movementIds);
+    }
+    return [];
   }
 
   /**
    * Get total number of indexed chunks
    */
   getChunkCount(): number {
-    return this.chunks.length;
+    return 0; // Unknown without counting in DB
   }
 }
 

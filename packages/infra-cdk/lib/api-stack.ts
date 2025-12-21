@@ -17,6 +17,7 @@ export interface ApiStackProps extends cdk.StackProps {
   checkinsTable: dynamodb.Table;
   logsTable: dynamodb.Table;
   contentBucket: s3.Bucket;
+  ragCollectionEndpoint: string;
 }
 
 export class ApiStack extends cdk.Stack {
@@ -261,6 +262,7 @@ export class ApiStack extends cdk.Stack {
       // Bedrock model IDs
       BEDROCK_CLAUDE_MODEL_ID: "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
       BEDROCK_TITAN_EMBED_MODEL_ID: "amazon.titan-embed-text-v2:0",
+      OPENSEARCH_ENDPOINT: props.ragCollectionEndpoint,
     };
 
     // Coach Chat Lambda (Milestone 3)
