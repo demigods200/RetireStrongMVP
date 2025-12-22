@@ -31,21 +31,32 @@ async function testConnection() {
             timestampEnd: 10
         }]);
 
-        // 3. Search Dummy Chunk (Wait 2s for consistency)
-        console.log("   Waiting 2s for consistency...");
-        await new Promise(r => setTimeout(r, 2000));
+        // 3. Search Dummy Chunk (Wait for consistency, try twice)
+        console.log("   Waiting 5s for consistency...");
+        await new Promise(r => setTimeout(r, 5000));
 
-        console.log("   Searching...");
-        const results = await store.search({
+        console.log("   Searching (attempt 1)...");
+        let results = await store.search({
             query: "Ping",
             limit: 1
         }, new Array(1024).fill(0.1));
+
+        if (results.length === 0) {
+            console.log("   No results yet, waiting 3s and retrying...");
+            await new Promise(r => setTimeout(r, 3000));
+            console.log("   Searching (attempt 2)...");
+            results = await store.search({
+                query: "Ping",
+                limit: 1
+            }, new Array(1024).fill(0.1));
+        }
 
         if (results.length > 0 && results[0].chunk.id === testId) {
             console.log("✅ SUCCESS: Read/Write verified.");
         } else {
             console.error("❌ FAILURE: Search failed to find inserted document");
             console.log("   Results found:", results.length);
+            if (results.length > 0) console.log('   First result id:', results[0].chunk.id);
         }
 
     } catch (e: any) {
