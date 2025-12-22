@@ -23,7 +23,8 @@ export class OpenSearchVectorStore implements VectorStore {
             ...AwsSigv4Signer({
                 region: process.env.AWS_REGION || 'us-east-1',
                 service: 'aoss', // Service name for OpenSearch Serverless
-                getCredentials: () => defaultProvider()(),
+                // `defaultProvider` is a credentials provider function, pass it directly
+                getCredentials: defaultProvider,
             }),
         });
     }
