@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 import "source-map-support/register";
+import * as path from 'path';
+import * as dotenv from 'dotenv';
+// Load .env from package root (packages/infra-cdk/.env)
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
 import * as cdk from "aws-cdk-lib";
 import { AuthStack } from "../lib/auth-stack";
 import { DataStack } from "../lib/data-stack";
