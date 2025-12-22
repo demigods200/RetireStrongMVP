@@ -100,7 +100,6 @@ export class RagSearchEngine {
   async search(query: SearchQuery): Promise<SearchResult[]> {
     const {
       query: queryText,
-      minSimilarity = 0.6,
     } = query;
 
     // Generate embedding for query

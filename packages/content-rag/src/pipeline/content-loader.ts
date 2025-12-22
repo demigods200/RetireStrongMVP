@@ -38,7 +38,6 @@ export function getRagStatus(): {
   chunkCount: number;
   collections: Record<CollectionName, number>;
 } {
-  const searchEngine = getRagSearchEngine();
   // With VectorStore, real-time counts are expensive/complex to fetch synchronously.
   // We return placeholder stats indicating "Cloud Managed".
 

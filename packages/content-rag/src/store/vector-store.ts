@@ -1,6 +1,6 @@
 import { Client } from '@opensearch-project/opensearch';
 import { AwsSigv4Signer } from '@opensearch-project/opensearch/aws';
-import { defaultProvider } from '@aws-sdk/credential-provider-node';
+import { defaultProvider } from '@aws-sdk/credential-providers';
 import type { RagChunk } from '../types/collections';
 import type { SearchQuery, SearchResult } from '../query/search';
 
