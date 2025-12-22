@@ -122,7 +122,7 @@ export class RagSearchEngine {
    * Get chunks by collection
    * (Limited support with VectorStore - usually redundant for search)
    */
-  getChunksByCollection(collection: CollectionName): RagChunk[] {
+getChunksByCollection(_collection: CollectionName): RagChunk[] {
     // With VectorStore, we cannot return all chunks synchronously or easily.
     // Returning empty array as this method was primarily for the in-memory debug view.
     return [];
