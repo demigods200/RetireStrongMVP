@@ -73,7 +73,8 @@ export class OpenSearchVectorStore implements VectorStore {
 
         // Bulk API format: [ { index: ... }, document, { index: ... }, document ]
         const body = chunks.flatMap(chunk => [
-            { index: { _index: INDEX_NAME, _id: chunk.id } },
+            // AOSS bulk does not accept client-supplied document IDs in this context; let server assign ids.
+            { index: { _index: INDEX_NAME } },
             { ...chunk, embedding: chunk.embedding }
         ]);
 
