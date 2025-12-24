@@ -1,0 +1,7 @@
+{
+  "RetireStrong-Rag-dev": {
+    "RagCollectionName": "retire-strong-rag-dev",
+    "ExportsOutputFnGetAttRagCollectionCollectionEndpointF4F8E7C9": "https://7bsmp1opwr3xs8g4h6yk.us-east-2.aoss.amazonaws.com",
+    "RagCollectionEndpoint": "https://7bsmp1opwr3xs8g4h6yk.us-east-2.aoss.amazonaws.com"
+  }
+}

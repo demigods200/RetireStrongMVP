@@ -1,0 +1,5138 @@
+{
+ "Description": "Retire Strong API Stack (dev)",
+ "Resources": {
+  "ApiF70053CD": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "Retire Strong API (dev)",
+    "Name": "retire-strong-api-dev",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Resource"
+   }
+  },
+  "ApiCloudWatchRole73EC6FC4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/CloudWatchRole/Resource"
+   }
+  },
+  "ApiAccountA18C9B29": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "ApiCloudWatchRole73EC6FC4",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "ApiF70053CD"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Account"
+   }
+  },
+  "ApiDeploymentB17BE62Db93449133b3889ba60fd5afd98ccb9a8": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Retire Strong API (dev)",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "DependsOn": [
+    "ApiauthloginOPTIONSCCF6F50B",
+    "ApiauthloginPOSTFBEAB6D5",
+    "Apiauthlogin425AB418",
+    "ApiauthOPTIONSC18B26B2",
+    "ApiauthresendcodeOPTIONS9E386F23",
+    "ApiauthresendcodePOSTBB7C7BF7",
+    "Apiauthresendcode0921C06F",
+    "Apiauth161C653C",
+    "ApiauthsignupOPTIONS52BF1977",
+    "ApiauthsignupPOST0DD6DBB2",
+    "Apiauthsignup5EC2C73B",
+    "ApiauthverifyOPTIONSA2B5DE7B",
+    "ApiauthverifyPOST2B838E20",
+    "Apiauthverify301F49C5",
+    "ApihealthGET8A9DC1E4",
+    "ApihealthOPTIONS119B6E46",
+    "Apihealth5CB7A415",
+    "ApimotivationOPTIONSBBB5DA9A",
+    "ApimotivationquizGETEB48E649",
+    "ApimotivationquizOPTIONS37320824",
+    "ApimotivationquizED588E0C",
+    "ApimotivationquizsubmitOPTIONS57E41D80",
+    "ApimotivationquizsubmitPOST0A47A05F",
+    "Apimotivationquizsubmit0E71C9C5",
+    "Apimotivation09DA2D8C",
+    "ApiOPTIONS5886EA5D",
+    "ApiplanscurrentGET2406E25E",
+    "ApiplanscurrentOPTIONSD166A650",
+    "Apiplanscurrent92E79DA2",
+    "ApiplansOPTIONS138F1CE4",
+    "Apiplans65A2B241",
+    "ApiplansstarterOPTIONSF7CAC649",
+    "ApiplansstarterPOST7B93364A",
+    "ApiplansstarterF3D21AD5",
+    "ApisessionsidcompleteOPTIONS7453A8E9",
+    "ApisessionsidcompletePOST4DB553F4",
+    "ApisessionsidcompleteD1247F6F",
+    "ApisessionsidGETF1B1E18E",
+    "ApisessionsidOPTIONS37F1B616",
+    "Apisessionsid1D1FE0FB",
+    "ApisessionsOPTIONS9B6C180F",
+    "Apisessions89D170DF",
+    "ApiusersmeGET488FD1C1",
+    "ApiusersmeOPTIONS10FF5AA3",
+    "Apiusersme63562DC2",
+    "ApiusersonboardingOPTIONS111FF8A1",
+    "ApiusersonboardingPOST91755F3E",
+    "Apiusersonboarding10212BEB",
+    "ApiusersOPTIONS3D818C2B",
+    "Apiusers7F86375B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "ApiDeploymentStagedev51EE5D56": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "ApiDeploymentB17BE62Db93449133b3889ba60fd5afd98ccb9a8"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": true,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "ResourcePath": "/*"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    },
+    "StageName": "dev",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "DependsOn": [
+    "ApiAccountA18C9B29"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/DeploymentStage.dev/Resource"
+   }
+  },
+  "ApiOPTIONS5886EA5D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "ApiF70053CD",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/OPTIONS/Resource"
+   }
+  },
+  "Apihealth5CB7A415": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ApiF70053CD",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "health",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/health/Resource"
+   }
+  },
+  "ApihealthOPTIONS119B6E46": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apihealth5CB7A415"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/health/OPTIONS/Resource"
+   }
+  },
+  "ApihealthGETApiPermissionRetireStrongApidevApi128F3ED9GEThealthC58ADC53": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "HealthFunction19D7724A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/GET/health"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/health/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..health"
+   }
+  },
+  "ApihealthGETApiPermissionTestRetireStrongApidevApi128F3ED9GEThealthFD242CB9": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "HealthFunction19D7724A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/GET/health"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/health/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..health"
+   }
+  },
+  "ApihealthGET8A9DC1E4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "HealthFunction19D7724A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apihealth5CB7A415"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/health/GET/Resource"
+   }
+  },
+  "Apiauth161C653C": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ApiF70053CD",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "auth",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/Resource"
+   }
+  },
+  "ApiauthOPTIONSC18B26B2": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiauth161C653C"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/OPTIONS/Resource"
+   }
+  },
+  "Apiauthsignup5EC2C73B": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apiauth161C653C"
+    },
+    "PathPart": "signup",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/signup/Resource"
+   }
+  },
+  "ApiauthsignupOPTIONS52BF1977": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiauthsignup5EC2C73B"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/signup/OPTIONS/Resource"
+   }
+  },
+  "ApiauthsignupPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTauthsignup01704A3F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SignupFunction2AD1B0FF",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/POST/auth/signup"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/signup/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..auth.signup"
+   }
+  },
+  "ApiauthsignupPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTauthsignup646B842B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SignupFunction2AD1B0FF",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/POST/auth/signup"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/signup/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..auth.signup"
+   }
+  },
+  "ApiauthsignupPOST0DD6DBB2": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SignupFunction2AD1B0FF",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apiauthsignup5EC2C73B"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/signup/POST/Resource"
+   }
+  },
+  "Apiauthlogin425AB418": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apiauth161C653C"
+    },
+    "PathPart": "login",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/login/Resource"
+   }
+  },
+  "ApiauthloginOPTIONSCCF6F50B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiauthlogin425AB418"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/login/OPTIONS/Resource"
+   }
+  },
+  "ApiauthloginPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTauthlogin259E8B6D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "LoginFunction66F090C6",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/POST/auth/login"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/login/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..auth.login"
+   }
+  },
+  "ApiauthloginPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTauthlogin0B70CA71": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "LoginFunction66F090C6",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/POST/auth/login"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/login/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..auth.login"
+   }
+  },
+  "ApiauthloginPOSTFBEAB6D5": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "LoginFunction66F090C6",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apiauthlogin425AB418"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/login/POST/Resource"
+   }
+  },
+  "Apiauthverify301F49C5": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apiauth161C653C"
+    },
+    "PathPart": "verify",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/verify/Resource"
+   }
+  },
+  "ApiauthverifyOPTIONSA2B5DE7B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiauthverify301F49C5"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/verify/OPTIONS/Resource"
+   }
+  },
+  "ApiauthverifyPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTauthverifyDC85420E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "VerifyFunction49C44DB6",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/POST/auth/verify"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/verify/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..auth.verify"
+   }
+  },
+  "ApiauthverifyPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTauthverify44601477": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "VerifyFunction49C44DB6",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/POST/auth/verify"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/verify/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..auth.verify"
+   }
+  },
+  "ApiauthverifyPOST2B838E20": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "VerifyFunction49C44DB6",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apiauthverify301F49C5"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/verify/POST/Resource"
+   }
+  },
+  "Apiauthresendcode0921C06F": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apiauth161C653C"
+    },
+    "PathPart": "resend-code",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/resend-code/Resource"
+   }
+  },
+  "ApiauthresendcodeOPTIONS9E386F23": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiauthresendcode0921C06F"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/resend-code/OPTIONS/Resource"
+   }
+  },
+  "ApiauthresendcodePOSTApiPermissionRetireStrongApidevApi128F3ED9POSTauthresendcode89E09BE2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ResendCodeFunction059C2A19",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/POST/auth/resend-code"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/resend-code/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..auth.resend-code"
+   }
+  },
+  "ApiauthresendcodePOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTauthresendcode391A632A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ResendCodeFunction059C2A19",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/POST/auth/resend-code"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/resend-code/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..auth.resend-code"
+   }
+  },
+  "ApiauthresendcodePOSTBB7C7BF7": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ResendCodeFunction059C2A19",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apiauthresendcode0921C06F"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/auth/resend-code/POST/Resource"
+   }
+  },
+  "Apiusers7F86375B": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ApiF70053CD",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "users",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/Resource"
+   }
+  },
+  "ApiusersOPTIONS3D818C2B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiusers7F86375B"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/OPTIONS/Resource"
+   }
+  },
+  "Apiusersonboarding10212BEB": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apiusers7F86375B"
+    },
+    "PathPart": "onboarding",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/onboarding/Resource"
+   }
+  },
+  "ApiusersonboardingOPTIONS111FF8A1": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiusersonboarding10212BEB"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/onboarding/OPTIONS/Resource"
+   }
+  },
+  "ApiusersonboardingPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTusersonboardingD11BB5BE": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "OnboardingFunction320572EE",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/POST/users/onboarding"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/onboarding/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..users.onboarding"
+   }
+  },
+  "ApiusersonboardingPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTusersonboarding707F8182": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "OnboardingFunction320572EE",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/POST/users/onboarding"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/onboarding/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..users.onboarding"
+   }
+  },
+  "ApiusersonboardingPOST91755F3E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "OnboardingFunction320572EE",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apiusersonboarding10212BEB"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/onboarding/POST/Resource"
+   }
+  },
+  "Apiusersme63562DC2": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apiusers7F86375B"
+    },
+    "PathPart": "me",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/me/Resource"
+   }
+  },
+  "ApiusersmeOPTIONS10FF5AA3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiusersme63562DC2"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/me/OPTIONS/Resource"
+   }
+  },
+  "ApiusersmeGETApiPermissionRetireStrongApidevApi128F3ED9GETusersme9FFA46BA": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ProfileFunction90BDA49F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/GET/users/me"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/me/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..users.me"
+   }
+  },
+  "ApiusersmeGETApiPermissionTestRetireStrongApidevApi128F3ED9GETusersme428DC588": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ProfileFunction90BDA49F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/GET/users/me"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/me/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..users.me"
+   }
+  },
+  "ApiusersmeGET488FD1C1": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ProfileFunction90BDA49F",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apiusersme63562DC2"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/users/me/GET/Resource"
+   }
+  },
+  "Apimotivation09DA2D8C": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ApiF70053CD",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "motivation",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/Resource"
+   }
+  },
+  "ApimotivationOPTIONSBBB5DA9A": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apimotivation09DA2D8C"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/OPTIONS/Resource"
+   }
+  },
+  "ApimotivationquizED588E0C": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apimotivation09DA2D8C"
+    },
+    "PathPart": "quiz",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/Resource"
+   }
+  },
+  "ApimotivationquizOPTIONS37320824": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ApimotivationquizED588E0C"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/OPTIONS/Resource"
+   }
+  },
+  "ApimotivationquizGETApiPermissionRetireStrongApidevApi128F3ED9GETmotivationquizE01222DA": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "QuizFunction7BB26CF8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/GET/motivation/quiz"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..motivation.quiz"
+   }
+  },
+  "ApimotivationquizGETApiPermissionTestRetireStrongApidevApi128F3ED9GETmotivationquizDE737256": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "QuizFunction7BB26CF8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/GET/motivation/quiz"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..motivation.quiz"
+   }
+  },
+  "ApimotivationquizGETEB48E649": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "QuizFunction7BB26CF8",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ApimotivationquizED588E0C"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/GET/Resource"
+   }
+  },
+  "Apimotivationquizsubmit0E71C9C5": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ApimotivationquizED588E0C"
+    },
+    "PathPart": "submit",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/Resource"
+   }
+  },
+  "ApimotivationquizsubmitOPTIONS57E41D80": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apimotivationquizsubmit0E71C9C5"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/OPTIONS/Resource"
+   }
+  },
+  "ApimotivationquizsubmitPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTmotivationquizsubmit648B660E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SubmitQuizFunctionDDBB21D9",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/POST/motivation/quiz/submit"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..motivation.quiz.submit"
+   }
+  },
+  "ApimotivationquizsubmitPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTmotivationquizsubmit6E26FF02": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SubmitQuizFunctionDDBB21D9",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/POST/motivation/quiz/submit"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..motivation.quiz.submit"
+   }
+  },
+  "ApimotivationquizsubmitPOST0A47A05F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SubmitQuizFunctionDDBB21D9",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apimotivationquizsubmit0E71C9C5"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/POST/Resource"
+   }
+  },
+  "Apiplans65A2B241": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ApiF70053CD",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "plans",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/Resource"
+   }
+  },
+  "ApiplansOPTIONS138F1CE4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiplans65A2B241"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/OPTIONS/Resource"
+   }
+  },
+  "ApiplansstarterF3D21AD5": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apiplans65A2B241"
+    },
+    "PathPart": "starter",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/starter/Resource"
+   }
+  },
+  "ApiplansstarterOPTIONSF7CAC649": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ApiplansstarterF3D21AD5"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/starter/OPTIONS/Resource"
+   }
+  },
+  "ApiplansstarterPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTplansstarter22E55129": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "StarterPlanFunctionEB7846E9",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/POST/plans/starter"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/starter/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..plans.starter"
+   }
+  },
+  "ApiplansstarterPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTplansstarterF6C9062C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "StarterPlanFunctionEB7846E9",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/POST/plans/starter"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/starter/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..plans.starter"
+   }
+  },
+  "ApiplansstarterPOST7B93364A": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "StarterPlanFunctionEB7846E9",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ApiplansstarterF3D21AD5"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/starter/POST/Resource"
+   }
+  },
+  "Apiplanscurrent92E79DA2": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apiplans65A2B241"
+    },
+    "PathPart": "current",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/current/Resource"
+   }
+  },
+  "ApiplanscurrentOPTIONSD166A650": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apiplanscurrent92E79DA2"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/current/OPTIONS/Resource"
+   }
+  },
+  "ApiplanscurrentGETApiPermissionRetireStrongApidevApi128F3ED9GETplanscurrent08F29CD3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CurrentPlanFunction9148563F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/GET/plans/current"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/current/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..plans.current"
+   }
+  },
+  "ApiplanscurrentGETApiPermissionTestRetireStrongApidevApi128F3ED9GETplanscurrent33907641": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CurrentPlanFunction9148563F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/GET/plans/current"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/current/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..plans.current"
+   }
+  },
+  "ApiplanscurrentGET2406E25E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "CurrentPlanFunction9148563F",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apiplanscurrent92E79DA2"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/plans/current/GET/Resource"
+   }
+  },
+  "Apisessions89D170DF": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ApiF70053CD",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "sessions",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/Resource"
+   }
+  },
+  "ApisessionsOPTIONS9B6C180F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apisessions89D170DF"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/OPTIONS/Resource"
+   }
+  },
+  "Apisessionsid1D1FE0FB": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apisessions89D170DF"
+    },
+    "PathPart": "{id}",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/Resource"
+   }
+  },
+  "ApisessionsidOPTIONS37F1B616": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "Apisessionsid1D1FE0FB"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/OPTIONS/Resource"
+   }
+  },
+  "ApisessionsidGETApiPermissionRetireStrongApidevApi128F3ED9GETsessionsidDF505528": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "GetSessionFunctionC8945475",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/GET/sessions/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..sessions.{id}"
+   }
+  },
+  "ApisessionsidGETApiPermissionTestRetireStrongApidevApi128F3ED9GETsessionsid61E49161": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "GetSessionFunctionC8945475",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/GET/sessions/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..sessions.{id}"
+   }
+  },
+  "ApisessionsidGETF1B1E18E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "GetSessionFunctionC8945475",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "Apisessionsid1D1FE0FB"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/GET/Resource"
+   }
+  },
+  "ApisessionsidcompleteD1247F6F": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "Apisessionsid1D1FE0FB"
+    },
+    "PathPart": "complete",
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/Resource"
+   }
+  },
+  "ApisessionsidcompleteOPTIONS7453A8E9": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'https://dev.app.retirestrong.com'",
+        "method.response.header.Vary": "'Origin'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "ResponseTemplates": {
+        "application/json": "#set($origin = $input.params().header.get(\"Origin\"))\n#if($origin == \"\")\n  #set($origin = $input.params().header.get(\"origin\"))\n#end\n#if($origin == \"http://localhost:3000\")\n  #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin)\n#end"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Vary": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ApisessionsidcompleteD1247F6F"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/OPTIONS/Resource"
+   }
+  },
+  "ApisessionsidcompletePOSTApiPermissionRetireStrongApidevApi128F3ED9POSTsessionsidcompleteDA3FDEC7": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CompleteSessionFunction5838EB7F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/",
+       {
+        "Ref": "ApiDeploymentStagedev51EE5D56"
+       },
+       "/POST/sessions/*/complete"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..sessions.{id}.complete"
+   }
+  },
+  "ApisessionsidcompletePOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTsessionsidcomplete7606C46C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CompleteSessionFunction5838EB7F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:328174020395:",
+       {
+        "Ref": "ApiF70053CD"
+       },
+       "/test-invoke-stage/POST/sessions/*/complete"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..sessions.{id}.complete"
+   }
+  },
+  "ApisessionsidcompletePOST4DB553F4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "CompleteSessionFunction5838EB7F",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ApisessionsidcompleteD1247F6F"
+    },
+    "RestApiId": {
+     "Ref": "ApiF70053CD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/POST/Resource"
+   }
+  },
+  "HealthFunctionServiceRole04552894": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/HealthFunction/ServiceRole/Resource"
+   }
+  },
+  "HealthFunctionServiceRoleDefaultPolicy57228674": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "HealthFunctionServiceRoleDefaultPolicy57228674",
+    "Roles": [
+     {
+      "Ref": "HealthFunctionServiceRole04552894"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/HealthFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "HealthFunction19D7724A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "9567722348a0896f69df6f268d4ab12a6ec28e452be5f2ad8e6eddf4c6b7c5d3.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development"
+     }
+    },
+    "FunctionName": "retire-strong-health-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "HealthFunctionServiceRole04552894",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "HealthFunctionServiceRoleDefaultPolicy57228674",
+    "HealthFunctionServiceRole04552894"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/HealthFunction/Resource",
+    "aws:asset:path": "asset.9567722348a0896f69df6f268d4ab12a6ec28e452be5f2ad8e6eddf4c6b7c5d3",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "SignupFunctionServiceRole9A5BB887": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/SignupFunction/ServiceRole/Resource"
+   }
+  },
+  "SignupFunctionServiceRoleDefaultPolicy581D58E0": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "cognito-idp:AdminCreateUser",
+        "cognito-idp:AdminSetUserPassword"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputFnGetAttUserPool6BA7E5F2Arn686ACC00"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SignupFunctionServiceRoleDefaultPolicy581D58E0",
+    "Roles": [
+     {
+      "Ref": "SignupFunctionServiceRole9A5BB887"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/SignupFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "SignupFunction2AD1B0FF": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "227d3b64dd9c20e19813149d3fd99a04b37989b44b480c96eb231b4d107655be.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-signup-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "SignupFunctionServiceRole9A5BB887",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "SignupFunctionServiceRoleDefaultPolicy581D58E0",
+    "SignupFunctionServiceRole9A5BB887"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/SignupFunction/Resource",
+    "aws:asset:path": "asset.227d3b64dd9c20e19813149d3fd99a04b37989b44b480c96eb231b4d107655be",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "LoginFunctionServiceRole74B42ABA": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/LoginFunction/ServiceRole/Resource"
+   }
+  },
+  "LoginFunctionServiceRoleDefaultPolicy2FE1C77C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "cognito-idp:AdminInitiateAuth",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputFnGetAttUserPool6BA7E5F2Arn686ACC00"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LoginFunctionServiceRoleDefaultPolicy2FE1C77C",
+    "Roles": [
+     {
+      "Ref": "LoginFunctionServiceRole74B42ABA"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/LoginFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LoginFunction66F090C6": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "83dba6f5f1a2ec7a20d800db0bc4586c60616fa9b0eb88af6f233c4ff9bef930.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-login-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "LoginFunctionServiceRole74B42ABA",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "LoginFunctionServiceRoleDefaultPolicy2FE1C77C",
+    "LoginFunctionServiceRole74B42ABA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/LoginFunction/Resource",
+    "aws:asset:path": "asset.83dba6f5f1a2ec7a20d800db0bc4586c60616fa9b0eb88af6f233c4ff9bef930",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "VerifyFunctionServiceRoleE92D7C5E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/VerifyFunction/ServiceRole/Resource"
+   }
+  },
+  "VerifyFunctionServiceRoleDefaultPolicyDC88716F": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "VerifyFunctionServiceRoleDefaultPolicyDC88716F",
+    "Roles": [
+     {
+      "Ref": "VerifyFunctionServiceRoleE92D7C5E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/VerifyFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "VerifyFunction49C44DB6": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "80c60dee23eb363fe0d7f4ec2230c2d6ab39820dc34f3c5febcda26b8bcb09cc.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-verify-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "VerifyFunctionServiceRoleE92D7C5E",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "VerifyFunctionServiceRoleDefaultPolicyDC88716F",
+    "VerifyFunctionServiceRoleE92D7C5E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/VerifyFunction/Resource",
+    "aws:asset:path": "asset.80c60dee23eb363fe0d7f4ec2230c2d6ab39820dc34f3c5febcda26b8bcb09cc",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ResendCodeFunctionServiceRoleF1CF393B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/ResendCodeFunction/ServiceRole/Resource"
+   }
+  },
+  "ResendCodeFunctionServiceRoleDefaultPolicy914F7420": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ResendCodeFunctionServiceRoleDefaultPolicy914F7420",
+    "Roles": [
+     {
+      "Ref": "ResendCodeFunctionServiceRoleF1CF393B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/ResendCodeFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ResendCodeFunction059C2A19": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "57cc1af3c278371f92631021372b14a469086ff99e86221a6b909cb279e7f50f.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-resend-code-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "ResendCodeFunctionServiceRoleF1CF393B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "ResendCodeFunctionServiceRoleDefaultPolicy914F7420",
+    "ResendCodeFunctionServiceRoleF1CF393B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/ResendCodeFunction/Resource",
+    "aws:asset:path": "asset.57cc1af3c278371f92631021372b14a469086ff99e86221a6b909cb279e7f50f",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "OnboardingFunctionServiceRoleFA9619E2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/OnboardingFunction/ServiceRole/Resource"
+   }
+  },
+  "OnboardingFunctionServiceRoleDefaultPolicy44075CBE": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OnboardingFunctionServiceRoleDefaultPolicy44075CBE",
+    "Roles": [
+     {
+      "Ref": "OnboardingFunctionServiceRoleFA9619E2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/OnboardingFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "OnboardingFunction320572EE": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "f592259634db8664fc8a1261b4265dc9117ce4a73cf9b2275bb11d58a8490a77.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-onboarding-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "OnboardingFunctionServiceRoleFA9619E2",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "OnboardingFunctionServiceRoleDefaultPolicy44075CBE",
+    "OnboardingFunctionServiceRoleFA9619E2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/OnboardingFunction/Resource",
+    "aws:asset:path": "asset.f592259634db8664fc8a1261b4265dc9117ce4a73cf9b2275bb11d58a8490a77",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "QuizFunctionServiceRole2A385018": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/QuizFunction/ServiceRole/Resource"
+   }
+  },
+  "QuizFunctionServiceRoleDefaultPolicy94F0356B": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "QuizFunctionServiceRoleDefaultPolicy94F0356B",
+    "Roles": [
+     {
+      "Ref": "QuizFunctionServiceRole2A385018"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/QuizFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "QuizFunction7BB26CF8": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "7823e864e7c22e36b76d6eaa5d49077810e72a293cfe31458221b269d982f293.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-quiz-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "QuizFunctionServiceRole2A385018",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "QuizFunctionServiceRoleDefaultPolicy94F0356B",
+    "QuizFunctionServiceRole2A385018"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/QuizFunction/Resource",
+    "aws:asset:path": "asset.7823e864e7c22e36b76d6eaa5d49077810e72a293cfe31458221b269d982f293",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "SubmitQuizFunctionServiceRoleEEAEAD9B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/SubmitQuizFunction/ServiceRole/Resource"
+   }
+  },
+  "SubmitQuizFunctionServiceRoleDefaultPolicy8F204B8A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SubmitQuizFunctionServiceRoleDefaultPolicy8F204B8A",
+    "Roles": [
+     {
+      "Ref": "SubmitQuizFunctionServiceRoleEEAEAD9B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/SubmitQuizFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "SubmitQuizFunctionDDBB21D9": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "7cd4b9015a63198047b5ce3c072118db03c39dc3069a8ed0f4a62bcbe738a91b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-submit-quiz-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "SubmitQuizFunctionServiceRoleEEAEAD9B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "SubmitQuizFunctionServiceRoleDefaultPolicy8F204B8A",
+    "SubmitQuizFunctionServiceRoleEEAEAD9B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/SubmitQuizFunction/Resource",
+    "aws:asset:path": "asset.7cd4b9015a63198047b5ce3c072118db03c39dc3069a8ed0f4a62bcbe738a91b",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ProfileFunctionServiceRoleD83BB872": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/ProfileFunction/ServiceRole/Resource"
+   }
+  },
+  "ProfileFunctionServiceRoleDefaultPolicyDEFBEB42": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ProfileFunctionServiceRoleDefaultPolicyDEFBEB42",
+    "Roles": [
+     {
+      "Ref": "ProfileFunctionServiceRoleD83BB872"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/ProfileFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ProfileFunction90BDA49F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "fea7887ed63d9a5060560106212d54d23cc2b87521c8ff7a69099a8c6b9d2f86.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-profile-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "ProfileFunctionServiceRoleD83BB872",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "ProfileFunctionServiceRoleDefaultPolicyDEFBEB42",
+    "ProfileFunctionServiceRoleD83BB872"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/ProfileFunction/Resource",
+    "aws:asset:path": "asset.fea7887ed63d9a5060560106212d54d23cc2b87521c8ff7a69099a8c6b9d2f86",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "StarterPlanFunctionServiceRole18E17537": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/StarterPlanFunction/ServiceRole/Resource"
+   }
+  },
+  "StarterPlanFunctionServiceRoleDefaultPolicy5376C38D": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StarterPlanFunctionServiceRoleDefaultPolicy5376C38D",
+    "Roles": [
+     {
+      "Ref": "StarterPlanFunctionServiceRole18E17537"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/StarterPlanFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "StarterPlanFunctionEB7846E9": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "c12cf12ff760dc5255d020d96b28f8e337ab65f551262d6afa56924a5fa91259.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-plan-starter-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "StarterPlanFunctionServiceRole18E17537",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "StarterPlanFunctionServiceRoleDefaultPolicy5376C38D",
+    "StarterPlanFunctionServiceRole18E17537"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/StarterPlanFunction/Resource",
+    "aws:asset:path": "asset.c12cf12ff760dc5255d020d96b28f8e337ab65f551262d6afa56924a5fa91259",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CurrentPlanFunctionServiceRole8D7D83CA": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/CurrentPlanFunction/ServiceRole/Resource"
+   }
+  },
+  "CurrentPlanFunctionServiceRoleDefaultPolicyED5D1CA0": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CurrentPlanFunctionServiceRoleDefaultPolicyED5D1CA0",
+    "Roles": [
+     {
+      "Ref": "CurrentPlanFunctionServiceRole8D7D83CA"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/CurrentPlanFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CurrentPlanFunction9148563F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "a490b797813bb36cf15de37985da4dc9a60ac99d8e2be17e3e5cfa6e2b509fa3.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-plan-current-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "CurrentPlanFunctionServiceRole8D7D83CA",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "CurrentPlanFunctionServiceRoleDefaultPolicyED5D1CA0",
+    "CurrentPlanFunctionServiceRole8D7D83CA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/CurrentPlanFunction/Resource",
+    "aws:asset:path": "asset.a490b797813bb36cf15de37985da4dc9a60ac99d8e2be17e3e5cfa6e2b509fa3",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "GetSessionFunctionServiceRoleA9731598": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/GetSessionFunction/ServiceRole/Resource"
+   }
+  },
+  "GetSessionFunctionServiceRoleDefaultPolicyCA010F4A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "GetSessionFunctionServiceRoleDefaultPolicyCA010F4A",
+    "Roles": [
+     {
+      "Ref": "GetSessionFunctionServiceRoleA9731598"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/GetSessionFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "GetSessionFunctionC8945475": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "471b6d622e8c26199450fd1a355655af6d2afae9041a659c927b441ed39a4b6e.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-session-get-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "GetSessionFunctionServiceRoleA9731598",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "GetSessionFunctionServiceRoleDefaultPolicyCA010F4A",
+    "GetSessionFunctionServiceRoleA9731598"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/GetSessionFunction/Resource",
+    "aws:asset:path": "asset.471b6d622e8c26199450fd1a355655af6d2afae9041a659c927b441ed39a4b6e",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CompleteSessionFunctionServiceRole0B4C7C14": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/CompleteSessionFunction/ServiceRole/Resource"
+   }
+  },
+  "CompleteSessionFunctionServiceRoleDefaultPolicy5FCD083C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+        },
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CompleteSessionFunctionServiceRoleDefaultPolicy5FCD083C",
+    "Roles": [
+     {
+      "Ref": "CompleteSessionFunctionServiceRole0B4C7C14"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/CompleteSessionFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CompleteSessionFunction5838EB7F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-328174020395-us-east-2",
+     "S3Key": "dc1f28272615fe74b0ba5bd6e3ed5df897f223ed3b02f122c05d3fa575753570.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "STAGE": "dev",
+      "NODE_ENV": "development",
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "RetireStrong-Auth-dev:ExportsOutputRefUserPoolClient2F5918F753847A55"
+      },
+      "DYNAMO_TABLE_USERS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefUsersTable9725E9C857961836"
+      },
+      "DYNAMO_TABLE_SESSIONS": {
+       "Fn::ImportValue": "RetireStrong-Data-dev:ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+      }
+     }
+    },
+    "FunctionName": "retire-strong-session-complete-dev",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "CompleteSessionFunctionServiceRole0B4C7C14",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "RetireStrong"
+     },
+     {
+      "Key": "Stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "CompleteSessionFunctionServiceRoleDefaultPolicy5FCD083C",
+    "CompleteSessionFunctionServiceRole0B4C7C14"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/CompleteSessionFunction/Resource",
+    "aws:asset:path": "asset.dc1f28272615fe74b0ba5bd6e3ed5df897f223ed3b02f122c05d3fa575753570",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WPzW6DQAyEnyX3xU3g0DNp1Vt/RB4AOYtLzc8uwt5GCPHu1UKQ0tN8nhmtvSmk2QmOB7xJYqs26fgK80XRtgZvUs44cI1KN5xgLkg0H9i8fLsHzK31wal5paHzU09Oo/swXRRrit4GBYkPo6UzCpl30h9fxfBOe3pfsvJiGHuYC99tdtQv37Gd4rjRYjrsrxXCHC0aexZh72LhLTir7N1eKZ2vqBH4WGVPjWQlipAK5FGMZHAOtiWNhy7/DvsMOgQ1ay9+il29mPgqNPL0m6ZweobjoRHmZAxOuScoNv0DSrQeBm8BAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "RetireStrong-Api-dev/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ApiEndpoint4F160690": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ApiF70053CD"
+      },
+      ".execute-api.us-east-2.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ApiDeploymentStagedev51EE5D56"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ApiF70053CD"
+      },
+      ".execute-api.us-east-2.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ApiDeploymentStagedev51EE5D56"
+      },
+      "/"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "RetireStrong-ApiUrl-dev"
+   }
+  },
+  "ApiId": {
+   "Value": {
+    "Ref": "ApiF70053CD"
+   },
+   "Export": {
+    "Name": "RetireStrong-ApiId-dev"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

@@ -41,7 +41,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/today">
-                <Button size="lg">Go to Today's Session</Button>
+                <Button size="lg">Go to Today&apos;s Session</Button>
               </Link>
             </div>
           </div>
@@ -50,11 +50,11 @@ export default function Home() {
             <div className="flex">
               <Card title="Today" subtitle="Your daily movement" className="w-full">
                 <p className="text-lg sm:text-xl text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                  Today's exercises are ready and waiting for you.
+                  Today&apos;s exercises are ready and waiting for you.
                 </p>
                 <div className="mt-auto">
                   <Link href="/today">
-                    <Button className="w-full">Start Today's Session</Button>
+                    <Button className="w-full">Start Today&apos;s Session</Button>
                   </Link>
                 </div>
               </Card>
@@ -140,7 +140,7 @@ export default function Home() {
           <div className="space-y-5 sm:space-y-6 text-lg sm:text-xl text-gray-700 leading-relaxed">
             <p>
               Retire Strong helps you build and maintain the strength, balance, and confidence you need for the activities that matter most—
-              whether that's climbing stairs easily, playing with grandchildren, traveling, or simply feeling capable in your daily life.
+              whether that&apos;s climbing stairs easily, playing with grandchildren, traveling, or simply feeling capable in your daily life.
             </p>
             <p>
               Through personalized exercise plans and supportive coaching, we help you stay independent and active on your own terms.
@@ -160,7 +160,7 @@ export default function Home() {
             </div>
             <div className="p-5 sm:p-6 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white hover:shadow-soft transition-all duration-200">
               <h3 className="text-xl sm:text-2xl font-semibold mb-3 text-gray-900">Adaptive Progression</h3>
-              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Your plan adjusts based on how you're feeling and what you're achieving</p>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">Your plan adjusts based on how you&apos;re feeling and what you&apos;re achieving</p>
             </div>
           </div>
         </Card>

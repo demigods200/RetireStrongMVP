@@ -14,6 +14,8 @@ export interface RagQueryParams {
   topics?: string[];
   /** Maximum number of results */
   limit?: number;
+  /** Minimum similarity threshold (0-1) */
+  minSimilarity?: number;
 }
 
 export interface RagQueryResult {
@@ -33,7 +35,7 @@ export interface RagQueryResult {
  * This is a tool that the LLM can use to get grounded information
  */
 export async function queryRag(params: RagQueryParams): Promise<RagQueryResult> {
-  const { query, collection, topics, limit = 3 } = params;
+  const { query, collection, topics, limit = 3, minSimilarity } = params;
 
   const searchEngine = getRagSearchEngine();
 
@@ -42,7 +44,7 @@ export async function queryRag(params: RagQueryParams): Promise<RagQueryResult> 
     collection,
     topics,
     limit,
-    minSimilarity: 0.6,
+    minSimilarity: minSimilarity ?? 0.6,
   });
 
   const results = searchResults.map(result => ({

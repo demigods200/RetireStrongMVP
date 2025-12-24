@@ -51,6 +51,7 @@ export const SignupForm: React.FC = () => {
         setError(data.error?.message || "Signup failed");
       }
     } catch (err) {
+      console.error(err);
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);

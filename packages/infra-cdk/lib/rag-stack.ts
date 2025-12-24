@@ -1,5 +1,4 @@
 import * as cdk from 'aws-cdk-lib';
-import * as keypair from 'aws-cdk-lib/aws-ec2';
 import * as oss from 'aws-cdk-lib/aws-opensearchserverless';
 import { Construct } from 'constructs';
 
@@ -65,7 +64,7 @@ export class RagStack extends cdk.Stack {
         // 4. Data Access Policy (Grant access to current account)
         // In a real app, you would grant specifically to Lambda roles. 
         // For now, we allow the deployment user and will attach Lambda roles later.
-        const accessPolicy = new oss.CfnAccessPolicy(this, 'RagAccessPolicy', {
+        new oss.CfnAccessPolicy(this, 'RagAccessPolicy', {
             name: `${this.collectionName}-access`,
             type: 'data',
             policy: JSON.stringify([

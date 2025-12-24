@@ -97,7 +97,7 @@ export default function MotivationResultPage() {
           {/* Header */}
           <div className="text-center mb-12 sm:mb-16">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">Meet Your Coach</h1>
-            <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">We've matched you with a coach that fits your style</p>
+            <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">We&apos;ve matched you with a coach that fits your style</p>
           </div>
 
           {/* Persona Card */}

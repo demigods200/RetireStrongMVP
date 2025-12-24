@@ -1,0 +1,1837 @@
+{
+  "version": "48.0.0",
+  "artifacts": {
+    "RetireStrong-Auth-dev.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "RetireStrong-Auth-dev.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "RetireStrong-Auth-dev": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://328174020395/us-east-2",
+      "properties": {
+        "templateFile": "RetireStrong-Auth-dev.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "ManagedBy": "CDK",
+          "Project": "RetireStrong",
+          "Stage": "dev"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-deploy-role-328174020395-us-east-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-cfn-exec-role-328174020395-us-east-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-328174020395-us-east-2/0998c32187b1125dad8abf4ceb3c22683394fdfd9e56ef570a16a388853b4184.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "RetireStrong-Auth-dev.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-lookup-role-328174020395-us-east-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "RetireStrong-Auth-dev.assets"
+      ],
+      "metadata": {
+        "/RetireStrong-Auth-dev": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "ManagedBy",
+                "Value": "CDK"
+              },
+              {
+                "Key": "Project",
+                "Value": "RetireStrong"
+              },
+              {
+                "Key": "Stage",
+                "Value": "dev"
+              }
+            ]
+          }
+        ],
+        "/RetireStrong-Auth-dev/UserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPool6BA7E5F2"
+          }
+        ],
+        "/RetireStrong-Auth-dev/UserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClient2F5918F7"
+          }
+        ],
+        "/RetireStrong-Auth-dev/UserPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolId"
+          }
+        ],
+        "/RetireStrong-Auth-dev/UserPoolClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClientId"
+          }
+        ],
+        "/RetireStrong-Auth-dev/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/RetireStrong-Auth-dev/Exports/Output{\"Fn::GetAtt\":[\"UserPool6BA7E5F2\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttUserPool6BA7E5F2Arn686ACC00"
+          }
+        ],
+        "/RetireStrong-Auth-dev/Exports/Output{\"Ref\":\"UserPool6BA7E5F2\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefUserPool6BA7E5F296FD7236"
+          }
+        ],
+        "/RetireStrong-Auth-dev/Exports/Output{\"Ref\":\"UserPoolClient2F5918F7\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefUserPoolClient2F5918F753847A55"
+          }
+        ],
+        "/RetireStrong-Auth-dev/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/RetireStrong-Auth-dev/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "RetireStrong-Auth-dev"
+    },
+    "RetireStrong-Data-dev.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "RetireStrong-Data-dev.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "RetireStrong-Data-dev": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://328174020395/us-east-2",
+      "properties": {
+        "templateFile": "RetireStrong-Data-dev.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "ManagedBy": "CDK",
+          "Project": "RetireStrong",
+          "Stage": "dev"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-deploy-role-328174020395-us-east-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-cfn-exec-role-328174020395-us-east-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-328174020395-us-east-2/338a4c6758376a3443e9c25bd59e3e47583c40f8c6bc26bfc9598e391d864c01.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "RetireStrong-Data-dev.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-lookup-role-328174020395-us-east-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "RetireStrong-Data-dev.assets"
+      ],
+      "metadata": {
+        "/RetireStrong-Data-dev": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "ManagedBy",
+                "Value": "CDK"
+              },
+              {
+                "Key": "Project",
+                "Value": "RetireStrong"
+              },
+              {
+                "Key": "Stage",
+                "Value": "dev"
+              }
+            ]
+          }
+        ],
+        "/RetireStrong-Data-dev/UsersTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "UsersTable9725E9C8"
+            }
+          }
+        ],
+        "/RetireStrong-Data-dev/UsersTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UsersTable9725E9C8"
+          }
+        ],
+        "/RetireStrong-Data-dev/SessionsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "SessionsTable7C302024"
+            }
+          }
+        ],
+        "/RetireStrong-Data-dev/SessionsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SessionsTable7C302024"
+          }
+        ],
+        "/RetireStrong-Data-dev/CheckinsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "CheckinsTable8511EA48"
+            }
+          }
+        ],
+        "/RetireStrong-Data-dev/CheckinsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckinsTable8511EA48"
+          }
+        ],
+        "/RetireStrong-Data-dev/LogsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "LogsTable2E519967"
+            }
+          }
+        ],
+        "/RetireStrong-Data-dev/LogsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogsTable2E519967"
+          }
+        ],
+        "/RetireStrong-Data-dev/ContentBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ContentBucket52D4B12C"
+          }
+        ],
+        "/RetireStrong-Data-dev/ContentBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ContentBucketPolicyA748B2E4"
+          }
+        ],
+        "/RetireStrong-Data-dev/ContentBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ContentBucketAutoDeleteObjectsCustomResourceC32383E7"
+          }
+        ],
+        "/RetireStrong-Data-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/RetireStrong-Data-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/RetireStrong-Data-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/RetireStrong-Data-dev/UsersTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UsersTableName"
+          }
+        ],
+        "/RetireStrong-Data-dev/SessionsTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SessionsTableName"
+          }
+        ],
+        "/RetireStrong-Data-dev/CheckinsTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckinsTableName"
+          }
+        ],
+        "/RetireStrong-Data-dev/LogsTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogsTableName"
+          }
+        ],
+        "/RetireStrong-Data-dev/ContentBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ContentBucketName"
+          }
+        ],
+        "/RetireStrong-Data-dev/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/RetireStrong-Data-dev/Exports/Output{\"Fn::GetAtt\":[\"UsersTable9725E9C8\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttUsersTable9725E9C8Arn5684EF99"
+          }
+        ],
+        "/RetireStrong-Data-dev/Exports/Output{\"Fn::GetAtt\":[\"SessionsTable7C302024\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttSessionsTable7C302024Arn24FF8012"
+          }
+        ],
+        "/RetireStrong-Data-dev/Exports/Output{\"Fn::GetAtt\":[\"CheckinsTable8511EA48\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttCheckinsTable8511EA48ArnCC914C84"
+          }
+        ],
+        "/RetireStrong-Data-dev/Exports/Output{\"Fn::GetAtt\":[\"LogsTable2E519967\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttLogsTable2E519967Arn236C837E"
+          }
+        ],
+        "/RetireStrong-Data-dev/Exports/Output{\"Fn::GetAtt\":[\"ContentBucket52D4B12C\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttContentBucket52D4B12CArn13DAF1CD"
+          }
+        ],
+        "/RetireStrong-Data-dev/Exports/Output{\"Ref\":\"UsersTable9725E9C8\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefUsersTable9725E9C857961836"
+          }
+        ],
+        "/RetireStrong-Data-dev/Exports/Output{\"Ref\":\"SessionsTable7C302024\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefSessionsTable7C3020246E1CCFDD"
+          }
+        ],
+        "/RetireStrong-Data-dev/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/RetireStrong-Data-dev/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "RetireStrong-Data-dev"
+    },
+    "RetireStrong-Api-dev.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "RetireStrong-Api-dev.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "RetireStrong-Api-dev": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://328174020395/us-east-2",
+      "properties": {
+        "templateFile": "RetireStrong-Api-dev.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "ManagedBy": "CDK",
+          "Project": "RetireStrong",
+          "Stage": "dev"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-deploy-role-328174020395-us-east-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-cfn-exec-role-328174020395-us-east-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-328174020395-us-east-2/661cd6cc9511e971dc9a3ae7197e59cb2b5272cd2c5935cf65bf4d0c62955224.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "RetireStrong-Api-dev.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-lookup-role-328174020395-us-east-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "RetireStrong-Auth-dev",
+        "RetireStrong-Data-dev",
+        "RetireStrong-Api-dev.assets"
+      ],
+      "metadata": {
+        "/RetireStrong-Api-dev": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "If you are relying on AWS SDK v2 to be present in the Lambda environment already, please explicitly configure a NodeJS runtime of Node 16 or lower. [ack: @aws-cdk/aws-lambda-nodejs:sdkV2NotInRuntime]",
+            "trace": [
+              "Annotations.addMessage (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\aws-cdk-lib@2.231.0_constructs@10.4.3\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2066)",
+              "Annotations.addWarningV2 (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\aws-cdk-lib@2.231.0_constructs@10.4.3\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:984)",
+              "new Bundling (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\aws-cdk-lib@2.231.0_constructs@10.4.3\\node_modules\\aws-cdk-lib\\aws-lambda-nodejs\\lib\\bundling.js:1:4190)",
+              "Function.bundle (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\aws-cdk-lib@2.231.0_constructs@10.4.3\\node_modules\\aws-cdk-lib\\aws-lambda-nodejs\\lib\\bundling.js:1:1141)",
+              "new NodejsFunction (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\aws-cdk-lib@2.231.0_constructs@10.4.3\\node_modules\\aws-cdk-lib\\aws-lambda-nodejs\\lib\\function.js:1:2443)",
+              "new ApiStack (D:\\work\\Retire_Strong\\packages\\infra-cdk\\lib\\api-stack.ts:79:26)",
+              "Object.<anonymous> (D:\\work\\Retire_Strong\\packages\\infra-cdk\\bin\\retire-strong.ts:41:18)",
+              "Module._compile (node:internal/modules/cjs/loader:1730:14)",
+              "Module.m._compile (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.25_typescript@5.9.3\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+              "node:internal/modules/cjs/loader:1895:10",
+              "Object.require.extensions.<computed> [as .ts] (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.25_typescript@5.9.3\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+              "Module.load (node:internal/modules/cjs/loader:1465:32)",
+              "Function._load (node:internal/modules/cjs/loader:1282:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+              "phase4 (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.25_typescript@5.9.3\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+              "bootstrap (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.25_typescript@5.9.3\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+              "main (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.25_typescript@5.9.3\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+              "Object.<anonymous> (D:\\work\\Retire_Strong\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.25_typescript@5.9.3\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1730:14)",
+              "Object.<anonymous> (node:internal/modules/cjs/loader:1895:10)",
+              "Module.load (node:internal/modules/cjs/loader:1465:32)",
+              "Function._load (node:internal/modules/cjs/loader:1282:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+              "node:internal/main/run_main_module:36:49"
+            ]
+          },
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "ManagedBy",
+                "Value": "CDK"
+              },
+              {
+                "Key": "Project",
+                "Value": "RetireStrong"
+              },
+              {
+                "Key": "Stage",
+                "Value": "dev"
+              }
+            ]
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiF70053CD"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiCloudWatchRole73EC6FC4"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiAccountA18C9B29"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiDeploymentB17BE62Db93449133b3889ba60fd5afd98ccb9a8"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/DeploymentStage.dev/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiDeploymentStagedev51EE5D56"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiEndpoint4F160690"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiOPTIONS5886EA5D"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/health/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apihealth5CB7A415"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/health/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApihealthOPTIONS119B6E46"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/health/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..health": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApihealthGETApiPermissionRetireStrongApidevApi128F3ED9GEThealthC58ADC53"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/health/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..health": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApihealthGETApiPermissionTestRetireStrongApidevApi128F3ED9GEThealthFD242CB9"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/health/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApihealthGET8A9DC1E4"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiauth161C653C"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthOPTIONSC18B26B2"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/signup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiauthsignup5EC2C73B"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/signup/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthsignupOPTIONS52BF1977"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/signup/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..auth.signup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthsignupPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTauthsignup01704A3F"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/signup/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..auth.signup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthsignupPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTauthsignup646B842B"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/signup/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthsignupPOST0DD6DBB2"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/login/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiauthlogin425AB418"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/login/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthloginOPTIONSCCF6F50B"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/login/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..auth.login": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthloginPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTauthlogin259E8B6D"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/login/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..auth.login": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthloginPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTauthlogin0B70CA71"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/login/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthloginPOSTFBEAB6D5"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/verify/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiauthverify301F49C5"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/verify/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthverifyOPTIONSA2B5DE7B"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/verify/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..auth.verify": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthverifyPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTauthverifyDC85420E"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/verify/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..auth.verify": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthverifyPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTauthverify44601477"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/verify/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthverifyPOST2B838E20"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/resend-code/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiauthresendcode0921C06F"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/resend-code/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthresendcodeOPTIONS9E386F23"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/resend-code/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..auth.resend-code": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthresendcodePOSTApiPermissionRetireStrongApidevApi128F3ED9POSTauthresendcode89E09BE2"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/resend-code/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..auth.resend-code": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthresendcodePOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTauthresendcode391A632A"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/auth/resend-code/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiauthresendcodePOSTBB7C7BF7"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiusers7F86375B"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiusersOPTIONS3D818C2B"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/onboarding/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiusersonboarding10212BEB"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/onboarding/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiusersonboardingOPTIONS111FF8A1"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/onboarding/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..users.onboarding": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiusersonboardingPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTusersonboardingD11BB5BE"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/onboarding/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..users.onboarding": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiusersonboardingPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTusersonboarding707F8182"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/onboarding/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiusersonboardingPOST91755F3E"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/me/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiusersme63562DC2"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/me/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiusersmeOPTIONS10FF5AA3"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/me/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..users.me": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiusersmeGETApiPermissionRetireStrongApidevApi128F3ED9GETusersme9FFA46BA"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/me/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..users.me": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiusersmeGETApiPermissionTestRetireStrongApidevApi128F3ED9GETusersme428DC588"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/users/me/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiusersmeGET488FD1C1"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apimotivation09DA2D8C"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationOPTIONSBBB5DA9A"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationquizED588E0C"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationquizOPTIONS37320824"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..motivation.quiz": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationquizGETApiPermissionRetireStrongApidevApi128F3ED9GETmotivationquizE01222DA"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..motivation.quiz": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationquizGETApiPermissionTestRetireStrongApidevApi128F3ED9GETmotivationquizDE737256"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationquizGETEB48E649"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apimotivationquizsubmit0E71C9C5"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationquizsubmitOPTIONS57E41D80"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..motivation.quiz.submit": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationquizsubmitPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTmotivationquizsubmit648B660E"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..motivation.quiz.submit": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationquizsubmitPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTmotivationquizsubmit6E26FF02"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/motivation/quiz/submit/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimotivationquizsubmitPOST0A47A05F"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiplans65A2B241"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplansOPTIONS138F1CE4"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/starter/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplansstarterF3D21AD5"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/starter/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplansstarterOPTIONSF7CAC649"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/starter/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..plans.starter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplansstarterPOSTApiPermissionRetireStrongApidevApi128F3ED9POSTplansstarter22E55129"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/starter/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..plans.starter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplansstarterPOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTplansstarterF6C9062C"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/starter/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplansstarterPOST7B93364A"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/current/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apiplanscurrent92E79DA2"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/current/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplanscurrentOPTIONSD166A650"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/current/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..plans.current": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplanscurrentGETApiPermissionRetireStrongApidevApi128F3ED9GETplanscurrent08F29CD3"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/current/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..plans.current": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplanscurrentGETApiPermissionTestRetireStrongApidevApi128F3ED9GETplanscurrent33907641"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/plans/current/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiplanscurrentGET2406E25E"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apisessions89D170DF"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsOPTIONS9B6C180F"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apisessionsid1D1FE0FB"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsidOPTIONS37F1B616"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/GET/ApiPermission.RetireStrongApidevApi128F3ED9.GET..sessions.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsidGETApiPermissionRetireStrongApidevApi128F3ED9GETsessionsidDF505528"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/GET/ApiPermission.Test.RetireStrongApidevApi128F3ED9.GET..sessions.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsidGETApiPermissionTestRetireStrongApidevApi128F3ED9GETsessionsid61E49161"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsidGETF1B1E18E"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsidcompleteD1247F6F"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsidcompleteOPTIONS7453A8E9"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/POST/ApiPermission.RetireStrongApidevApi128F3ED9.POST..sessions.{id}.complete": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsidcompletePOSTApiPermissionRetireStrongApidevApi128F3ED9POSTsessionsidcompleteDA3FDEC7"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/POST/ApiPermission.Test.RetireStrongApidevApi128F3ED9.POST..sessions.{id}.complete": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsidcompletePOSTApiPermissionTestRetireStrongApidevApi128F3ED9POSTsessionsidcomplete7606C46C"
+          }
+        ],
+        "/RetireStrong-Api-dev/Api/Default/sessions/{id}/complete/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApisessionsidcompletePOST4DB553F4"
+          }
+        ],
+        "/RetireStrong-Api-dev/HealthFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HealthFunctionServiceRole04552894"
+          }
+        ],
+        "/RetireStrong-Api-dev/HealthFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HealthFunctionServiceRoleDefaultPolicy57228674"
+          }
+        ],
+        "/RetireStrong-Api-dev/HealthFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HealthFunction19D7724A"
+          }
+        ],
+        "/RetireStrong-Api-dev/SignupFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignupFunctionServiceRole9A5BB887"
+          }
+        ],
+        "/RetireStrong-Api-dev/SignupFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignupFunctionServiceRoleDefaultPolicy581D58E0"
+          }
+        ],
+        "/RetireStrong-Api-dev/SignupFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignupFunction2AD1B0FF"
+          }
+        ],
+        "/RetireStrong-Api-dev/LoginFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LoginFunctionServiceRole74B42ABA"
+          }
+        ],
+        "/RetireStrong-Api-dev/LoginFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LoginFunctionServiceRoleDefaultPolicy2FE1C77C"
+          }
+        ],
+        "/RetireStrong-Api-dev/LoginFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LoginFunction66F090C6"
+          }
+        ],
+        "/RetireStrong-Api-dev/VerifyFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VerifyFunctionServiceRoleE92D7C5E"
+          }
+        ],
+        "/RetireStrong-Api-dev/VerifyFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VerifyFunctionServiceRoleDefaultPolicyDC88716F"
+          }
+        ],
+        "/RetireStrong-Api-dev/VerifyFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VerifyFunction49C44DB6"
+          }
+        ],
+        "/RetireStrong-Api-dev/ResendCodeFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResendCodeFunctionServiceRoleF1CF393B"
+          }
+        ],
+        "/RetireStrong-Api-dev/ResendCodeFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResendCodeFunctionServiceRoleDefaultPolicy914F7420"
+          }
+        ],
+        "/RetireStrong-Api-dev/ResendCodeFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResendCodeFunction059C2A19"
+          }
+        ],
+        "/RetireStrong-Api-dev/OnboardingFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OnboardingFunctionServiceRoleFA9619E2"
+          }
+        ],
+        "/RetireStrong-Api-dev/OnboardingFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OnboardingFunctionServiceRoleDefaultPolicy44075CBE"
+          }
+        ],
+        "/RetireStrong-Api-dev/OnboardingFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OnboardingFunction320572EE"
+          }
+        ],
+        "/RetireStrong-Api-dev/QuizFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuizFunctionServiceRole2A385018"
+          }
+        ],
+        "/RetireStrong-Api-dev/QuizFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuizFunctionServiceRoleDefaultPolicy94F0356B"
+          }
+        ],
+        "/RetireStrong-Api-dev/QuizFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuizFunction7BB26CF8"
+          }
+        ],
+        "/RetireStrong-Api-dev/SubmitQuizFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubmitQuizFunctionServiceRoleEEAEAD9B"
+          }
+        ],
+        "/RetireStrong-Api-dev/SubmitQuizFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubmitQuizFunctionServiceRoleDefaultPolicy8F204B8A"
+          }
+        ],
+        "/RetireStrong-Api-dev/SubmitQuizFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubmitQuizFunctionDDBB21D9"
+          }
+        ],
+        "/RetireStrong-Api-dev/ProfileFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProfileFunctionServiceRoleD83BB872"
+          }
+        ],
+        "/RetireStrong-Api-dev/ProfileFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProfileFunctionServiceRoleDefaultPolicyDEFBEB42"
+          }
+        ],
+        "/RetireStrong-Api-dev/ProfileFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProfileFunction90BDA49F"
+          }
+        ],
+        "/RetireStrong-Api-dev/StarterPlanFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StarterPlanFunctionServiceRole18E17537"
+          }
+        ],
+        "/RetireStrong-Api-dev/StarterPlanFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StarterPlanFunctionServiceRoleDefaultPolicy5376C38D"
+          }
+        ],
+        "/RetireStrong-Api-dev/StarterPlanFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StarterPlanFunctionEB7846E9"
+          }
+        ],
+        "/RetireStrong-Api-dev/CurrentPlanFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CurrentPlanFunctionServiceRole8D7D83CA"
+          }
+        ],
+        "/RetireStrong-Api-dev/CurrentPlanFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CurrentPlanFunctionServiceRoleDefaultPolicyED5D1CA0"
+          }
+        ],
+        "/RetireStrong-Api-dev/CurrentPlanFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CurrentPlanFunction9148563F"
+          }
+        ],
+        "/RetireStrong-Api-dev/GetSessionFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetSessionFunctionServiceRoleA9731598"
+          }
+        ],
+        "/RetireStrong-Api-dev/GetSessionFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetSessionFunctionServiceRoleDefaultPolicyCA010F4A"
+          }
+        ],
+        "/RetireStrong-Api-dev/GetSessionFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetSessionFunctionC8945475"
+          }
+        ],
+        "/RetireStrong-Api-dev/CompleteSessionFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CompleteSessionFunctionServiceRole0B4C7C14"
+          }
+        ],
+        "/RetireStrong-Api-dev/CompleteSessionFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CompleteSessionFunctionServiceRoleDefaultPolicy5FCD083C"
+          }
+        ],
+        "/RetireStrong-Api-dev/CompleteSessionFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CompleteSessionFunction5838EB7F"
+          }
+        ],
+        "/RetireStrong-Api-dev/ApiUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiUrl"
+          }
+        ],
+        "/RetireStrong-Api-dev/ApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiId"
+          }
+        ],
+        "/RetireStrong-Api-dev/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/RetireStrong-Api-dev/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/RetireStrong-Api-dev/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "RetireStrong-Api-dev"
+    },
+    "RetireStrong-Web-dev.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "RetireStrong-Web-dev.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "RetireStrong-Web-dev": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://328174020395/us-east-2",
+      "properties": {
+        "templateFile": "RetireStrong-Web-dev.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "ManagedBy": "CDK",
+          "Project": "RetireStrong",
+          "Stage": "dev"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-deploy-role-328174020395-us-east-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-cfn-exec-role-328174020395-us-east-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-328174020395-us-east-2/ae7fdda6fc9d1f4bdc101150cce76cc332346dd866187c27b093c383644f9543.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "RetireStrong-Web-dev.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-lookup-role-328174020395-us-east-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "RetireStrong-Api-dev",
+        "RetireStrong-Web-dev.assets"
+      ],
+      "metadata": {
+        "/RetireStrong-Web-dev": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "ManagedBy",
+                "Value": "CDK"
+              },
+              {
+                "Key": "Project",
+                "Value": "RetireStrong"
+              },
+              {
+                "Key": "Stage",
+                "Value": "dev"
+              }
+            ]
+          }
+        ],
+        "/RetireStrong-Web-dev/WebBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebBucket12880F5B"
+          }
+        ],
+        "/RetireStrong-Web-dev/WebBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebBucketPolicy95D08FAA"
+          }
+        ],
+        "/RetireStrong-Web-dev/WebBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebBucketAutoDeleteObjectsCustomResource9C1A079F"
+          }
+        ],
+        "/RetireStrong-Web-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/RetireStrong-Web-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/RetireStrong-Web-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/RetireStrong-Web-dev/WebDistribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebDistribution59C46482"
+          }
+        ],
+        "/RetireStrong-Web-dev/WebBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebBucketName"
+          }
+        ],
+        "/RetireStrong-Web-dev/DistributionId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DistributionId"
+          }
+        ],
+        "/RetireStrong-Web-dev/DistributionDomainName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DistributionDomainName"
+          }
+        ],
+        "/RetireStrong-Web-dev/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/RetireStrong-Web-dev/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/RetireStrong-Web-dev/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "RetireStrong-Web-dev"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "aws-cdk-lib/feature-flag-report": {
+      "type": "cdk:feature-flag-report",
+      "properties": {
+        "module": "aws-cdk-lib",
+        "flags": {
+          "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "recommendedValue": true,
+            "explanation": "Pass signingProfileName to CfnSigningProfile"
+          },
+          "@aws-cdk/core:newStyleStackSynthesis": {
+            "recommendedValue": true,
+            "explanation": "Switch to new stack synthesis method which enables CI/CD",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/core:stackRelativeExports": {
+            "recommendedValue": true,
+            "explanation": "Name exports based on the construct paths relative to the stack, rather than the global construct path",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "recommendedValue": true,
+            "explanation": "Disable implicit openListener when custom security groups are provided"
+          },
+          "@aws-cdk/aws-rds:lowercaseDbIdentifier": {
+            "recommendedValue": true,
+            "explanation": "Force lowercasing of RDS Cluster names in CDK",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": {
+            "recommendedValue": true,
+            "explanation": "Allow adding/removing multiple UsagePlanKeys independently",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-lambda:recognizeVersionProps": {
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to opt in to the updated logical id calculation for Lambda Version created using the  `fn.currentVersion`.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-lambda:recognizeLayerVersion": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to opt in to the updated logical id calculation for Lambda Version created using the `fn.currentVersion`."
+          },
+          "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": {
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to have cloudfront distributions use the security policy TLSv1.2_2021 by default.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/core:checkSecretUsage": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this flag to make it impossible to accidentally use SecretValues in unsafe locations"
+          },
+          "@aws-cdk/core:target-partitions": {
+            "userValue": [
+              "aws",
+              "aws-cn"
+            ],
+            "recommendedValue": [
+              "aws",
+              "aws-cn"
+            ],
+            "explanation": "What regions to include in lookup tables of environment agnostic stacks"
+          },
+          "@aws-cdk-containers/ecs-service-extensions:enableDefaultLogDriver": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "ECS extensions will automatically add an `awslogs` driver if no logging is specified"
+          },
+          "@aws-cdk/aws-ec2:uniqueImdsv2TemplateName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to have Launch Templates generated by the `InstanceRequireImdsv2Aspect` use unique names."
+          },
+          "@aws-cdk/aws-ecs:arnFormatIncludesClusterName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "ARN format used by ECS. In the new ARN format, the cluster name is part of the resource ID."
+          },
+          "@aws-cdk/aws-iam:minimizePolicies": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Minimize IAM policies by combining Statements"
+          },
+          "@aws-cdk/core:validateSnapshotRemovalPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Error on snapshot removal policies on resources that do not support it."
+          },
+          "@aws-cdk/aws-codepipeline:crossAccountKeyAliasStackSafeResourceName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Generate key aliases that include the stack name"
+          },
+          "@aws-cdk/aws-s3:createDefaultLoggingPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to create an S3 bucket policy by default in cases where an AWS service would automatically create the Policy if one does not exist."
+          },
+          "@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Restrict KMS key policy for encrypted Queues a bit more"
+          },
+          "@aws-cdk/aws-apigateway:disableCloudWatchRole": {
+            "userValue": false,
+            "recommendedValue": true,
+            "explanation": "Make default CloudWatch Role behavior safe for multiple API Gateways in one environment"
+          },
+          "@aws-cdk/core:enablePartitionLiterals": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Make ARNs concrete if AWS partition is known"
+          },
+          "@aws-cdk/aws-events:eventsTargetQueueSameAccount": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Event Rules may only push to encrypted SQS queues in the same account"
+          },
+          "@aws-cdk/aws-ecs:disableExplicitDeploymentControllerForCircuitBreaker": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Avoid setting the \"ECS\" deployment controller when adding a circuit breaker"
+          },
+          "@aws-cdk/aws-iam:importedRoleStackSafeDefaultPolicyName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this feature to create default policy names for imported roles that depend on the stack the role is in."
+          },
+          "@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use S3 Bucket Policy instead of ACLs for Server Access Logging"
+          },
+          "@aws-cdk/aws-route53-patters:useCertificate": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the official `Certificate` resource instead of `DnsValidatedCertificate`"
+          },
+          "@aws-cdk/customresources:installLatestAwsSdkDefault": {
+            "userValue": false,
+            "recommendedValue": false,
+            "explanation": "Whether to install the latest SDK by default in AwsCustomResource"
+          },
+          "@aws-cdk/aws-rds:databaseProxyUniqueResourceName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use unique resource name for Database Proxy"
+          },
+          "@aws-cdk/aws-codedeploy:removeAlarmsFromDeploymentGroup": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Remove CloudWatch alarms from deployment group"
+          },
+          "@aws-cdk/aws-apigateway:authorizerChangeDeploymentLogicalId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include authorizer configuration in the calculation of the API deployment logical ID."
+          },
+          "@aws-cdk/aws-ec2:launchTemplateDefaultUserData": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Define user data for a launch template by default when a machine image is provided."
+          },
+          "@aws-cdk/aws-secretsmanager:useAttachedSecretResourcePolicyForSecretTargetAttachments": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "SecretTargetAttachments uses the ResourcePolicy of the attached Secret."
+          },
+          "@aws-cdk/aws-redshift:columnId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Whether to use an ID to track Redshift column changes"
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:enableEmrServicePolicyV2": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable AmazonEMRServicePolicy_v2 managed policies"
+          },
+          "@aws-cdk/aws-ec2:restrictDefaultSecurityGroup": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Restrict access to the VPC default security group"
+          },
+          "@aws-cdk/aws-apigateway:requestValidatorUniqueId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Generate a unique id for each RequestValidator added to a method"
+          },
+          "@aws-cdk/aws-kms:aliasNameRef": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "KMS Alias name and keyArn will have implicit reference to KMS Key"
+          },
+          "@aws-cdk/aws-kms:applyImportedAliasPermissionsToPrincipal": {
+            "recommendedValue": true,
+            "explanation": "Enable grant methods on Aliases imported by name to use kms:ResourceAliases condition"
+          },
+          "@aws-cdk/aws-autoscaling:generateLaunchTemplateInsteadOfLaunchConfig": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Generate a launch template when creating an AutoScalingGroup"
+          },
+          "@aws-cdk/core:includePrefixInUniqueNameGeneration": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include the stack prefix in the stack name generation process"
+          },
+          "@aws-cdk/aws-efs:denyAnonymousAccess": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "EFS denies anonymous clients accesses"
+          },
+          "@aws-cdk/aws-opensearchservice:enableOpensearchMultiAzWithStandby": {
+            "recommendedValue": true,
+            "explanation": "Enables support for Multi-AZ with Standby deployment for opensearch domains"
+          },
+          "@aws-cdk/aws-lambda-nodejs:useLatestRuntimeVersion": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enables aws-lambda-nodejs.Function to use the latest available NodeJs runtime as the default"
+          },
+          "@aws-cdk/aws-efs:mountTargetOrderInsensitiveLogicalId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, mount targets will have a stable logicalId that is linked to the associated subnet."
+          },
+          "@aws-cdk/aws-rds:auroraClusterChangeScopeOfInstanceParameterGroupWithEachParameters": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, a scope of InstanceParameterGroup for AuroraClusterInstance with each parameters will change."
+          },
+          "@aws-cdk/aws-appsync:useArnForSourceApiAssociationIdentifier": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, will always use the arn for identifiers for CfnSourceApiAssociation in the GraphqlApi construct rather than id."
+          },
+          "@aws-cdk/aws-rds:preventRenderingDeprecatedCredentials": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, creating an RDS database cluster from a snapshot will only render credentials for snapshot credentials."
+          },
+          "@aws-cdk/aws-codepipeline-actions:useNewDefaultBranchForCodeCommitSource": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, the CodeCommit source action is using the default branch name 'main'."
+          },
+          "@aws-cdk/aws-cloudwatch-actions:changeLambdaPermissionLogicalIdForLambdaAction": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, the logical ID of a Lambda permission for a Lambda action includes an alarm ID."
+          },
+          "@aws-cdk/aws-codepipeline:crossAccountKeysDefaultValueToFalse": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enables Pipeline to set the default value for crossAccountKeys to false."
+          },
+          "@aws-cdk/aws-codepipeline:defaultPipelineTypeToV2": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enables Pipeline to set the default pipeline type to V2."
+          },
+          "@aws-cdk/aws-kms:reduceCrossAccountRegionPolicyScope": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, IAM Policy created from KMS key grant will reduce the resource scope to this key only."
+          },
+          "@aws-cdk/pipelines:reduceAssetRoleTrustScope": {
+            "recommendedValue": true,
+            "explanation": "Remove the root account principal from PipelineAssetsFileRole trust policy",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-eks:nodegroupNameAttribute": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
+          },
+          "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, the default volume type of the EBS volume will be GP3"
+          },
+          "@aws-cdk/aws-ecs:removeDefaultDeploymentAlarm": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, remove default deployment alarm settings"
+          },
+          "@aws-cdk/custom-resources:logApiResponseDataPropertyTrueDefault": {
+            "userValue": false,
+            "recommendedValue": false,
+            "explanation": "When enabled, the custom resource used for `AwsCustomResource` will configure the `logApiResponseData` property as true by default"
+          },
+          "@aws-cdk/aws-s3:keepNotificationInImportedBucket": {
+            "userValue": false,
+            "recommendedValue": false,
+            "explanation": "When enabled, Adding notifications to a bucket in the current stack will not remove notification from imported stack."
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:useNewS3UriParametersForBedrockInvokeModelTask": {
+            "recommendedValue": true,
+            "explanation": "When enabled, use new props for S3 URI field in task definition of state machine for bedrock invoke model.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/core:explicitStackTags": {
+            "recommendedValue": true,
+            "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
+          },
+          "@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature": {
+            "recommendedValue": false,
+            "explanation": "When set to true along with canContainersAccessInstanceRole=false in ECS cluster, new updated commands will be added to UserData to block container accessing IMDS. **Applicable to Linux only. IMPORTANT: See [details.](#aws-cdkaws-ecsenableImdsBlockingDeprecatedFeature)**"
+          },
+          "@aws-cdk/aws-ecs:disableEcsImdsBlocking": {
+            "recommendedValue": true,
+            "explanation": "When set to true, CDK synth will throw exception if canContainersAccessInstanceRole is false. **IMPORTANT: See [details.](#aws-cdkaws-ecsdisableEcsImdsBlocking)**"
+          },
+          "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, we will only grant the necessary permissions when users specify cloudwatch log group through logConfiguration"
+          },
+          "@aws-cdk/aws-dynamodb:resourcePolicyPerReplica": {
+            "recommendedValue": true,
+            "explanation": "When enabled will allow you to specify a resource policy per replica, and not copy the source table policy to all replicas"
+          },
+          "@aws-cdk/aws-ec2:ec2SumTImeoutEnabled": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, initOptions.timeout and resourceSignalTimeout values will be summed together."
+          },
+          "@aws-cdk/aws-appsync:appSyncGraphQLAPIScopeLambdaPermission": {
+            "recommendedValue": true,
+            "explanation": "When enabled, a Lambda authorizer Permission created when using GraphqlApi will be properly scoped with a SourceArn."
+          },
+          "@aws-cdk/aws-rds:setCorrectValueForDatabaseInstanceReadReplicaInstanceResourceId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, the value of property `instanceResourceId` in construct `DatabaseInstanceReadReplica` will be set to the correct value which is `DbiResourceId` instead of currently `DbInstanceArn`"
+          },
+          "@aws-cdk/core:cfnIncludeRejectComplexResourceUpdateCreatePolicyIntrinsics": {
+            "recommendedValue": true,
+            "explanation": "When enabled, CFN templates added with `cfn-include` will error if the template contains Resource Update or Create policies with CFN Intrinsics that include non-primitive values."
+          },
+          "@aws-cdk/aws-lambda-nodejs:sdkV3ExcludeSmithyPackages": {
+            "recommendedValue": true,
+            "explanation": "When enabled, both `@aws-sdk` and `@smithy` packages will be excluded from the Lambda Node.js 18.x runtime to prevent version mismatches in bundled applications."
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:fixRunEcsTaskPolicy": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the resource of IAM Run Ecs policy generated by SFN EcsRunTask will reference the definition, instead of constructing ARN."
+          },
+          "@aws-cdk/aws-ec2:bastionHostUseAmazonLinux2023ByDefault": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the BastionHost construct will use the latest Amazon Linux 2023 AMI, instead of Amazon Linux 2."
+          },
+          "@aws-cdk/core:aspectStabilization": {
+            "recommendedValue": true,
+            "explanation": "When enabled, a stabilization loop will be run when invoking Aspects during synthesis.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-route53-targets:userPoolDomainNameMethodWithoutCustomResource": {
+            "recommendedValue": true,
+            "explanation": "When enabled, use a new method for DNS Name of user pool domain target without creating a custom resource."
+          },
+          "@aws-cdk/aws-elasticloadbalancingV2:albDualstackWithoutPublicIpv4SecurityGroupRulesDefault": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the default security group ingress rules will allow IPv6 ingress from anywhere"
+          },
+          "@aws-cdk/aws-iam:oidcRejectUnauthorizedConnections": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the default behaviour of OIDC provider will reject unauthorized connections"
+          },
+          "@aws-cdk/core:enableAdditionalMetadataCollection": {
+            "recommendedValue": true,
+            "explanation": "When enabled, CDK will expand the scope of usage data collected to better inform CDK development and improve communication for security concerns and emerging issues."
+          },
+          "@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy": {
+            "recommendedValue": false,
+            "explanation": "[Deprecated] When enabled, Lambda will create new inline policies with AddToRolePolicy instead of adding to the Default Policy Statement"
+          },
+          "@aws-cdk/aws-s3:setUniqueReplicationRoleName": {
+            "recommendedValue": true,
+            "explanation": "When enabled, CDK will automatically generate a unique role name that is used for s3 object replication."
+          },
+          "@aws-cdk/pipelines:reduceStageRoleTrustScope": {
+            "recommendedValue": true,
+            "explanation": "Remove the root account principal from Stage addActions trust policy",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-events:requireEventBusPolicySid": {
+            "recommendedValue": true,
+            "explanation": "When enabled, grantPutEventsTo() will use resource policies with Statement IDs for service principals."
+          },
+          "@aws-cdk/core:aspectPrioritiesMutating": {
+            "recommendedValue": true,
+            "explanation": "When set to true, Aspects added by the construct library on your behalf will be given a priority of MUTATING."
+          },
+          "@aws-cdk/aws-dynamodb:retainTableReplica": {
+            "recommendedValue": true,
+            "explanation": "When enabled, table replica will be default to the removal policy of source table unless specified otherwise."
+          },
+          "@aws-cdk/cognito:logUserPoolClientSecretValue": {
+            "recommendedValue": false,
+            "explanation": "When disabled, the value of the user pool client secret will not be logged in the custom resource lambda function logs."
+          },
+          "@aws-cdk/pipelines:reduceCrossAccountActionRoleTrustScope": {
+            "recommendedValue": true,
+            "explanation": "When enabled, scopes down the trust policy for the cross-account action role",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-stepfunctions:useDistributedMapResultWriterV2": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the resultWriterV2 property of DistributedMap will be used insted of resultWriter"
+          },
+          "@aws-cdk/s3-notifications:addS3TrustKeyPolicyForSnsSubscriptions": {
+            "recommendedValue": true,
+            "explanation": "Add an S3 trust policy to a KMS key resource policy for SNS subscriptions."
+          },
+          "@aws-cdk/aws-ec2:requirePrivateSubnetsForEgressOnlyInternetGateway": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the EgressOnlyGateway resource is only created if private subnets are defined in the dual-stack VPC."
+          },
+          "@aws-cdk/aws-ec2-alpha:useResourceIdForVpcV2Migration": {
+            "recommendedValue": false,
+            "explanation": "When enabled, use resource IDs for VPC V2 migration"
+          },
+          "@aws-cdk/aws-s3:publicAccessBlockedByDefault": {
+            "recommendedValue": true,
+            "explanation": "When enabled, setting any combination of options for BlockPublicAccess will automatically set true for any options not defined."
+          },
+          "@aws-cdk/aws-lambda:useCdkManagedLogGroup": {
+            "recommendedValue": true,
+            "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "recommendedValue": true,
+            "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:httpInvokeDynamicJsonPathEndpoint": {
+            "recommendedValue": true,
+            "explanation": "When enabled, allows using a dynamic apiEndpoint with JSONPath format in HttpInvoke tasks.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "recommendedValue": true,
+            "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          }
+        }
+      }
+    }
+  },
+  "minimumCliVersion": "2.1033.0"
+}

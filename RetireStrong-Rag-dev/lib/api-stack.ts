@@ -1,0 +1,501 @@
+import * as cdk from "aws-cdk-lib";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as lambdaNodejs from "aws-cdk-lib/aws-lambda-nodejs";
+import * as cognito from "aws-cdk-lib/aws-cognito";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as iam from "aws-cdk-lib/aws-iam";
+import { Construct } from "constructs";
+
+export interface ApiStackProps extends cdk.StackProps {
+  stage: string;
+  userPool: cognito.UserPool;
+  userPoolClient: cognito.UserPoolClient;
+  usersTable: dynamodb.Table;
+  sessionsTable: dynamodb.Table;
+  checkinsTable: dynamodb.Table;
+  logsTable: dynamodb.Table;
+  contentBucket: s3.Bucket;
+  ragCollectionEndpoint: string;
+}
+
+export class ApiStack extends cdk.Stack {
+  public readonly api: apigateway.RestApi;
+  public readonly apiUrl: string;
+
+  constructor(scope: Construct, id: string, props: ApiStackProps) {
+    super(scope, id, props);
+
+    // API Gateway
+    this.api = new apigateway.RestApi(this, "Api", {
+      restApiName: `retire-strong-api-${props.stage}`,
+      description: `Retire Strong API (${props.stage})`,
+      defaultCorsPreflightOptions: {
+        allowOrigins: [
+          `https://${props.stage === "prod" ? "app" : `${props.stage}.app`}.retirestrong.com`,
+          "http://localhost:3000",
+        ],
+        allowMethods: apigateway.Cors.ALL_METHODS,
+        allowHeaders: ["Content-Type", "Authorization"],
+      },
+      deployOptions: {
+        stageName: props.stage,
+        loggingLevel: apigateway.MethodLoggingLevel.INFO,
+        dataTraceEnabled: true,
+      },
+    });
+
+    // Add Gateway Responses to include CORS headers in API Gateway error responses
+    // This handles 4xx/5xx errors from API Gateway itself
+    // Lambda responses use the CORS helper functions in apps/api-gateway/src/lib/cors.ts
+    const corsResponseParameters = {
+      "gatewayresponse.header.Access-Control-Allow-Origin": "'http://localhost:3000'",
+      "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+      "gatewayresponse.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+    };
+
+    new apigateway.GatewayResponse(this, "Default4xxResponse", {
+      restApi: this.api,
+      type: apigateway.ResponseType.DEFAULT_4XX,
+      responseHeaders: corsResponseParameters,
+    });
+
+    new apigateway.GatewayResponse(this, "Default5xxResponse", {
+      restApi: this.api,
+      type: apigateway.ResponseType.DEFAULT_5XX,
+      responseHeaders: corsResponseParameters,
+    });
+
+    // Cognito Authorizer (will be created and attached when needed for protected endpoints)
+    // Example usage when needed:
+    // const cognitoAuthorizer = new apigateway.CognitoUserPoolsAuthorizer(this, "CognitoAuthorizer", {
+    //   cognitoUserPools: [props.userPool],
+    //   identitySource: apigateway.IdentitySource.header("Authorization"),
+    // });
+    // Then use in addMethod: resource.addMethod("GET", integration, { authorizer: cognitoAuthorizer });
+
+    // Common Lambda configuration - optimized for performance
+    const commonBundling = {
+      minify: true, // Enable minification to reduce bundle size and cold start time
+      sourceMap: false, // Disable source maps in production for smaller bundles
+      target: "es2022",
+      format: lambdaNodejs.OutputFormat.CJS,
+      externalModules: ["aws-sdk", "@aws-sdk/*"], // Exclude AWS SDK (available in Lambda runtime)
+      bundle: true,
+      projectRoot: "../../",
+    };
+
+    const commonEnvironment = {
+      STAGE: props.stage,
+      NODE_ENV: props.stage === "prod" ? "production" : "development",
+      // Note: AWS_REGION is automatically provided by Lambda runtime, don't set it manually
+      COGNITO_USER_POOL_ID: props.userPool.userPoolId,
+      COGNITO_CLIENT_ID: props.userPoolClient.userPoolClientId,
+      DYNAMO_TABLE_USERS: props.usersTable.tableName,
+      DYNAMO_TABLE_SESSIONS: props.sessionsTable.tableName,
+    };
+
+    // Health Lambda
+    const healthLambda = new lambdaNodejs.NodejsFunction(this, "HealthFunction", {
+      functionName: `retire-strong-health-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/health.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: {
+        STAGE: props.stage,
+        NODE_ENV: props.stage === "prod" ? "production" : "development",
+      },
+    });
+
+    // Signup Lambda
+    const signupLambda = new lambdaNodejs.NodejsFunction(this, "SignupFunction", {
+      functionName: `retire-strong-signup-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/auth/signup.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    // Login Lambda
+    const loginLambda = new lambdaNodejs.NodejsFunction(this, "LoginFunction", {
+      functionName: `retire-strong-login-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/auth/login.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    // Verify Email Lambda
+    const verifyLambda = new lambdaNodejs.NodejsFunction(this, "VerifyFunction", {
+      functionName: `retire-strong-verify-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/auth/verify.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    // Resend Verification Code Lambda
+    const resendCodeLambda = new lambdaNodejs.NodejsFunction(this, "ResendCodeFunction", {
+      functionName: `retire-strong-resend-code-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/auth/resend-code.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    // Onboarding Lambda
+    const onboardingLambda = new lambdaNodejs.NodejsFunction(this, "OnboardingFunction", {
+      functionName: `retire-strong-onboarding-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/users/onboarding.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    // Quiz Lambda (GET questions)
+    const quizLambda = new lambdaNodejs.NodejsFunction(this, "QuizFunction", {
+      functionName: `retire-strong-quiz-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/motivation/quiz.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    // Submit Quiz Lambda
+    const submitQuizLambda = new lambdaNodejs.NodejsFunction(this, "SubmitQuizFunction", {
+      functionName: `retire-strong-submit-quiz-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/motivation/submit.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    // Profile Lambda (GET /users/me)
+    const profileLambda = new lambdaNodejs.NodejsFunction(this, "ProfileFunction", {
+      functionName: `retire-strong-profile-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/users/profile.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    const starterPlanLambda = new lambdaNodejs.NodejsFunction(this, "StarterPlanFunction", {
+      functionName: `retire-strong-plan-starter-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/plans/starter.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    const currentPlanLambda = new lambdaNodejs.NodejsFunction(this, "CurrentPlanFunction", {
+      functionName: `retire-strong-plan-current-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/plans/current.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    const getSessionLambda = new lambdaNodejs.NodejsFunction(this, "GetSessionFunction", {
+      functionName: `retire-strong-session-get-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/sessions/get.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    const completeSessionLambda = new lambdaNodejs.NodejsFunction(this, "CompleteSessionFunction", {
+      functionName: `retire-strong-session-complete-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/sessions/complete.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      bundling: commonBundling,
+      environment: commonEnvironment,
+    });
+
+    // ============================================
+    // MILESTONE 3: Coach Engine Lambda Functions
+    // ============================================
+
+    const coachEnvironment = {
+      ...commonEnvironment,
+      DYNAMO_TABLE_LOGS: props.logsTable.tableName,
+      DYNAMO_TABLE_CHECKINS: props.checkinsTable.tableName,
+      // Bedrock model IDs
+      BEDROCK_CLAUDE_MODEL_ID: "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+      BEDROCK_TITAN_EMBED_MODEL_ID: "amazon.titan-embed-text-v2:0",
+      OPENSEARCH_ENDPOINT: props.ragCollectionEndpoint,
+    };
+
+    // Coach Chat Lambda (Milestone 3)
+    const coachChatLambda = new lambdaNodejs.NodejsFunction(this, "CoachChatFunction", {
+      functionName: `retire-strong-coach-chat-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/coach/chat.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(60), // Increased for LLM calls
+      memorySize: 1024, // Increased for LLM processing
+      bundling: {
+        ...commonBundling,
+        commandHooks: {
+          beforeBundling(inputDir: string, outputDir: string): string[] {
+            return [
+              `mkdir -p ${outputDir}/content/seed`,
+              `cp -r ${inputDir}/content/seed/* ${outputDir}/content/seed/`
+            ];
+          },
+          beforeInstall() { return []; },
+          afterBundling() { return []; }
+        }
+      },
+      environment: coachEnvironment,
+    });
+
+    // Explain Plan Lambda (Milestone 3)
+    const explainPlanLambda = new lambdaNodejs.NodejsFunction(this, "ExplainPlanFunction", {
+      functionName: `retire-strong-explain-plan-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/coach/explain-plan.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(60),
+      memorySize: 1024,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // ============================================
+    // MILESTONE 4: Check-in Lambda Functions
+    // ============================================
+
+    // Create Session Check-in Lambda
+    const createSessionCheckinLambda = new lambdaNodejs.NodejsFunction(this, "CreateSessionCheckinFunction", {
+      functionName: `retire-strong-checkin-session-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/checkins/create-session-checkin.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 512,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // Create Weekly Check-in Lambda
+    const createWeeklyCheckinLambda = new lambdaNodejs.NodejsFunction(this, "CreateWeeklyCheckinFunction", {
+      functionName: `retire-strong-checkin-weekly-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/checkins/create-weekly-checkin.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 512,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // Get Check-ins Lambda
+    const getCheckinsLambda = new lambdaNodejs.NodejsFunction(this, "GetCheckinsFunction", {
+      functionName: `retire-strong-checkins-get-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/checkins/get-checkins.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 512,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // Get Adherence Summary Lambda
+    const adherenceSummaryLambda = new lambdaNodejs.NodejsFunction(this, "AdherenceSummaryFunction", {
+      functionName: `retire-strong-adherence-summary-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "../../apps/api-gateway/src/handlers/checkins/adherence-summary.ts",
+      handler: "handler",
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 512,
+      bundling: commonBundling,
+      environment: coachEnvironment,
+    });
+
+    // Grant Lambda permissions to DynamoDB tables
+    const lambdas = [
+      healthLambda,
+      signupLambda,
+      loginLambda,
+      verifyLambda,
+      resendCodeLambda,
+      onboardingLambda,
+      quizLambda,
+      submitQuizLambda,
+      profileLambda,
+      starterPlanLambda,
+      currentPlanLambda,
+      getSessionLambda,
+      completeSessionLambda,
+      coachChatLambda,
+      explainPlanLambda,
+      createSessionCheckinLambda,
+      createWeeklyCheckinLambda,
+      getCheckinsLambda,
+      adherenceSummaryLambda,
+    ];
+    lambdas.forEach((lambdaFn) => {
+      props.usersTable.grantReadWriteData(lambdaFn);
+      props.sessionsTable.grantReadWriteData(lambdaFn);
+      props.checkinsTable.grantReadWriteData(lambdaFn);
+      props.logsTable.grantReadWriteData(lambdaFn);
+      props.contentBucket.grantRead(lambdaFn);
+    });
+
+    // Grant Cognito permissions to auth lambdas
+    props.userPool.grant(signupLambda, "cognito-idp:AdminCreateUser", "cognito-idp:AdminSetUserPassword");
+    props.userPool.grant(loginLambda, "cognito-idp:AdminInitiateAuth");
+    // Verify and resend code use public Cognito APIs (no admin permissions needed)
+
+    // Grant Bedrock permissions to coach lambdas (Milestone 3)
+    const bedrockPolicy = new iam.PolicyStatement({
+      actions: [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream",
+      ],
+      resources: [
+        `arn:aws:bedrock:${this.region}:${this.account}:inference-profile/us.anthropic.claude-3-5-sonnet-20241022-v2:0`,
+        `arn:aws:bedrock:*::foundation-model/anthropic.claude-3-5-sonnet-20241022-v2:0`,
+        `arn:aws:bedrock:${this.region}::foundation-model/amazon.titan-embed-text-v2:0`,
+      ],
+    });
+
+    coachChatLambda.addToRolePolicy(bedrockPolicy);
+    explainPlanLambda.addToRolePolicy(bedrockPolicy);
+
+    // API Routes
+
+    // Health endpoint (no auth required)
+    const healthResource = this.api.root.addResource("health");
+    healthResource.addMethod("GET", new apigateway.LambdaIntegration(healthLambda));
+
+    // Auth routes
+    const authResource = this.api.root.addResource("auth");
+    const signupResource = authResource.addResource("signup");
+    signupResource.addMethod("POST", new apigateway.LambdaIntegration(signupLambda));
+
+    const loginResource = authResource.addResource("login");
+    loginResource.addMethod("POST", new apigateway.LambdaIntegration(loginLambda));
+
+    const verifyResource = authResource.addResource("verify");
+    verifyResource.addMethod("POST", new apigateway.LambdaIntegration(verifyLambda));
+
+    const resendCodeResource = authResource.addResource("resend-code");
+    resendCodeResource.addMethod("POST", new apigateway.LambdaIntegration(resendCodeLambda));
+
+    // Users routes
+    const usersResource = this.api.root.addResource("users");
+    const onboardingResource = usersResource.addResource("onboarding");
+    onboardingResource.addMethod("POST", new apigateway.LambdaIntegration(onboardingLambda));
+
+    const meResource = usersResource.addResource("me");
+    meResource.addMethod("GET", new apigateway.LambdaIntegration(profileLambda));
+
+    // Motivation routes
+    const motivationResource = this.api.root.addResource("motivation");
+    const quizResource = motivationResource.addResource("quiz");
+    quizResource.addMethod("GET", new apigateway.LambdaIntegration(quizLambda));
+
+    const submitResource = quizResource.addResource("submit");
+    submitResource.addMethod("POST", new apigateway.LambdaIntegration(submitQuizLambda));
+
+    // Plans routes
+    const plansResource = this.api.root.addResource("plans");
+    const starterPlanResource = plansResource.addResource("starter");
+    starterPlanResource.addMethod("POST", new apigateway.LambdaIntegration(starterPlanLambda));
+
+    const currentPlanResource = plansResource.addResource("current");
+    currentPlanResource.addMethod("GET", new apigateway.LambdaIntegration(currentPlanLambda));
+
+    // Sessions routes
+    const sessionsResource = this.api.root.addResource("sessions");
+    const sessionIdResource = sessionsResource.addResource("{id}");
+    sessionIdResource.addMethod("GET", new apigateway.LambdaIntegration(getSessionLambda));
+    const completeSessionResource = sessionIdResource.addResource("complete");
+    completeSessionResource.addMethod("POST", new apigateway.LambdaIntegration(completeSessionLambda));
+
+    // ============================================
+    // MILESTONE 3: Coach Routes
+    // ============================================
+
+    const coachResource = this.api.root.addResource("coach");
+    const chatResource = coachResource.addResource("chat");
+    chatResource.addMethod("POST", new apigateway.LambdaIntegration(coachChatLambda));
+
+    const explainResource = coachResource.addResource("explain-plan");
+    explainResource.addMethod("POST", new apigateway.LambdaIntegration(explainPlanLambda));
+
+    // ============================================
+    // MILESTONE 4: Check-in Routes
+    // ============================================
+
+    const checkinsResource = this.api.root.addResource("checkins");
+
+    const sessionCheckinResource = checkinsResource.addResource("session");
+    sessionCheckinResource.addMethod("POST", new apigateway.LambdaIntegration(createSessionCheckinLambda));
+
+    const weeklyCheckinResource = checkinsResource.addResource("weekly");
+    weeklyCheckinResource.addMethod("POST", new apigateway.LambdaIntegration(createWeeklyCheckinLambda));
+
+    // GET /checkins - list check-ins
+    checkinsResource.addMethod("GET", new apigateway.LambdaIntegration(getCheckinsLambda));
+
+    const adherenceResource = checkinsResource.addResource("adherence-summary");
+    adherenceResource.addMethod("GET", new apigateway.LambdaIntegration(adherenceSummaryLambda));
+
+    // Outputs
+    this.apiUrl = this.api.url;
+
+    new cdk.CfnOutput(this, "ApiUrl", {
+      value: this.api.url,
+      exportName: `RetireStrong-ApiUrl-${props.stage}`,
+    });
+
+    new cdk.CfnOutput(this, "ApiId", {
+      value: this.api.restApiId,
+      exportName: `RetireStrong-ApiId-${props.stage}`,
+    });
+  }
+}
+

@@ -112,18 +112,18 @@ export default function TodayPage() {
 
   // Generate motivational message based on adherence
   const getMotivationalMessage = () => {
-    if (!adherenceSummary) return "You're doing great! Keep up the momentum.";
+    if (!adherenceSummary) return "You&apos;re doing great! Keep up the momentum.";
 
     if (adherenceSummary.adherenceRate >= 0.8) {
-      return "🌟 You're on fire! Your consistency is impressive.";
+      return "🌟 You&apos;re on fire! Your consistency is impressive.";
     } else if (adherenceSummary.adherenceRate >= 0.6) {
-      return "💪 You're building great habits! Keep it going.";
+      return "💪 You&apos;re building great habits! Keep it going.";
     } else if (adherenceSummary.recentSkipStreak >= 3) {
       return "We noticed you've been away. No worries—today is a perfect day for a fresh start!";
     } else if (adherenceSummary.adherenceRate < 0.5) {
-      return "Every small step counts. Let's make today count!";
+      return "Every small step counts. Let&apos;s make today count!";
     }
-    return "You're making progress! Stay consistent and you'll see results.";
+    return "You&apos;re making progress! Stay consistent and you&apos;ll see results.";
   };
 
   // Get insight based on trends
@@ -134,7 +134,7 @@ export default function TodayPage() {
       return {
         type: "warning",
         title: "Pain Management",
-        message: "We've noticed increasing pain levels. Today's session has been adjusted for comfort. Consider consulting your healthcare provider if pain persists."
+        message: "We&apos;ve noticed increasing pain levels. Today&apos;s session has been adjusted for comfort. Consider consulting your healthcare provider if pain persists."
       };
     }
 
@@ -142,15 +142,15 @@ export default function TodayPage() {
       return {
         type: "success",
         title: "Ready to Progress",
-        message: "You're getting stronger! We've added some gentle progressions to keep you challenged."
+        message: "You&apos;re getting stronger! We&apos;ve added some gentle progressions to keep you challenged."
       };
     }
 
     if (dropoffRisk?.riskLevel === "high") {
       return {
         type: "info",
-        title: "Let's Adjust",
-        message: dropoffRisk.recommendations[0] || "We've simplified today's session to help you get back on track."
+        title: "Let&apos;s Adjust",
+        message: dropoffRisk.recommendations[0] || "We&apos;ve simplified today&apos;s session to help you get back on track."
       };
     }
 
@@ -185,7 +185,7 @@ export default function TodayPage() {
         {showWelcome && (
           <Card title="Welcome!" subtitle="Your profile is complete" className="border-2 border-primary/20 bg-primary/5 mb-6">
             <p className="text-lg sm:text-xl text-gray-700 mb-6 leading-relaxed">
-              Great! We've set up your personalized wellness plan. Let's get started with your first session.
+              Great! We&apos;ve set up your personalized wellness plan. Let&apos;s get started with your first session.
             </p>
             <button
               onClick={() => setShowWelcome(false)}

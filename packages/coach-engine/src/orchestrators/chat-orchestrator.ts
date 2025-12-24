@@ -51,9 +51,12 @@ export class ChatOrchestrator {
 
     if (useRag) {
       try {
+        // Lower similarity threshold for user-facing chat queries so recent
+        // or more loosely-worded matches can be surfaced.
         const ragResult = await queryRag({
           query: userMessage,
           limit: 3,
+          minSimilarity: 0.4,
         });
 
         if (ragResult.results.length > 0) {

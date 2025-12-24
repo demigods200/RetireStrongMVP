@@ -1,0 +1,35 @@
+{
+    "item": [
+        {
+            "deploymentId": "3vxm45",
+            "stageName": "dev",
+            "cacheClusterEnabled": false,
+            "cacheClusterStatus": "NOT_AVAILABLE",
+            "methodSettings": {
+                "*/*": {
+                    "metricsEnabled": false,
+                    "loggingLevel": "INFO",
+                    "dataTraceEnabled": true,
+                    "throttlingBurstLimit": 5000,
+                    "throttlingRateLimit": 10000.0,
+                    "cachingEnabled": false,
+                    "cacheTtlInSeconds": 300,
+                    "cacheDataEncrypted": false,
+                    "requireAuthorizationForCacheControl": true,
+                    "unauthorizedCacheControlHeaderStrategy": "SUCCEED_WITH_RESPONSE_HEADER"
+                }
+            },
+            "tracingEnabled": false,
+            "tags": {
+                "ManagedBy": "CDK",
+                "Project": "RetireStrong",
+                "Stage": "dev",
+                "aws:cloudformation:logical-id": "ApiDeploymentStagedev51EE5D56",
+                "aws:cloudformation:stack-id": "arn:aws:cloudformation:us-east-2:328174020395:stack/RetireStrong-Api-dev/c036a4c0-da54-11f0-9fc3-0605a8a4e397",
+                "aws:cloudformation:stack-name": "RetireStrong-Api-dev"
+            },
+            "createdDate": "2025-12-16T07:57:58+00:00",
+            "lastUpdatedDate": "2025-12-18T03:15:23+00:00"
+        }
+    ]
+}

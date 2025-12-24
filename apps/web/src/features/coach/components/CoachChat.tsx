@@ -68,10 +68,10 @@ export function CoachChat({ userId }: CoachChatProps) {
 
       if (!response.ok || !data.success) {
         // More helpful error messages based on the error type
-        let errorMessage = "I'm having trouble responding right now. Please try again.";
+        let errorMessage = "I&apos;m having trouble responding right now. Please try again.";
 
         if (response.status === 500) {
-          errorMessage = "I'm experiencing technical difficulties. Please try again in a moment.";
+          errorMessage = "I&apos;m experiencing technical difficulties. Please try again in a moment.";
         } else if (response.status === 400) {
           errorMessage = "I didn't quite understand that. Could you try rephrasing your question?";
         } else if (response.status === 429) {
@@ -143,7 +143,7 @@ export function CoachChat({ userId }: CoachChatProps) {
           <div className="h-96 overflow-y-auto border border-gray-200 rounded-lg p-4 space-y-4 bg-gray-50">
             {messages.length === 0 && (
               <div className="text-center text-gray-500 py-8">
-                <p className="text-lg">👋 Hi! I'm your Retire Strong Coach.</p>
+                <p className="text-lg">👋 Hi! I&apos;m your Retire Strong Coach.</p>
                 <p className="mt-2">Ask me anything about your exercise plan, movement, or wellness journey.</p>
               </div>
             )}

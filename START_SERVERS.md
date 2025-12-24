@@ -20,10 +20,13 @@ pnpm dev
 ```
 
 ### Terminal 2: Web App (Frontend)
+If you only need to run the frontend locally and point it to the deployed API Gateway, run:
 ```bash
-cd ~/Documents/Retire\ Strong/RetireStrongMVP/apps/web
-pnpm dev
+cd ~/Documents/Retire\ Strong/RetireStrongMVP
+pnpm dev:web
 ```
+
+This will start the Next dev server only (http://localhost:3000) and the frontend will use the deployed API Gateway URL set in `apps/web/.env.local` (or the project root `.env.local` via `NEXT_PUBLIC_API_URL`).
 
 **Expected output:**
 ```

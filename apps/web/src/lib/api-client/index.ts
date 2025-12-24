@@ -31,10 +31,11 @@ export async function apiRequest<T>(
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: "Request failed" }));
+    const error = (await response.json().catch(() => ({ message: "Request failed" }))) as { message?: string };
     throw new Error(error.message || `HTTP error! status: ${response.status}`);
   }
 
-  return response.json();
+  const data = (await response.json().catch(() => ({}))) as T;
+  return data;
 }
 

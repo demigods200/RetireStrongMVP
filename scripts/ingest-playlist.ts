@@ -50,6 +50,7 @@ function getPlaylistVideos(url: string) {
         const output = execSync(`yt-dlp --flat-playlist -J "${url}"`, { maxBuffer: 1024 * 1024 * 10 }).toString();
         const data = JSON.parse(output);
 
+        // Playlist response (entries array)
         if (data.entries) {
             return data.entries.map((entry: any) => ({
                 id: entry.id,
@@ -58,6 +59,17 @@ function getPlaylistVideos(url: string) {
                 duration: entry.duration,
             }));
         }
+
+        // Single video response (yt-dlp -J on a single video)
+        if (data.id) {
+            return [{
+                id: data.id,
+                title: data.title || data.id,
+                url: data.webpage_url || `https://www.youtube.com/watch?v=${data.id}`,
+                duration: data.duration,
+            }];
+        }
+
         return [];
     } catch (e: any) {
         console.error('Failed to fetch playlist:', e.message);
@@ -114,10 +126,13 @@ function deleteFileAfterRead(path: string) {
 // ---------------------------------------------------------
 // Step 3: Chunking & Indexing
 // ---------------------------------------------------------
+const MAX_VIDEOS = parseInt(process.argv[3] || process.env.INGEST_MAX || '0');
+
 async function ingest() {
     await vectorStore.ensureIndex();
 
-    const videos = getPlaylistVideos(PLAYLIST_URL);
+    let videos = getPlaylistVideos(PLAYLIST_URL);
+    if (MAX_VIDEOS && MAX_VIDEOS > 0) videos = videos.slice(0, MAX_VIDEOS);
     console.log(`Found ${videos.length} videos.`);
 
     for (const video of videos) {

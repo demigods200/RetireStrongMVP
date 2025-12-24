@@ -92,7 +92,7 @@ export default function OnboardingResultPage() {
           </div>
 
           {/* Success Card */}
-          <Card title="Profile Summary" subtitle="Here's what we've saved">
+          <Card title="Profile Summary" subtitle="Here&apos;s what we&apos;ve saved">
             <div className="space-y-8 sm:space-y-10">
               {/* Demographics */}
               {result.onboardingData?.demographics && (

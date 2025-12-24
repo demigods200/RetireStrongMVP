@@ -59,6 +59,7 @@ export const VerifyEmailForm: React.FC = () => {
         setError(data.error?.message || "Verification failed");
       }
     } catch (err) {
+      console.error(err);
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -90,6 +91,7 @@ export const VerifyEmailForm: React.FC = () => {
         setError(data.error?.message || "Failed to resend code");
       }
     } catch (err) {
+      console.error(err);
       setError("An error occurred. Please try again.");
     } finally {
       setResending(false);
@@ -166,7 +168,7 @@ export const VerifyEmailForm: React.FC = () => {
             {resending ? "Sending..." : "Resend Code"}
           </button>
           <p className="text-sm sm:text-base text-gray-600">
-            Didn't receive the code? Check your spam folder or click "Resend Code"
+            Didn&apos;t receive the code? Check your spam folder or click &quot;Resend Code&quot;
           </p>
         </div>
 

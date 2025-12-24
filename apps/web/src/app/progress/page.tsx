@@ -405,7 +405,7 @@ export default function ProgressPage() {
           <Card title="Start Tracking" subtitle="Complete sessions to see your progress">
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
               As you complete sessions and check-ins, your progress will be tracked here.
-              You'll see trends in adherence, difficulty, pain management, and energy levels.
+              You&apos;ll see trends in adherence, difficulty, pain management, and energy levels.
             </p>
             <Link href="/plan">
               <Button size="lg" className="w-full">View Your Plan</Button>

@@ -4,7 +4,14 @@ import * as dotenv from 'dotenv';
 import { OpenSearchVectorStore } from '../packages/content-rag/src/store/vector-store';
 import type { RagChunk } from '../packages/content-rag/src/types/collections';
 
-dotenv.config({ path: '.env.local' });
+// Try loading multiple .env files so the script works when run from repo root
+// and when env vars are stored under apps/api-gateway/.env or in .env
+const dotenvResult: any = dotenv.config({ path: ['.env.local', '.env', 'apps/api-gateway/.env'] });
+if (dotenvResult && dotenvResult.parsed) {
+    console.log(`Loaded environment file with ${Object.keys(dotenvResult.parsed).length} entries`);
+} else {
+    console.log('No .env file loaded by dotenv; relying on process environment');
+}
 
 const SEED_DIR = join(__dirname, '../content/seed');
 const OPENSEARCH_ENDPOINT = process.env.OPENSEARCH_ENDPOINT;

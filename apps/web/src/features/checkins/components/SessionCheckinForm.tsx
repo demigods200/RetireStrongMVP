@@ -118,7 +118,7 @@ export function SessionCheckinForm({
     <div className="space-y-6">
       <div>
         <label className="block text-lg font-semibold text-gray-900 mb-3">
-          How challenging was today's session?
+          How challenging was today&apos;s session?
         </label>
         <div className="space-y-2">
           {[
@@ -309,7 +309,7 @@ export function SessionCheckinForm({
 
       <div>
         <label className="block text-lg font-semibold text-gray-900 mb-3">
-          Did you enjoy today's session?
+          Did you enjoy today&apos;s session?
         </label>
         <div className="grid grid-cols-2 gap-3">
           <button
@@ -340,7 +340,7 @@ export function SessionCheckinForm({
           Additional notes (optional)
         </label>
         <textarea
-          placeholder="Anything else you'd like to share about today's session?"
+          placeholder="Anything else you'd like to share about today&apos;s session?"
           value={formData.notes}
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
           className="w-full p-3 border-2 border-gray-200 rounded-lg"

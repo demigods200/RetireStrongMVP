@@ -1,0 +1,21 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "0998c32187b1125dad8abf4ceb3c22683394fdfd9e56ef570a16a388853b4184": {
+      "displayName": "RetireStrong-Auth-dev Template",
+      "source": {
+        "path": "RetireStrong-Auth-dev.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "328174020395-us-east-2-f760e6f5": {
+          "bucketName": "cdk-hnb659fds-assets-328174020395-us-east-2",
+          "objectKey": "0998c32187b1125dad8abf4ceb3c22683394fdfd9e56ef570a16a388853b4184.json",
+          "region": "us-east-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::328174020395:role/cdk-hnb659fds-file-publishing-role-328174020395-us-east-2"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

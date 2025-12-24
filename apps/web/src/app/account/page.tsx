@@ -1,10 +1,10 @@
 "use client";
 
-import { Layout } from "@retire-strong/shared-ui";
-import { Card, Button } from "@retire-strong/shared-ui";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+
+import { Layout, Card, Button } from "@retire-strong/shared-ui";
 import { useAuthGuard } from "@/lib/auth/guards";
 import { getApiUrl } from "@/lib/api-client";
 
@@ -24,25 +24,33 @@ interface User {
   onboardingComplete?: boolean;
 }
 
+interface ApiResponse<T> {
+  success?: boolean;
+  data?: T;
+  error?: {
+    message?: string;
+    code?: string;
+  };
+}
+
 export default function AccountPage() {
+  useAuthGuard();
+
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useAuthGuard(); // Redirect to login if not authenticated
-
   useEffect(() => {
     const fetchUserProfile = async () => {
-      // Check if user is authenticated
       const token = localStorage.getItem("accessToken");
+
       if (!token) {
         setLoading(false);
         return;
       }
 
       try {
-        // Fetch user profile from API
         const response = await fetch(getApiUrl("/users/me"), {
           method: "GET",
           headers: {
@@ -51,34 +59,36 @@ export default function AccountPage() {
           },
         });
 
-        let data: any;
-        try {
-          data = await response.json();
-        } catch (parseError) {
-          console.error("Failed to parse response:", parseError);
-          setError(`Server error: ${response.status} ${response.statusText}`);
+        if (!response.ok) {
+          setError(`Server error: ${response.status}`);
           return;
         }
 
-        if (data.success && data.data) {
-          setUser(data.data);
+        const payload = (await response.json()) as ApiResponse<User>;
+
+        if (payload.success && payload.data) {
+          setUser(payload.data);
+          setError(null);
         } else {
-          // Show more detailed error message
-          const errorMsg = data.error?.message || data.error?.code || "Failed to load user profile";
-          setError(errorMsg);
-          console.error("API error:", data.error);
+          setError(
+            payload.error?.message ??
+              payload.error?.code ??
+              "Failed to load user profile"
+          );
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "An error occurred while loading your profile";
-        setError(errorMessage);
-        console.error("Error fetching user profile:", err);
+        setError(
+          err instanceof Error
+            ? err.message
+            : "An error occurred while loading your profile"
+        );
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserProfile();
-  }, [router]);
+    void fetchUserProfile();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -101,9 +111,9 @@ export default function AccountPage() {
   return (
     <Layout>
       <div className="max-w-2xl mx-auto content-spacing">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">Account</h1>
-        </div>
+        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 sm:mb-8">
+          Account
+        </h1>
 
         {error && (
           <div className="bg-red-50 border-2 border-red-200 text-red-700 px-5 py-4 rounded-xl text-base sm:text-lg">
@@ -114,26 +124,43 @@ export default function AccountPage() {
         <Card title="Profile Information" subtitle="Your account details">
           <div className="space-y-6">
             <div>
-              <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-2">Email</label>
-              <p className="text-lg sm:text-xl text-gray-900">{user?.email || "Not available"}</p>
+              <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-2">
+                Email
+              </label>
+              <p className="text-lg sm:text-xl text-gray-900">
+                {user?.email ?? "Not available"}
+              </p>
             </div>
+
             <div>
-              <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-2">Name</label>
+              <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-2">
+                Name
+              </label>
               <p className="text-lg sm:text-xl text-gray-900">
                 {user?.firstName} {user?.lastName}
               </p>
             </div>
+
             <div>
-              <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-2">Coach Persona</label>
+              <label className="block text-lg sm:text-xl font-semibold text-gray-700 mb-2">
+                Coach Persona
+              </label>
+
               {user?.coachPersona?.name ? (
-                <div>
-                  <p className="text-lg sm:text-xl text-gray-900 font-semibold">{user.coachPersona.name}</p>
+                <>
+                  <p className="text-lg sm:text-xl text-gray-900 font-semibold">
+                    {user.coachPersona.name}
+                  </p>
                   {user.coachPersona.description && (
-                    <p className="text-base sm:text-lg text-gray-600 mt-2 leading-relaxed">{user.coachPersona.description}</p>
+                    <p className="text-base sm:text-lg text-gray-600 mt-2">
+                      {user.coachPersona.description}
+                    </p>
                   )}
-                </div>
+                </>
               ) : (
-                <p className="text-lg sm:text-xl text-gray-600 italic">Will be assigned after motivation quiz</p>
+                <p className="text-lg sm:text-xl text-gray-600 italic">
+                  Will be assigned after motivation quiz
+                </p>
               )}
             </div>
           </div>
@@ -148,9 +175,10 @@ export default function AccountPage() {
                 </Button>
               </Link>
             )}
+
             <button
               onClick={handleLogout}
-              className="w-full px-7 py-3.5 bg-red-600 text-white rounded-xl text-lg font-semibold hover:bg-red-700 transition-all duration-200 min-h-[48px] shadow-soft hover:shadow-medium active:scale-[0.98]"
+              className="w-full px-7 py-3.5 bg-red-600 text-white rounded-xl text-lg font-semibold hover:bg-red-700 transition-all"
             >
               Sign Out
             </button>
@@ -160,4 +188,3 @@ export default function AccountPage() {
     </Layout>
   );
 }
-

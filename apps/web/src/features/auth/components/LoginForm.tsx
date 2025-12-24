@@ -80,6 +80,7 @@ export const LoginForm: React.FC = () => {
         setError(data.error?.message || "Login failed");
       }
     } catch (err) {
+      console.error(err);
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);

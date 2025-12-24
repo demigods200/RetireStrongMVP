@@ -85,6 +85,14 @@ export class OpenSearchVectorStore implements VectorStore {
             throw new Error('Failed to index some chunks');
         }
 
+        // Force a refresh so newly indexed documents are immediately searchable in read-after-write tests
+        try {
+            await this.client.indices.refresh({ index: INDEX_NAME });
+        } catch (err) {
+            // Not fatal for production use; log for debugging
+            console.warn('Index refresh failed or not supported:', err);
+        }
+
         console.log(`Indexed ${chunks.length} chunks.`);
     }
 
@@ -111,17 +119,38 @@ export class OpenSearchVectorStore implements VectorStore {
             filter.push({ terms: { movementIds } });
         }
 
-        const searchBody = {
-            size: limit,
-            query: {
+        // Build query differently depending on whether filters are present. Some kNN engines (eg. NMSLIB) do not support `filter` inside the knn block.
+        let queryBody: any;
+
+        if (filter.length > 0) {
+            // Put filters at the bool-level and the kNN as a `must` clause
+            queryBody = {
+                bool: {
+                    filter: filter,
+                    must: {
+                        knn: {
+                            embedding: {
+                                vector: embedding,
+                                k: limit,
+                            },
+                        },
+                    },
+                },
+            };
+        } else {
+            queryBody = {
                 knn: {
                     embedding: {
                         vector: embedding,
                         k: limit,
-                        filter: filter.length > 0 ? { bool: { filter } } : undefined,
                     },
                 },
-            },
+            };
+        }
+
+        const searchBody = {
+            size: limit,
+            query: queryBody,
             _source: ['id', 'collection', 'content', 'sourceTitle', 'topics', 'movementIds', 'timestampStart', 'timestampEnd'],
         };
 
@@ -133,13 +162,18 @@ export class OpenSearchVectorStore implements VectorStore {
         const hits = response.body.hits.hits;
 
         return hits
-            .map((hit: any) => ({
-                chunk: {
-                    id: hit._id,
-                    ...hit._source,
-                } as RagChunk,
-                score: hit._score,
-            }))
+            .map((hit: any) => {
+                // If the document stored an explicit `id` field, prefer it; otherwise fall back to the internal _id
+                const sourceId = hit._source && hit._source.id ? hit._source.id : hit._id;
+
+                return {
+                    chunk: {
+                        id: sourceId,
+                        ...hit._source,
+                    } as RagChunk,
+                    score: hit._score,
+                };
+            })
             .filter((result: any) => result.score >= minSimilarity);
     }
 
